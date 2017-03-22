@@ -1,0 +1,61 @@
+class Solution {
+public:
+    string multiply(string num1, string num2) {
+        string result = "";
+        int carry = 0;
+        int tmp1,tmp2;
+        reverse(num1.begin(),num1.end());
+        reverse(num2.begin(),num2.end());
+        int mul = 0;
+        int i;
+        int target;
+        for(i = 0;i<(num1.size()+num2.size()-1);i++)
+        {
+            int sum_tmp = carry;
+            for(int index1 = 0;index1<=i;index1++)
+            {
+                target = i;
+                target = target-index1;
+                if(index1>=num1.size() || target>=num2.size())
+                {
+                    continue;
+                }
+                tmp1 = int(num1[index1]-'0');
+                tmp2 = int(num2[target]-'0');
+                sum_tmp+=tmp1*tmp2;
+            }
+            
+            //tmp1 = int(num1[i]-'0');
+            //tmp2 = int(num2[i]-'0');
+            //mul = tmp1*tmp2;
+            carry = sum_tmp/10;
+            mul = sum_tmp%10;
+            result =result+char(mul+'0');
+        }
+        
+        if(carry!=0)
+        {
+            result+=char(carry+'0');
+        }
+        
+        int count = result.size()-1;
+        while(result[count] == '0')
+        {
+            count--;
+        }
+        if(count == -1)
+        {
+            result = "0";
+        }
+        else
+        {
+            result.erase(count+1,result.size()-1-count);
+        }
+        //result.erase()
+        
+        
+        
+        reverse(result.begin(),result.end());
+        return result;
+    }
+};
