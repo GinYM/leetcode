@@ -1,0 +1,35 @@
+class Solution {
+public:
+    vector<string> letterCombinations(string digits) {
+        queue<string> myque;
+        vector<string> result;
+        string store[10] = {"0", "1", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+        myque.push("");
+        if(digits.empty())
+        {
+            return result;
+        }
+       
+        for(int dig_idx = 0;dig_idx<digits.size();dig_idx++)
+        {
+            int myque_size = myque.size();
+            for(int i = 0;i<myque_size;i++)
+            {
+                for(int j = 0;j<store[digits[dig_idx]-'0'].size();j++)
+                {
+                    string tmp = myque.front();
+                    tmp= tmp+store[digits[dig_idx]-'0'][j];
+                    myque.push(tmp );
+                    if(dig_idx == digits.size()-1)
+                    {
+                        result.push_back(tmp);
+                    }
+                    
+                }
+                myque.pop();
+            }
+        }
+        return result;
+        
+    }
+};

@@ -1,0 +1,55 @@
+class Solution {
+public:
+    vector<string> generateParenthesis(int n) {
+        queue<string> myq;
+        myq.push("");
+        myq.push("0");
+        vector<string> result;
+        string tmp;
+        if(n == 0)
+        {
+            return result;
+        }
+        int count_left = 0;
+        
+        int count_right = 0;
+        for(int i = 0;i<n*2;i++)
+        {
+            int que_size = myq.size()/2;
+            while(que_size--)
+            {
+                tmp = myq.front();
+                myq.pop();
+                count_left = myq.front()[0]-'0';
+                
+                myq.pop();
+                count_right = tmp.size()-count_left;
+                if(count_left > count_right)
+                {
+                    myq.push(tmp+")");
+                    stringstream stream;
+                    char c = count_left+'0';
+                    stream << c;
+                    //string s(count_left+'0');
+                    myq.push(stream.str());
+                }
+                if(count_left<n)
+                {
+                    myq.push(tmp+"(");
+                    stringstream stream;
+                    char c = count_left+1+'0';
+                    stream << c;
+                    myq.push(stream.str());
+                }
+            }
+            
+        }
+        while(!myq.empty())
+        {
+            result.push_back(myq.front());
+            myq.pop();
+            myq.pop();
+        }
+        return result;
+    }
+};

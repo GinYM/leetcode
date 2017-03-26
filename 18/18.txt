@@ -1,0 +1,69 @@
+class Solution {
+public:
+    vector<vector<int>> fourSum(vector<int>& nums, int target) {
+        sort((nums).begin(),(nums).end());
+        vector<vector<int>> result;
+        if(nums.empty() )
+        {
+            return result;
+        }
+        for(int i = 0;i<(nums).size();i++)
+        {
+            for(int j = i+1;j<(nums).size();j++)
+            {
+                int start = j+1;
+                int end = (nums).size()-1;
+                int thetarget = target-nums[i]-nums[j];
+                while(start < end)
+                {
+                    int tmp = nums[start]+nums[end];
+                    if(tmp < thetarget)
+                    {
+                        while(start<end && nums[start+1] == nums[start])
+                        {
+                            start++;
+                        }
+                        start++;
+                    }
+                    else if(tmp > thetarget)
+                    {
+                        while(start<end && nums[end-1] == nums[end])
+                        {
+                            end--;
+                        }
+                        end--;
+                    }
+                    else
+                    {
+                        vector<int> tmp;
+                        tmp.push_back(nums[i]);
+                        tmp.push_back(nums[j]);
+                        tmp.push_back(nums[start]);
+                        tmp.push_back(nums[end]);
+                        result.push_back(tmp);
+                        while(start < end && nums[start+1] == nums[start])
+                        {
+                            start++;
+                        }
+                        start++;
+                        while(start<end && nums[end-1] == nums[end])
+                        {
+                            end--;
+                        }
+                        end--;
+                    }
+                }
+                while(j+1<nums.size() && nums[j+1] == nums[j])
+                {
+                    j++;
+                }
+                
+            }
+            while(i+1<nums.size() && nums[i+1] == nums[i])
+            {
+                i++;
+            }
+        }
+        return result;
+    }
+};
