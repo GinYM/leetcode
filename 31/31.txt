@@ -1,0 +1,52 @@
+class Solution {
+public:
+    void myswap(vector<int>& nums, int start,int end)
+    {
+        int index = start;
+        while(start < end)
+        {
+            int tmp = nums[start];
+            nums[start] = nums[end];
+            nums[end] = tmp;
+            start++;
+            end--;
+        }
+    }
+
+    void nextPermutation(vector<int>& nums) {
+        int index = nums.size()-1;
+        int diff = INT_MAX;
+        int store_idx = nums.size()-1;
+        while(index>=1)
+        {
+            if(nums[index-1] < nums[index] )
+            {
+                break;
+            }
+            index--;
+        }
+        if(index == 0)
+        {
+            myswap(nums, 0,nums.size()-1);
+        }
+        else
+        {
+            index--;
+            int i;
+            for(i = nums.size()-1;i>index;i--)
+            {
+                if(nums[i] > nums[index])
+                {
+                    break;
+                }
+            }
+            int tmp = nums[i];
+            nums[i] = nums[index];
+            nums[index] = tmp;
+            myswap(nums,index+1,nums.size()-1);
+        }
+        
+        
+    }
+    
+};
