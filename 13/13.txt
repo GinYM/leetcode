@@ -1,0 +1,34 @@
+class Solution {
+public:
+    int romanToInt(string s) {
+        map<char,int> convert;
+        convert['M'] = 1000;
+        convert['C'] = 100;
+        convert['L'] = 50;
+        convert['X'] = 10;
+        convert['I'] = 1;
+        convert['D'] = 500;
+        convert['V'] = 5;
+        int result = 0;
+        for(int i = 0;i<s.size();i++)
+        {
+            bool isBig = false;
+            if(s[i] == 'I' || s[i] == 'X' || s[i] == 'C')
+            {
+                for(int j = i+1 ;j<s.size();j++)
+                {
+                    if(convert[s[j]] > convert[s[i]])
+                    {
+                        isBig = true;
+                        break;
+                    }
+                }
+            }
+            if(isBig)
+                result -= convert[s[i]];
+            else
+                result += convert[s[i]];
+        }
+        return result;
+    }
+};
