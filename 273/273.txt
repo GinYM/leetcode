@@ -1,0 +1,83 @@
+class Solution {
+public:
+    string numberToWords(int num) {
+        string result ="";
+        map<int,string> convert;
+        convert[1] = "One";
+        convert[2] = "Two";
+        convert[3] = "Three";
+        convert[4] = "Four";
+        convert[5] = "Five";
+        convert[6] = "Six";
+        convert[7] = "Seven";
+        convert[8] = "Eight";
+        convert[9] = "Nine";
+        convert[10] = "Ten";
+        convert[11] = "Eleven";
+        convert[12] = "Twelve";
+        convert[13] = "Thirteen";
+        convert[14] = "Fourteen";
+        convert[15] = "Fifteen";
+        convert[16] = "Sixteen";
+        convert[17] = "Seventeen";
+        convert[18] = "Eighteen";
+        convert[19] = "Nineteen";
+        convert[20] = "Twenty";
+        convert[30] = "Thirty";
+        convert[40] = "Forty";
+        convert[50] = "Fifty";
+        convert[60] = "Sixty";
+        convert[70] = "Seventy";
+        convert[80] = "Eighty";
+        convert[90] = "Ninety";
+        convert[1000] = "Thousand";
+        convert[1000000] = "Million";
+        
+        for(int num_len = 1000000000;num_len>=1;num_len/=1000)
+        {
+            if(num_len == 1000000000)
+            {
+                if (num/num_len != 0)
+                {
+                    result += " "+convert[num/num_len];
+                    result += " Billion";
+                }
+            }
+            else 
+            {
+                int three_dig = (num/num_len)%1000;
+                if(three_dig != 0)
+                {
+                    int first = (three_dig/100)%10;
+                    int second = (three_dig/10)%10;
+                    int third = (three_dig)%10;
+                    if(first != 0)
+                    {
+                        result += " "+convert[first];
+                        result += " Hundred";
+                    }
+                    int lasttwo = three_dig%100;
+                    if((lasttwo<=19 || lasttwo%10 == 0) && lasttwo != 0)
+                    {
+                        result += " "+convert[lasttwo];
+                        
+                    }
+                    else
+                    {   
+                        if(second!=0)
+                            result += " "+convert[second*10];
+                        
+                        if(third!=0)
+                            result += " "+convert[third];
+                        
+                    }
+                    if(num_len != 1)
+                        result += " "+convert[num_len];
+                }
+            }
+        }
+        if(result == "")
+            return "Zero";
+        return result.substr(1);
+    }
+};

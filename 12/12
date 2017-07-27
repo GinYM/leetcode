@@ -1,0 +1,60 @@
+class Solution {
+public:
+    string intToRoman(int num) {
+        string result = "";
+        map<int,string> store;
+        store[1] = "I";
+        store[5] = "V";
+        store[10] = "X";
+        store[50] = "L";
+        store[100] = "C";
+        store[500] = "D";
+        store[1000] = "M";
+        for(int num_len = 1000;num_len>=1;num_len/=10)
+        {
+            if(num_len == 1000)
+            {
+                for(int count = 0;count<num/num_len;count++)
+                {
+                    result += store[num_len];
+                }
+            }
+            else
+            {
+                
+                int extract = (num/num_len)%10;
+                
+                
+                if(extract == 9)
+                {
+                    result += store[num_len]+store[num_len*10];
+                }
+                else if(extract == 4)
+                {
+                    result += store[num_len]+store[num_len*5];
+                }
+                else if(extract == 5)
+                {
+                    result += store[num_len*5];
+                }
+                else if(extract > 5)
+                {
+                    result += store[num_len*5];
+                    for(int idx = 0;idx<extract-5;idx++)
+                    {
+                        result += store[num_len];
+                    }
+                }
+                else if(extract > 0)
+                {
+                    
+                    for(int idx = 0;idx<extract;idx++)
+                    {
+                        result += store[num_len];
+                    }
+                }
+            }
+        }
+        return result;
+    }
+};
