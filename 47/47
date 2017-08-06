@@ -1,0 +1,42 @@
+class Solution {
+public:
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
+        vector<vector<int> > result;
+        vector<int>store;
+        map<int,int>hash;
+        for(int i = 0;i<nums.size();i++)
+        {
+            if(hash.find(nums[i]) == hash.end())
+            {
+                hash[nums[i]] = 1;
+            }
+            else
+            {
+                hash[nums[i]]++;
+            }
+        }
+        dfs(store,result,nums,hash);
+        return result;
+    }
+private:
+    void dfs(vector<int>&store,vector<vector<int> >&result,vector<int>&nums,map<int,int>&hash)
+    {
+        vector<int> tmp;
+        if(store.size() == nums.size())
+        {
+            result.push_back(store);
+        }
+        for(int i = 0;i<nums.size();i++)
+        {
+            if(hash[nums[i]]!=0 && find(tmp.begin(),tmp.end(),nums[i]) == tmp.end())
+            {
+                tmp.push_back(nums[i]);
+                hash[nums[i]]--;
+                store.push_back(nums[i]);
+                dfs(store,result,nums,hash);
+                hash[nums[i]]++;
+                store.pop_back();
+            }
+        }
+    }
+};

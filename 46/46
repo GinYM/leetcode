@@ -1,0 +1,27 @@
+class Solution {
+public:
+    vector<vector<int>> permute(vector<int>& nums) {
+        vector<vector<int> > result;
+        vector<int> store;
+        dfs(result,store,nums);
+        return result;
+    }
+private:
+    void dfs(vector<vector<int> > &result,vector<int>&store,vector<int>&nums)
+    {
+        if(store.size() == nums.size())
+        {
+            result.push_back(store);
+            return;
+        }
+        for(int i = 0;i<nums.size();i++)
+        {
+            if(find(store.begin(),store.end(),nums[i])==store.end())
+            {
+                store.push_back(nums[i]);
+                dfs(result,store,nums);
+                store.pop_back();
+            }
+        }
+    }
+};

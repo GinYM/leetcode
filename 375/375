@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int getMoneyAmount(int n) {
+        vector<vector<int> >table(n+1,vector<int>(n+1,0));
+        int tmp = 0;
+        for(int len = 1;len<=n;len++)
+        {
+            for(int i = 1;i<=n-len;i++)
+            {
+                int min_money = INT_MAX;
+                for(int idx = i;idx<=i+len;idx++)
+                {
+                    int left = idx>i?table[i][idx-1]:0;
+                    int right = idx<i+len?table[idx+1][i+len]:0;
+                    tmp = idx+max(left,right);
+                    if(tmp<min_money)
+                    {
+                        min_money = tmp;
+                    }
+                }
+                table[i][i+len]=min_money;
+            }
+        }
+        return table[1][n];
+    }
+};
