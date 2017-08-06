@@ -1,0 +1,68 @@
+class Solution {
+public:
+    void solveSudoku(vector<vector<char>>& board) {
+        bool vis[10];
+        dfs(board, 0,vis);
+    }
+private:
+    bool checkCur(vector<vector<char> >& board,int pos,char c)
+    {
+        int i = pos/9;
+        int j = pos%9;
+        for(int idx1 = 0;idx1<9;idx1++)
+        {
+            if(board[idx1][j] == c)
+            {
+                return false;
+            }
+        }
+        for(int idx2=0;idx2<9;idx2++)
+        {
+            if(board[i][idx2] == c)
+            {
+                return false;
+            }
+        }
+        int cur1 = i/3*3;
+        int cur2 = j/3*3;
+        for(int idx1=cur1;idx1<cur1+3;idx1++)
+        {
+            for(int idx2=cur2;idx2<cur2+3;idx2++)
+            {
+                if(board[idx1][idx2] == c)
+                    return false;
+            }
+        }
+        return true;
+    }
+    bool dfs(vector<vector<char>>& board,int pos,bool *vis)
+    {
+        if(pos >=81)
+        {
+            return true;
+        }
+        int i = pos/9;
+        int j = pos%9;
+        if(board[i][j] != '.')
+            return dfs(board,pos+1,vis);
+        else
+        {
+            for(int num = 1;num<=9;num++)
+            {
+                if(checkCur(board,pos,char('0'+num)))
+                {
+                    board[i][j]=char(num+'0');
+                    if(dfs(board,pos+1,vis))
+                        return true;
+                    else
+                        board[i][j]='.';
+                }
+                
+                
+                
+            }
+        }
+        return false;
+        
+    }
+};

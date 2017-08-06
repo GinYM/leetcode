@@ -1,0 +1,25 @@
+class Solution {
+public:
+    bool judgeSquareSum(int c) {
+        int num = 0;
+        unordered_set<int> hash;
+        int idx = -1;
+        do
+        {
+            idx++;
+            hash.insert(idx*idx);
+        }while(c-idx*idx>=2*idx+1);
+       
+        
+        
+        
+        
+        for(num = 0;num*num<=c/2;num++)
+        {
+            if(hash.find(c-num*num) != hash.end())
+                return true;
+        }
+        return false;
+    }
+
+};

@@ -1,0 +1,77 @@
+class Solution {
+public:
+    bool isValidSudoku(vector<vector<char>>& board) {
+        int m = board.size();
+        int n = board[0].size();
+        bool vis[10];
+        for(int i = 0;i<m;i++)
+        {
+            for(int idx=1;idx<=9;idx++)
+            {
+                vis[idx]=false;
+            }
+            
+            for(int j = 0;j<n;j++)
+            {
+                if(board[i][j] == '.')
+                {
+                    continue;
+                }
+                if(vis[int(board[i][j]-'0')]==true)
+                {
+                    cout<<"cond1"<<endl;
+                    return false;
+                }
+                vis[int(board[i][j]-'0')]=true;
+                
+            }
+        }
+        for(int j=0;j<n;j++)
+        {
+            for(int idx=1;idx<=9;idx++)
+            {
+                vis[idx]=false;
+            }
+            for(int i = 0;i<m;i++)
+            {
+                if(board[i][j] == '.')
+                    continue;
+                if(vis[int(board[i][j]-'0')]==true)
+                {
+                    cout<<"cond2"<<endl;
+                    return false;
+                }
+                vis[int(board[i][j]-'0')]=true;
+            }
+        }
+        for(int i = 0;i<=m-3;i=i+3)
+        {
+            for(int j = 0;j<=n-3;j=j+3)
+            {
+                for(int idx=1;idx<=9;idx++)
+                {
+                    vis[idx]=false;
+                }
+                for(int i1=i;i1<=i+2;i1++)
+                {
+                    for(int j1 = j;j1<=j+2;j1++)
+                    {
+                        if(board[i1][j1] == '.')
+                        {
+                            continue;
+                        }
+                        cout<<i1<<" "<<j1<<" "<<int(board[i1][j1]-'0')<<" "<<vis[int(board[i1][j1]-'0')]<<endl;
+                        if(vis[int(board[i1][j1]-'0')] == true)
+                        {
+                            cout<<"cond3"<<endl;
+                            return false;
+                        }
+                        vis[int(board[i1][j1]-'0')] = true;
+                        
+                    }
+                }
+            }
+        }
+        return true;
+    }
+};
