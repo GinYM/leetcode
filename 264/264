@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int nthUglyNumber(int n) {
+        int dp[n+1] = {0};
+        dp[1]=1;
+        int i=0,j=0,k=0;
+        int min_num;
+        for(int idx = 2;idx<=n;idx++)
+        {
+            while(dp[i]*2<=dp[idx-1])
+                i++;
+            while(dp[j]*3<=dp[idx-1])
+                j++;
+            while(dp[k]*5<=dp[idx-1])
+                k++;
+            min_num=min(min(dp[i]*2,dp[j]*3),dp[k]*5);
+            dp[idx]=min_num;
+        }
+        return dp[n];
+    }
+
+};

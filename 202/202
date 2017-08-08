@@ -1,0 +1,22 @@
+class Solution {
+public:
+    bool isHappy(int n) {
+        unordered_set<int> hash;
+        int num = n;
+        int tmp = 0;
+        while(hash.find(num) == hash.end())
+        {
+            hash.insert(num);
+            tmp = num;
+            num = 0;
+            while(tmp>0)
+            {
+                num+=(tmp%10)*(tmp%10);
+                tmp/=10;
+            }
+            if(num == 1)
+                return true;
+        }
+        return false;
+    }
+};

@@ -1,0 +1,25 @@
+class Solution {
+public:
+    string convertToTitle(int n) {
+       
+        string result = "";
+        int left = 0;
+        int cur = 0;
+        cur = n;
+        int div = 0;
+        do
+        {
+            left = cur%26;
+            div = cur/26;
+            if(left == 0)
+            {
+                left=26;
+                div--;
+            }
+            cur = div;
+            result = char('A'+left-1)+result;
+            
+        }while(cur >0);
+        return result;
+    }
+};

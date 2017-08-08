@@ -1,0 +1,53 @@
+class Solution {
+public:
+    int superPow(int a, vector<int>& b) {
+        a %=1337;
+        if(isZero(b))
+            return 1;
+        if(b[b.size()-1]%2 == 0)
+        {
+            
+            divide_two(b);
+            
+            return superPow(a*a%1337,b);
+        }
+        else
+        {
+            
+            divide_two(b);
+            
+            return a*superPow(a*a%1337,b)%1337;
+        }
+        
+    }
+private:
+    void divide_two(vector<int>&b)
+    {
+        int prev = 0;
+        int cur = 0;
+        for(int i = 0;i<b.size();i++)
+        {
+            cur = prev*10+b[i];
+            prev = cur%2;
+            b[i] = cur/2;
+        }
+    }
+    bool isZero(vector<int>&b)
+    {
+        for(int i = 0;i<b.size();i++)
+        {
+            if(b[i]!=0)
+                return false;
+        }
+        return true;
+    }
+    void show(vector<int>&b)
+    {
+        for(int i = 0;i<b.size();i++)
+        {
+            cout<<b[i];
+        }
+        cout<<endl;
+    }
+    
+};
