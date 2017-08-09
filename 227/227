@@ -1,0 +1,111 @@
+class Solution {
+public:
+    int calculate(string s) {
+        map<char,int> hash;
+        hash['+'] = 0;
+        hash['-'] = 0;
+        hash['*'] = 1;
+        hash['/'] = 1;
+        stack<char>op;
+        stack<int>num_s;
+        int i = 0;
+        char op_tmp;
+        int num1,num2;
+        while(i<s.size())
+        {
+            
+            if(s[i] == ' ')
+            {
+                i++;
+                continue;
+            }
+            if(s[i]>='0' && s[i]<='9')
+            {
+                int num = 0;
+                while(s[i]>='0' && s[i]<='9')
+                {
+                    
+                    num = num*10+int(s[i]-'0');
+                    i++;
+                }
+                
+                num_s.push(num);
+            }
+            else
+            {
+                if(op.empty() || hash[op.top()] < hash[s[i]])
+                    op.push(s[i]);
+                else
+                {
+                    if(!op.empty() )
+                    {
+                        op_tmp = op.top();
+                        op.pop();
+                        num1 = num_s.top();
+                        num_s.pop();
+                        num2 = num_s.top();
+                        num_s.pop();
+                        if(op_tmp == '*')
+                        {
+                            num_s.push(num1*num2);
+                        }
+                        else if(op_tmp == '/')
+                        {
+                            num_s.push(num2/num1);
+                        }
+                        else if(op_tmp == '+')
+                            num_s.push(num1+num2);
+                        else
+                        {
+                            num_s.push(num2-num1);
+                        }
+                    }
+                    if(!op.empty() && hash[s[i]] == hash[op.top()] && hash[s[i]] == 0)
+                    {
+                        op_tmp = op.top();
+                        op.pop();
+                        num1 = num_s.top();
+                        num_s.pop();
+                        num2 = num_s.top();
+                        num_s.pop();
+                        if(op_tmp == '+')
+                            num_s.push(num1+num2);
+                        else
+                        {
+                            num_s.push(num2-num1);
+                        }
+                    }
+                    op.push(s[i]);
+                }
+                i++;
+            }
+        }
+        
+        while(!op.empty())
+        {
+            op_tmp = op.top();
+            op.pop();
+            num1 = num_s.top();
+            num_s.pop();
+            num2 = num_s.top();
+            num_s.pop();
+            if(op_tmp == '+')
+            {
+                num_s.push(num1+num2);
+            }
+            else if(op_tmp == '-')
+            {
+                num_s.push(num2-num1);
+            }
+            else if(op_tmp == '*')
+            {
+                num_s.push(num1*num2);
+            }
+            else
+            {
+                num_s.push(num2/num1);
+            }
+        }
+        return num_s.top();
+    }
+};

@@ -1,0 +1,31 @@
+class Solution {
+public:
+    string reverseVowels(string s) {
+        int start = 0;
+        int end = s.size()-1;
+        unordered_set<char> hash;
+        hash.insert('a');
+        hash.insert('e');
+        hash.insert('i');
+        hash.insert('o');
+        hash.insert('u');
+        hash.insert('A');
+        hash.insert('E');
+        hash.insert('I');
+        hash.insert('O');
+        hash.insert('U');
+        while(start<end)
+        {
+            while(start<end && hash.find(s[start]) == hash.end())
+                start++;
+            while(start<end && hash.find(s[end]) == hash.end())
+                end--;
+            char tmp = s[start];
+            s[start] = s[end];
+            s[end] = tmp;
+            start++;
+            end--;
+        }
+        return s;
+    }
+};

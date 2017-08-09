@@ -1,0 +1,66 @@
+class Solution {
+public:
+    vector<vector<int>> generateMatrix(int n) {
+        vector<vector<int>> result(n,vector<int>(n,0));
+        int idx1=0;
+        int idx2=0;
+        int count = 0;
+        int state = 0;
+        int circle = 0;
+        while(count<n*n)
+        {
+            count++;
+            result[idx1][idx2] = count;
+            if(state==0)
+            {
+                if(idx2<n-circle-1)
+                {
+                    idx2++;
+                }
+                else
+                {
+                    idx1++;
+                    state++;
+                }
+            }
+            else if(state == 1)
+            {
+                if(idx1<n-circle-1)
+                {
+                    idx1++;
+                }
+                else
+                {
+                    idx2--;
+                    state++;
+                }
+            }
+            else if(state == 2)
+            {
+                if(idx2>circle)
+                {
+                    idx2--;
+                }
+                else
+                {
+                    idx1--;
+                    state++;
+                }
+            }
+            else
+            {
+                if(idx1>circle+1)
+                {
+                    idx1--;
+                }
+                else
+                {
+                    state=0;
+                    idx2++;
+                    circle++;
+                }
+            }
+        }
+        return result;
+    }
+};

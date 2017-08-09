@@ -1,0 +1,66 @@
+class Solution {
+public:
+    vector<int> spiralOrder(vector<vector<int>>& matrix) {
+        vector<int>result;
+        int idx1=0,idx2=0;
+        int m = matrix.size();
+        if(m == 0)
+            return result;
+        int n = matrix[0].size();
+        int count = 0;
+        int states=0;
+        int circle = 0;
+        while(count<m*n)
+        {
+            
+            count++;
+            result.push_back(matrix[idx1][idx2]);
+            if(states == 0)
+            {
+                if(idx2<n-circle-1)
+                {
+                    idx2++;
+                }
+                else
+                {
+                    states=1;
+                    idx1++;
+                }
+            }
+            else if(states == 1)
+            {
+                if(idx1 < m-circle-1)
+                {
+                    idx1++;
+                }
+                else
+                {
+                    states++;
+                    idx2--;
+                }
+            }
+            else if(states == 2)
+            {
+                if(idx2>circle)
+                    idx2--;
+                else
+                {
+                    states++;
+                    idx1--;
+                }
+            }
+            else
+            {
+                if(idx1>circle+1)
+                    idx1--;
+                else
+                {
+                    states=0;
+                    circle++;
+                    idx2++;
+                }
+            }
+        }
+        return result;
+    }
+};

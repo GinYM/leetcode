@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int minSubArrayLen(int s, vector<int>& nums) {
+        int start = 0;
+        int end = 0;
+        int result = nums.size()+1;
+        int count = 0;
+        while(end<nums.size())
+        {
+            while(end<nums.size() && count <s)
+            {
+                count+=nums[end];
+                end++;
+            }
+            if(count>=s && end-start<result)
+            {
+                result = end-start;
+            }
+            while(count>=s)
+            {
+                
+                if(end-start<result)
+                    result = end-start;
+                count-=nums[start];
+                start++;
+            }
+            
+        }
+        return result==nums.size()+1?0:result;
+    }
+};
