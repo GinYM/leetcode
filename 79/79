@@ -1,0 +1,91 @@
+class Solution {
+public:
+    bool exist(vector<vector<char>>& board, string word) {
+        int m = board.size();
+        int n = board[0].size();
+        bool isVis[m*n] = {false};
+        return search(board,isVis,-1,word,0);
+    }
+private:
+    bool search(vector<vector<char> > &board,bool * isVis,int cur,string word,int widx)
+    {
+        if(widx==word.size())
+            return true;
+        int m = board.size();
+        int n = board[0].size();
+        int i,j;
+        if(cur == -1)
+        {
+            for(int idx=0;idx<m*n;idx++)
+            {
+                i=idx/n;
+                j=idx%n;
+                if(board[i][j] == word[widx])
+                {
+                    isVis[idx]=true;
+                    if(search(board,isVis,idx,word,widx+1))
+                        return true;
+                    isVis[idx] = false;
+                }
+            }
+            return false;
+        }
+        else
+        {
+            i=cur/n;
+            j=cur%n;
+            if(i>=1)
+            {
+                if(isVis[(i-1)*n+j]==false && board[i-1][j] == word[widx])
+                {
+                    isVis[(i-1)*n+j]=true;
+                    if(search(board,isVis,(i-1)*n+j,word,widx+1))
+                        return true;
+                    else
+                    {
+                        isVis[(i-1)*n+j]=false;
+                    }
+                }
+            }
+            int cur_tmp=0;
+            if(i<=m-2)
+            {
+                cur_tmp = (i+1)*n+j;
+                if(isVis[cur_tmp] == false && board[i+1][j] == word[widx])
+                {
+                    isVis[cur_tmp] = true;
+                    if(search(board,isVis,cur_tmp,word,widx+1))
+                        return true;
+                    else
+                        isVis[cur_tmp]=false;
+                }
+            }
+            if(j>=1)
+            {
+                cur_tmp = i*n+j-1;
+                if(isVis[cur_tmp] == false && board[i][j-1] == word[widx])
+                {
+                    isVis[cur_tmp] = true;
+                    if(search(board,isVis,cur_tmp,word,widx+1))
+                        return true;
+                    else
+                        isVis[cur_tmp]=false;
+                }
+            }
+            if(j<=n-2)
+            {
+                cur_tmp = i*n+j+1;
+                if(isVis[cur_tmp] == false && board[i][j+1] == word[widx])
+                {
+                    isVis[cur_tmp] = true;
+                    if(search(board,isVis,cur_tmp,word,widx+1))
+                        return true;
+                    else
+                        isVis[cur_tmp]=false;
+                }
+            }
+            return false;
+            
+        }
+    }
+};

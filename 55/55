@@ -1,0 +1,17 @@
+class Solution {
+public:
+    bool canJump(vector<int>& nums) {
+        int end_idx = 0;
+        for(int i = 0;i<nums.size();i++)
+        {
+            if(i>end_idx)
+                return false;
+            if(i+nums[i] > end_idx)
+                end_idx = i+nums[i];
+            if(end_idx >=nums.size()-1)
+                return true;
+        }
+        return false;
+    }
+
+};

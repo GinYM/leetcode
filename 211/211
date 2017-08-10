@@ -1,0 +1,82 @@
+class TrieNode
+{
+public:
+    bool isKey;
+    TrieNode* next[26];
+    TrieNode(bool key=false)
+    {
+        isKey = key;
+        memset(next,0,sizeof(next));
+    }
+};
+
+class WordDictionary {
+public:
+    TrieNode*root;
+    /** Initialize your data structure here. */
+    WordDictionary() {
+        root = new TrieNode();
+    }
+    
+    /** Adds a word into the data structure. */
+    void addWord(string word) {
+        TrieNode*cur = root;
+        for(int i = 0;i<word.size();i++)
+        {
+            if(cur->next[word[i]-'a'] == NULL)
+            {
+                cur->next[word[i]-'a'] = new TrieNode();
+            }
+            if(i == word.size()-1)
+                cur->next[word[i]-'a']->isKey = true;
+            cur = cur->next[word[i]-'a'];
+            
+        }
+    }
+    
+    /** Returns if the word is in the data structure. A word could contain the dot character '.' to represent any one letter. */
+    bool search(string word) {
+        return findstr(root,word,0);
+    }
+private:
+    bool findstr(TrieNode*cur,string &word,int idx)
+    {
+        if(word.size()==0)
+            return false;
+        if(cur==NULL)
+            return false;
+        if(idx == word.size())
+            return cur->isKey;
+        
+        if(word[idx] == '.')
+        {
+            for(int i = 0;i<26;i++)
+            {
+                if(cur->next[i]!=NULL)
+                {
+                    if(findstr(cur->next[i],word,idx+1))
+                        return true;
+                }
+            }
+            return false;
+        }
+        else
+        {
+            if(cur->next[word[idx]-'a']==NULL)
+            {
+                return false;
+            }
+            else
+            {
+                return findstr(cur->next[word[idx]-'a'],word,idx+1);
+            }
+        }
+    }
+};
+
+/**
+ * Your WordDictionary object will be instantiated and called as such:
+ * WordDictionary obj = new WordDictionary();
+ * obj.addWord(word);
+ * bool param_2 = obj.search(word);
+ */

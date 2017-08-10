@@ -1,0 +1,63 @@
+/**
+ * Definition for an interval.
+ * struct Interval {
+ *     int start;
+ *     int end;
+ *     Interval() : start(0), end(0) {}
+ *     Interval(int s, int e) : start(s), end(e) {}
+ * };
+ */
+class Solution {
+public:
+    vector<Interval> merge(vector<Interval>& intervals) {
+        qs(intervals,0,intervals.size()-1);
+        vector<Interval> result;
+        if(intervals.size()==0)
+            return result;
+        int start = intervals[0].start;
+        int end = intervals[0].end;
+        for(int i = 1;i<intervals.size();i++)
+        {
+            
+            if(intervals[i].start<=end)
+            {
+                end = max(end,intervals[i].end);
+                
+            }
+            else
+            {
+                
+                result.push_back(Interval(start,end));
+                start = intervals[i].start;
+                end = intervals[i].end;
+            }
+        }
+        result.push_back(Interval(start,end));
+        return result;
+    }
+private:
+    void qs(vector<Interval>&intervals,int low,int high)
+    {
+        if(low>=high)
+            return;
+        int key_start = intervals[low].start;
+        int key_end = intervals[low].end;
+        int left=low;
+        int right = high;
+        while(left<right)
+        {
+            while(left<right && (intervals[right].start >key_start || (intervals[right].start==key_start && intervals[right].end >key_end ) ))
+                right--;
+            intervals[left].start = intervals[right].start;
+            intervals[left].end=intervals[right].end;
+            while(left<right && (intervals[left].start<key_start || (intervals[left].start ==key_start && intervals[left].end<=key_end ) ))
+                left++;
+            intervals[right].start=intervals[left].start;
+            intervals[right].end=intervals[left].end;
+        }
+        intervals[left].start=key_start;
+        intervals[left].end=key_end;
+        qs(intervals,low,left-1);
+        qs(intervals,left+1,high);
+    }
+};
