@@ -1,0 +1,27 @@
+class Solution {
+public:
+    vector<vector<int>> combine(int n, int k) {
+        vector<vector<int> >result;
+        vector<int> pre;
+        dfs(n,k,result,0,1,pre);
+        return result;
+    }
+    
+private:
+    void dfs(int n,int k,vector<vector<int> >&result,int cur_count,int cur_idx,vector<int> &pre)
+    {
+        if(cur_count == k)
+        {
+            result.push_back(pre);
+            return;
+        }
+        
+        for(int i = cur_idx;i<=n;i++)
+        {
+            pre.push_back(i);
+            dfs(n,k,result,cur_count+1,i+1,pre);
+            pre.pop_back();
+        }
+    }
+    
+};

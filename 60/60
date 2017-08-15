@@ -1,0 +1,46 @@
+class Solution {
+public:
+    string getPermutation(int n, int k) {
+        vector<int> store;
+        int count = 0;
+        int perm = 0;
+        int cur = 0;
+        int pre_count = 0;
+        string result = "";
+        int left = k;
+        for(int dump = 0;dump<n;dump++)
+        {
+            
+            perm = getPerm(n-1-cur);
+            int i=1;
+            for(i = 1;i<=n;i++)
+            {
+                if(find(store.begin(),store.end(),i) == store.end())
+                {
+                    if(count+perm >=k)
+                        break;
+                    count += perm;
+                    
+                }
+            }
+            store.push_back(i);
+            cur++;
+            
+        }
+        for(int i = 0;i<store.size();i++)
+            result = result+char('0'+store[i]);
+        return result;
+    }
+private:
+    int getPerm(int n)
+    {
+        int result = 1;
+        for(int i = 1;i<=n;i++)
+        {
+            result = result*i;
+        }
+        return result;
+    }
+
+    
+};

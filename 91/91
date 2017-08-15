@@ -1,0 +1,59 @@
+class Solution {
+public:
+    int numDecodings(string s) {
+        if(s.size() == 0)
+        {
+            return 0;
+        }
+        if(s.size() == 1)
+        {
+            if(s[0] >'0')
+                return 1;
+            else
+                return 0;
+        }
+        vector<int>decode(int(s.size()),0);
+        if(s[0] !='0')
+            decode[0]=1;
+        
+        int tmp = 0;
+        tmp = int(s[0]-'0')*10+int(s[1]-'0');
+        if(tmp<=26 && tmp>=10)
+        {
+            if(s[1] == '0')
+                decode[1] = 1;
+            else
+                decode[1] = 2;
+        }
+        else
+        {
+            if(s[1] !='0')
+                decode[1] = decode[0];
+            else
+                decode[1] = 0;
+        }
+        for(int i = 2;i<s.size();i++)
+        {
+            tmp = int(s[i-1]-'0')*10+int(s[i]-'0');
+            
+            if(tmp <=26 && tmp>=10)
+            {
+                if(s[i]>'0')
+                    decode[i] = decode[i-1]+decode[i-2];
+                else
+                    decode[i] = decode[i-2];
+            }
+            else
+            {
+                if(s[i]>'0')
+                {
+                    decode[i] = decode[i-1];
+                    
+                }
+                else
+                    return 0;
+            }
+        }
+        return decode[int(s.size())-1];
+    }
+};

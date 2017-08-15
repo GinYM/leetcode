@@ -1,0 +1,67 @@
+class Solution {
+public:
+    vector<vector<string>> solveNQueens(int n) {
+        vector<vector<string> > result;
+        vector<vector<int> > place(n,vector<int>(n,0));
+        dfs(result,n,0,place);
+        return result;
+    }
+private:
+    void dfs(vector<vector<string> >&result,int n,int cur_row,vector<vector<int> >&place)
+    {
+        if(cur_row==n)
+        {
+            vector<string>vs;
+            for(int i = 0;i<n;i++)
+            {
+                string s = "";
+                for(int j = 0;j<n;j++)
+                {
+                    s += place[i][j] == 0?'.':'Q';
+                }
+                vs.push_back(s);
+            }
+            result.push_back(vs);
+            
+            return;
+        }
+        for(int i = 0;i<n;i++)
+        {
+            if(checkPlace(place,cur_row,i,n))
+            {
+                place[cur_row][i] = 1;
+                dfs(result,n,cur_row+1,place);
+                place[cur_row][i]=0;
+            }
+        }
+    }
+    bool checkPlace(vector<vector<int> >&place,int row,int col,int n)
+    {
+        for(int j=0;j<n;j++)
+        {
+            if(j!=col && place[row][j] == 1)
+                return false;
+        }
+        for(int i=0;i<n;i++)
+        {
+            if(i!=row && place[i][col] == 1)
+                return false;
+        }
+        for(int i = row-1,j=col-1;i>=0&& j>=0;i--,j--)
+        {
+            if(place[i][j]==1)
+                return false;
+        }
+        for(int i = row-1,j=col+1;i>=0 && j<n;i--,j++)
+            if(place[i][j]==1)
+                return false;
+        for(int i = row+1,j=col-1;i<n && j>=0;i++,j--)
+            if(place[i][j] == 1)
+                return false;
+        for(int i = row+1,j=col+1;i<n && j<n;i++,j++)
+            if(place[i][j] == 1)
+                return false;
+        return true;
+    }
+};
+
