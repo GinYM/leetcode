@@ -1,0 +1,26 @@
+class Solution {
+public:
+    string addBinary(string a, string b) {
+        string result="";
+        int carry = 0;
+        int num = 0;
+        int i;
+        int j;
+        for(i = a.size()-1,j=b.size()-1;i>=0 && j>=0;i--,j--)
+        {
+            num = (carry+a[i]-'0'+b[j]-'0')%2;
+            carry = (carry+a[i]-'0'+b[j]-'0')/2;
+            result = char('0'+num)+result;
+        }
+        string left = i==-1?b.substr(0,j+1):a.substr(0,i+1);
+        for(int i = left.size()-1;i>=0;i--)
+        {
+            num = (carry+left[i]-'0')%2;
+            carry = (carry+left[i]-'0')/2;
+            result = char('0'+num)+result;
+        }
+        if(carry !=0)
+            result = char('0'+carry)+result;
+        return result;
+    }
+};

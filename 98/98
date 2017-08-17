@@ -1,0 +1,63 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool isValidBST(TreeNode* root) {
+        bool isval = true;
+        int min_num = INT_MAX;
+        int max_num = INT_MIN;
+        in_order(root,min_num,max_num,isval);
+        return isval;
+    }
+private:
+    void in_order(TreeNode*h,int& min_num,int& max_num,bool &isval)
+    {
+        if(h == NULL)
+            return;
+        if(h->val<min_num)
+            min_num=h->val;
+        
+        if(h->val>max_num)
+            max_num=h->val;
+        
+        int tmp = INT_MAX;
+        int tmp2 = INT_MIN;
+        if(h->left != NULL)
+        {
+            tmp2 = max_num;
+            max_num = INT_MIN;
+            min_num = INT_MAX;
+            in_order(h->left,min_num,max_num,isval);
+            
+            tmp = min_num;
+            if(max_num>=h->val)
+            {
+                isval = false;
+                return;
+            }
+            max_num = tmp2;
+        }
+        if(h->right!=NULL)
+        {
+            min_num = INT_MAX;
+            in_order(h->right,min_num,max_num,isval);
+            if(min_num<=h->val)
+            {
+                isval = false;
+                return;
+            }
+        }
+        
+        if(h->left!=NULL)
+            min_num = tmp;
+        else
+            min_num = h->val;
+    }
+};

@@ -1,0 +1,47 @@
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        if(matrix.size()==0 || matrix[1].size()==0)
+            return false;
+        int m = matrix.size()-1;
+        int n = matrix[0].size()-1;
+        return bs(matrix,target,0,m,0,n);
+    }
+private:
+    bool bs(vector<vector<int> >& matrix,int target, int rowi,int rowj,int coli, int colj)
+    {
+        if(rowi>rowj || coli > colj)
+            return false;
+        
+        if(rowi == rowj && coli == colj)
+        {
+            return matrix[rowi][coli] == target;
+        }
+        if(rowi == rowj)
+        {
+            int midcol = (coli+colj)/2;
+            if(matrix[rowi][midcol] == target)
+                return true;
+            else if(target < matrix[rowi][midcol])
+            {
+                return bs(matrix,target,rowi,rowj,coli,midcol-1);
+            }
+            else
+            {
+                return bs(matrix,target,rowi,rowj,midcol+1,colj);
+            }
+        }
+        else
+        {
+            int midrow = (rowi+rowj)/2;
+            if(target<matrix[midrow][0])
+            {
+                return bs(matrix,target,rowi,midrow-1,coli,colj);
+            }
+            else if(target>matrix[midrow][colj])
+                return bs(matrix,target,midrow+1,rowj,coli,colj);
+            else
+                return bs(matrix,target,midrow,midrow,coli,colj);
+        }
+    }
+};
