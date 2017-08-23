@@ -1,0 +1,20 @@
+class Solution {
+public:
+    vector<vector<int>> subsets(vector<int>& nums) {
+        vector<vector<int> >result;
+        vector<int>store;
+        dfs(result,store,nums,0);
+        return result;
+    }
+private:
+    void dfs(vector<vector<int> >&result,vector<int>&store,vector<int>&nums,int idx)
+    {
+        result.push_back(store);
+        for(int i = idx;i<nums.size();i++)
+        {
+            store.push_back(nums[i]);
+            dfs(result,store,nums,i+1);
+            store.pop_back();
+        }
+    }
+};

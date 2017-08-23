@@ -1,0 +1,24 @@
+class Solution {
+public:
+    vector<vector<int>> combinationSum3(int k, int n) {
+        vector<vector<int> >result;
+        vector<int>store;
+        search(result,k,n,store,1);
+        return result;
+    }
+private:
+    void search(vector<vector<int> >&result,int k,int n,vector<int>&store,int cur)
+    {
+        if(k==0 && n==0)
+        {
+            result.push_back(store);
+            return;
+        }
+        for(int i = cur;k*cur+(k-1)*k/2 <=n && i<=9;i++)
+        {
+            store.push_back(i);
+            search(result,k-1,n-i,store,i+1);
+            store.pop_back();
+        }
+    }
+};
