@@ -1,0 +1,40 @@
+class Solution {
+public:
+    vector<vector<string>> partition(string s) {
+        vector<vector<string> > result;
+        vector<string> store;
+        dfs(result,s,store,0);
+        return result;
+    }
+private:
+    void dfs(vector<vector<string> > &result, string s, vector<string>&store,int cur)
+    {
+        if(cur==s.size())
+        {
+            result.push_back(store);
+            return;
+        }
+        
+        string tmp = "";
+        for(int i = cur;i<s.size();i++)
+        {
+            tmp+=s[i];
+            if(ispali(tmp))
+            {
+                store.push_back(tmp);
+                dfs(result,s,store,i+1);
+                store.pop_back();
+                
+            }
+        }
+    }
+    bool ispali(string s)
+    {
+        for(int i = 0;i<s.size()/2;i++)
+        {
+            if(s[i]!=s[s.size()-1-i])
+                return false;
+        }
+        return true;
+    }
+};

@@ -1,0 +1,45 @@
+class Solution {
+public:
+    void reverseWords(string &s) {
+        reverse(s.begin(),s.end());
+        int start=0,end=0;
+        int zeropos = 0;
+        while(zeropos<s.size() && s[zeropos]==' ')
+            zeropos++;
+        s.erase(s.begin(),s.begin()+zeropos);
+        int idx = 0;
+        int numlength = 0;
+        
+        while(idx<s.size())
+        {
+            if(s[idx] == ' ')
+            {
+                if(numlength!=0)
+                    reverse(s.begin()+start,s.begin()+start+numlength);
+                
+                start = 0;
+                numlength = 0;
+                zeropos = idx;
+                while(zeropos<s.size() && s[zeropos] == ' ')
+                    zeropos++;
+                if(zeropos-idx>=2)
+                {
+                    s.erase(idx,zeropos-idx-1);
+                }
+            }
+            else
+            {
+                if(numlength == 0)
+                    start = idx;
+                numlength++;
+            }
+            idx++;
+        }
+        
+        if(numlength!=0)
+            reverse(s.begin()+start,s.begin()+start+numlength);
+        
+        if(s[s.size()-1] == ' ')
+            s.erase(s.end()-1);
+    }
+};

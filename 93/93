@@ -1,0 +1,57 @@
+class Solution {
+public:
+    vector<string> restoreIpAddresses(string s) {
+        vector<string> result;
+        fun(s,"",1,0,result);
+        return result;
+    }
+private:
+    void fun(string s,string pre,int level,int cur,vector<string>&result)
+    {
+        if(level==5 && cur==s.size())
+        {
+            result.push_back(pre);
+            return;
+        }
+        if(level == 5 || cur>=s.size())
+            return;
+            
+        if(s[cur] == '0')
+        {
+            if(pre!="")
+            {
+                fun(s,pre+".0",level+1,cur+1,result);
+            }
+            else
+            {
+                fun(s,pre+"0",level+1,cur+1,result);
+            }
+        }
+        else
+        {
+            for(int i = 1;i<=3;i++)
+            {
+                string store = "";
+                int num = 0;
+                for(int idx=cur;idx<cur+i;idx++)
+                {
+                    num = num*10+s[idx]-'0';
+                    store += s[idx];
+                }
+                if(num<=255)
+                {
+                    if(pre!="")
+                    {
+                        fun(s,pre+"."+store,level+1,cur+i,result);
+                    }
+                    else
+                    {
+                        fun(s,pre+store,level+1,cur+i,result);
+                    }
+                }
+            }
+        }
+        
+        
+    }
+};
