@@ -1,0 +1,58 @@
+class Solution {
+public:
+    string fractionToDecimal(int numerator, int denominator) {
+        
+        string mag = "+";
+        
+        
+        long above = long(numerator)/long(denominator);
+        if((numerator<0 && denominator>0) || (numerator>0 && denominator<0) )
+        {
+            mag = "-";
+            above = abs(above);
+        }
+        
+        
+        long newdeno = abs(long(denominator));
+        
+        
+        long left = abs(long(numerator))%abs(long(denominator));
+        unordered_map<long,int> hash;
+        int num = 0;
+        string result = "";
+        while(above!=0)
+        {
+            result = char(above%10+'0')+result;
+            above/=10;
+        }
+        if(result == "")
+            result = "0";
+            
+        string s = "";
+        bool isRep = false;
+        int idx = 0;
+        while(left!=0 && hash.find(left)==hash.end())
+        {
+            hash[left] = idx;
+           
+            s+=char(left*10/newdeno+'0');
+            left = left*10%newdeno;
+            idx++;
+        }
+        if(mag == "-")
+            result = mag+result;
+        if(s == "")
+        {
+            return result;
+        }
+        else if(left==0)
+        {
+            return result+"."+s;
+        }
+        else
+        {
+            idx = hash[left];
+            return result+"."+s.substr(0,idx)+"("+s.substr(idx,s.size()-idx)+")";
+        }
+    }
+};
