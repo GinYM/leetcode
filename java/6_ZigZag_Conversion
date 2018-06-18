@@ -1,0 +1,49 @@
+class Solution {
+    public String convert(String s, int numRows) {
+        if(numRows == 1){
+            return s;
+        }
+        String result = new String();
+        int[][] idx = new int[numRows][];
+        for(int i = 0;i<numRows;i++){
+            idx[i] = new int[s.length()];
+            for(int j = 0;j< s.length();j++){
+                idx[i][j] = -1;
+            }
+        }
+        int i=0;
+        int j=0;
+        int state = 0; //0 down 1 diagonal
+        int count = 0;
+        while(count < s.length()){
+            idx[i][j] = count;
+            if(state == 0){
+                
+                i++;
+                if(i == numRows){
+                    state = 1;
+                    i-=2;
+                    j++;
+                }
+            }else{
+                i--;
+                j++;
+                if(i == -1){
+                    i=1;
+                    j--;
+                    state = 0;
+                }
+            }
+            count++;
+            
+        }
+        for(i = 0;i<numRows;i++){
+            for(j = 0;j<s.length();j++){
+                if(idx[i][j]!= -1){
+                    result += s.charAt(idx[i][j]);
+                }
+            }
+        }
+        return result;
+    }
+}

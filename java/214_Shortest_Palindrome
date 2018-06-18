@@ -1,0 +1,23 @@
+class Solution {
+    public String shortestPalindrome(String s) {
+        String rev = new StringBuilder(s).reverse().toString();
+        String news = s+"#"+rev;
+        int[] next = new int[news.length()];
+        next[0] = 0;
+        int j = 0;
+        for(int i = 1;i<news.length();i++){
+            j = next[i-1];
+            while(j>0 && news.charAt(j) != news.charAt(i)){
+                j = next[j-1];
+            }
+            if(news.charAt(j) == news.charAt(i)){
+                next[i] = j+1;
+            }else{
+                next[i] = j;
+            }
+        }
+        
+        
+        return rev.substring(0,s.length()-next[news.length()-1])+s;
+    }
+}
