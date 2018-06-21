@@ -1,0 +1,110 @@
+class Solution {
+    public boolean isNumber(String s) {
+        int idx = 0;
+        while(idx<s.length() && s.charAt(idx) == ' '){
+            idx++;
+        }
+        boolean isFindDot = false;
+        boolean isFindE = false;
+        if(idx<s.length() && (s.charAt(idx) == '+' || s.charAt(idx) == '-' )){
+            idx++;
+        }
+        
+        
+        if(idx >= s.length()){
+            return false;
+        }
+        
+        if(s.charAt(idx) == '.'){
+            isFindDot = true;
+            idx++;
+        }
+        
+        if(idx >= s.length()){
+            return false;
+        }
+        
+        if(idx<s.length()  && !(s.charAt(idx) >= '0' && s.charAt(idx) <= '9')){
+            return false;
+        }
+        idx++;
+        
+        boolean isFindBlank = false;
+        
+        while(idx < s.length()){
+            if(s.charAt(idx) == ' '){
+                isFindBlank = true;
+                idx++;
+                continue;
+            }
+            if(isFindBlank){
+                return false;
+            }
+            if(s.charAt(idx) >= '0' && s.charAt(idx) <= '9'){
+                
+                idx++;
+                continue;
+            }
+            
+            
+            
+            if(s.charAt(idx) == '.' ){
+                
+                if(isFindDot || isFindE){
+                    return false;
+                }
+                isFindDot = true;
+                
+                
+                
+                
+                
+                
+                if(idx+1 >= s.length()){
+                    return true; 
+                }
+                
+                
+                
+            }else if(s.charAt(idx) == 'e'){
+                if(isFindE){
+                    return false;
+                }
+                isFindE = true;
+                idx++;
+                boolean isFindNum = false;
+                boolean EFindBlank = false;
+                boolean EFindSign = false;
+                
+                while(idx < s.length()){
+                    if((s.charAt(idx) >= '0' && s.charAt(idx) <='9')){
+                        if(EFindBlank == true){
+                            return false;
+                        }
+                        isFindNum = true;
+                    }else if(s.charAt(idx) == ' '){
+                        EFindBlank = true;
+                        
+                    }else if(s.charAt(idx) == '+' || s.charAt(idx) == '-'){
+                        if(isFindNum || EFindSign){
+                            return false;
+                        }
+                        EFindSign = true;
+                    }else{
+                        return false;
+                    }
+                    idx++;
+                }
+                if(isFindNum == false){
+                    return false;
+                }
+            }else{
+                return false;
+            }
+            
+            
+            idx++;
+        }
+        return true;
+    }
+}
