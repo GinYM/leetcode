@@ -1,0 +1,29 @@
+class Solution {
+    public int pivotIndex(int[] nums) {
+        int[] left = new int[nums.length];
+        int[] right = new int[nums.length];
+        int start = 0;
+        int end = nums.length-1;
+        while(start < nums.length){
+            if (start == 0){
+                left[start] = nums[start];
+                right[end] = nums[end];
+            }else{
+                left[start] = left[start-1] + nums[start];
+                right[end] = right[end+1] + nums[end];
+            }
+            start++;
+            end--;
+        }
+        int pivot = -1;
+        for(int i = 0;i<nums.length;i++){
+            int leftNum = i-1>=0?left[i-1]:0;
+            int rightNum = i+1<nums.length?right[i+1]:0;
+            if(leftNum == rightNum){
+                pivot = i;
+                break;
+            }
+        }
+        return pivot;
+    }
+}

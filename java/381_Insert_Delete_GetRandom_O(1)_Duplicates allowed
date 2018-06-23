@@ -1,0 +1,76 @@
+class RandomizedCollection {
+    Map<Integer, Map<Integer, Boolean> > map;
+    // map idx -> arr idx
+    //Map<Integer, Map<Integer, Boolean> > hash;
+    ArrayList<Integer> arr;
+    /** Initialize your data structure here. */
+    public RandomizedCollection() {
+        map = new HashMap<Integer, Map<Integer, Boolean> >();
+        arr = new ArrayList<Integer>();
+        //hash = new Map<Integer, Map<Integer, Integer> >();
+    }
+    
+    /** Inserts a value to the collection. Returns true if the collection did not already contain the specified element. */
+    public boolean insert(int val) {
+        if(map.containsKey(val)){
+            //hash.put(val, hash.get(val).put(arr.size(), map.get(val).size()));
+            Map<Integer, Boolean> getMap = map.get(val);
+            getMap.put(arr.size(), true);
+            map.put(val, getMap);
+            arr.add(val);
+            return false;
+        }else{
+            Map<Integer, Boolean> tmpMap = new HashMap<Integer, Boolean>();
+            tmpMap.put(arr.size(), true);
+            map.put(val, tmpMap);
+            arr.add(val);
+            return true;
+        }
+    }
+    
+    /** Removes a value from the collection. Returns true if the collection contained the specified element. */
+    public boolean remove(int val) {
+        if(map.containsKey(val)){
+            Iterator<Integer> iter = map.get(val).keySet().iterator();
+            // get first index for val
+            int next = iter.next();
+            // remove val
+            map.get(val).remove(next);
+            if (map.get(val).isEmpty()){
+                //System.out.println("Remove "+val);
+                map.remove(val);
+                
+            }
+            // change index of last one
+            if(map.containsKey(arr.get(arr.size()-1))){
+                map.get(arr.get(arr.size()-1)).remove(arr.size()-1);
+                Map<Integer, Boolean> tmp = map.get(arr.get(arr.size()-1));
+                tmp.put(next, true);
+                // update index for last one
+                map.put( arr.get(arr.size()-1), tmp);
+            }
+            
+            
+            arr.set(next, arr.get(arr.size()-1));
+            // remove last  one
+            arr.remove(arr.size()-1);
+            
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    /** Get a random element from the collection. */
+    public int getRandom() {
+        return arr.get((int)(Math.random()*arr.size()));
+    }
+}
+
+/**
+ * Your RandomizedCollection object will be instantiated and called as such:
+ * RandomizedCollection obj = new RandomizedCollection();
+ * boolean param_1 = obj.insert(val);
+ * boolean param_2 = obj.remove(val);
+ * int param_3 = obj.getRandom();
+ */
