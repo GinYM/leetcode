@@ -1,0 +1,39 @@
+class Solution {
+    public String[] findRestaurant(String[] list1, String[] list2) {
+        ArrayList<String> ret = new ArrayList<String>();
+        int index = 0;
+        Map<String, Integer> result = new HashMap<String, Integer>();
+        Map<String, Integer> map1 = new HashMap<String, Integer>();
+        Map<String, Integer> map2 = new HashMap<String, Integer>();
+        int minCount = list1.length + list2.length+1;
+        while(index < list1.length || index < list2.length){
+            if(index < list1.length && !map1.containsKey(list1[index])){
+                map1.put(list1[index], index);
+                if(map2.containsKey(list1[index])){
+                    result.put(list1[index], index + map2.get(list1[index]));
+                    if(index + map2.get(list1[index]) < minCount){
+                        minCount = index + map2.get(list1[index]);
+                    }
+                }
+            }
+            if(index < list2.length && !map2.containsKey(list2[index])){
+                map2.put(list2[index], index);
+                if(map1.containsKey(list2[index])){
+                    result.put(list2[index], index + map1.get(list2[index]));
+                    if(index + map1.get(list2[index]) < minCount){
+                        minCount = index + map1.get(list2[index]);
+                    }
+                }
+            }
+            index++;
+        }
+        for(Map.Entry<String, Integer> entry : result.entrySet()){
+            if(entry.getValue() == minCount){
+                ret.add(entry.getKey());
+            }
+        }
+        String[] convertToArray = new String[ret.size()];
+        ret.toArray(convertToArray);
+        return convertToArray;
+    }
+}
