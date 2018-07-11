@@ -1,0 +1,63 @@
+class Solution {
+    public List<String> fullJustify(String[] words, int maxWidth) {
+        int start = 0;
+        int countNum = 0;
+        int countLen = 0;
+        List<String> result = new ArrayList<String>(words.length);
+        for(int i = 0;i<words.length;i++){
+            if(countLen + countNum + words[i].length() <= maxWidth){
+                countLen += words[i].length();
+                countNum++;
+            }else{
+                int totalLeft = maxWidth - countLen;
+                StringBuilder sb = new StringBuilder();
+                if(countNum == 1){
+                    sb.append(words[start]);
+                    for(int idx = 0;idx<totalLeft;idx++){
+                        sb.append(" ");
+                    }
+                    result.add(sb.toString());
+                }else{
+                    int each = totalLeft/(countNum-1);
+                    int eachPlus = totalLeft%(countNum-1);
+                    for(int idx = start;idx < i;idx++){
+                        if(idx == start){
+                            sb.append(words[idx]);
+                        }else{
+                            int end = 0;
+                            if(idx-start <= eachPlus){
+                                end = each+1;
+                            }else{
+                                end = each;
+                            }
+                            for(int idxNull = 0;idxNull<end;idxNull++){
+                                sb.append(" ");
+                            }
+                            sb.append(words[idx]);
+                        }
+                    }
+                    result.add(sb.toString());
+                }
+                start = i;
+                countLen = words[start].length();
+                countNum = 1;
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        countLen = 0;
+        for(int i = start; i < words.length;i++){
+            if(i == start){
+                sb.append(words[i]);
+            }else{
+                sb.append(" "+words[i]);
+            }
+        }
+        
+        int leftSize = maxWidth-sb.toString().length();
+        for(int i = 0;i<leftSize;i++){
+            sb.append(" ");
+        }
+        result.add(sb.toString());
+        return result;
+    }
+}
