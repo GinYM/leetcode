@@ -1,0 +1,40 @@
+class Solution {
+    public boolean isMatch(String s, String p) {
+        boolean [][]dp = new boolean[s.length()+1][p.length()+1];
+        dp[0][0] = true;
+        //corner case a c*a*q**
+        int idx = 1;
+        while(idx < p.length()){
+            if(p.charAt(idx) == '*'){
+                dp[0][idx+1] = true;
+                if(idx+1<p.length() && p.charAt(idx+1)=='*'){
+                    idx++;
+                }else if(idx + 2 < p.length() && p.charAt(idx+2) == '*'){
+                    idx+=2;
+                }else{
+                    break;
+                }
+            }else{
+                break;
+            }
+        }
+        
+        for(int i = 0; i < s.length();i++){
+            for(int j = 0;j<p.length();j++){
+                if(s.charAt(i)==(p.charAt(j)) || p.charAt(j)==('.')){
+                    dp[i+1][j+1] = dp[i][j];
+                }else if(p.charAt(j)==('*')){
+                    if(p.charAt(j-1)==(s.charAt(i)) || p.charAt(j-1)==('.')){
+                        dp[i+1][j+1] = dp[i][j-1]||dp[i+1][j-1]||dp[i][j+1]; //one | none | multi
+                    }else{
+                        dp[i+1][j+1] = dp[i+1][j-1];
+                    }
+                    
+                }else{
+                    dp[i+1][j+1] = false;
+                }
+            }
+        }
+        return dp[s.length()][p.length()];
+    }
+}
