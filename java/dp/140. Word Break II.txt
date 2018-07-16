@@ -1,0 +1,27 @@
+class Solution {
+    public List<String> wordBreak(String s, List<String> wordDict) {
+        Map<String, LinkedList<String>>map = new HashMap<String, LinkedList<String>>();
+        return dfs(s, map, wordDict);
+    }
+    private LinkedList<String> dfs(String s, Map<String, LinkedList<String>> map, List<String> wordDict){
+        if(map.containsKey(s)){
+            return map.get(s);
+        }
+        if(s.length() == 0){
+            return new LinkedList<String>(Arrays.asList(""));
+        }
+        LinkedList<String> res = new LinkedList<String>();
+        for(String str : wordDict){
+            if(s.startsWith(str)){
+                LinkedList<String> ret = dfs(s.substring(str.length()), map, wordDict);
+                for(String retStr : ret){
+                    res.add(str + (retStr.isEmpty()? "":" ") + retStr);
+                }
+                
+            }
+        }
+        map.put(s, res);
+        return res;
+    }
+  
+}
