@@ -1,0 +1,135 @@
+class LFUCache {
+    class Node{
+        int key;
+        int value;
+        int freq;
+        Node prev;
+        Node next;
+        public Node(){
+            key=0;
+            value=0;
+            freq=0;
+            prev=null;
+            next=null;
+        }
+    }
+    
+    Node head;
+    Node tail;
+    int length;
+    int capacity;
+    Map<Integer, Node> cache; // freq -> node 
+    Map<Integer, Node> db; // key -> node
+    int maxFreq;
+
+    public LFUCache(int capacity) {
+        this.capacity = capacity;
+        head = new Node();
+        tail = new Node();
+        head.next = tail;
+        tail.prev = head;
+        cache = new HashMap<Integer, Node>();
+        db = new HashMap<Integer, Node>();
+    }
+    
+    public void removeNode(Node n){
+        Node next = n.next;
+        Node prev = n.prev;
+        prev.next = next;
+        next.prev = prev;
+        length--;
+        db.remove(n.key);
+        if(cache.get(n.freq) == n){
+            if(n.next.freq == n.freq){
+                cache.put(n.next.freq, n.next);
+            }else{
+                cache.remove(n.freq);
+            }
+        }
+    }
+    
+    public void addNode(Node n){
+        db.put(n.key, n);
+        length++;
+        int freq = n.freq;
+        if(!cache.containsKey(freq)){
+            cache.put(freq, n);
+            Node next = tail;
+            int i;
+            for(i = freq-1;i>=1;i--){
+                if(cache.containsKey(i)){
+                    next = cache.get(i);
+                    break;
+                }
+            }
+            Node prev = next.prev;
+            n.next = next;
+            next.prev = n;
+            prev.next = n;
+            n.prev = prev;
+        }else{
+            Node next = cache.get(freq);
+            Node prev = next.prev;
+            n.next = next;
+            next.prev = n;
+            prev.next = n;
+            n.prev = prev;
+            cache.put(freq, n);
+        }
+    }
+    
+    public int get(int key) {
+        if(capacity == 0){
+            return -1;
+        }
+        if(db.containsKey(key)){
+            Node n = db.get(key);
+            removeNode(n);
+            n.freq = n.freq+1;
+            addNode(n);
+            return n.value;
+        }else{
+            return -1;
+        }
+    }
+    
+    private void removeLast(){
+        Node prev = tail.prev;
+        prev.prev.next = tail;
+        tail.prev = prev.prev;
+        db.remove(prev.key);
+        if(cache.get(prev.freq) == prev){
+            cache.remove(prev.freq);
+        }
+        length--;
+    }
+    
+    public void put(int key, int value) {
+        if(capacity == 0){
+            return;
+        }
+        if(db.containsKey(key)){
+            Node n = db.get(key);
+            removeNode(n);
+            n.value = value;
+            n.freq = n.freq+1;
+            addNode(n);
+        }else{
+            if(length >= capacity){
+                removeLast();
+            }
+            Node n = new Node();
+            n.freq = 1;
+            n.key = key;
+            n.value = value;
+            addNode(n);
+        }
+    }
+}
+
+/**
+ * Your LFUCache object will be instantiated and called as such:
+ * LFUCache obj = new LFUCache(capacity);
+ * int param_1 = obj.get(key);
+ * obj.put(key,value);
+ */
