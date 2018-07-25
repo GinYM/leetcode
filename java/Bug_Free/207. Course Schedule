@@ -1,0 +1,44 @@
+class Solution {
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        int [][]req = new int[numCourses][numCourses];
+        for(int i = 0;i<numCourses;i++){
+            for(int j = 0;j<numCourses;j++){
+                req[i][j] = -1;
+            }
+        }
+        for(int i = 0;i<prerequisites.length;i++){
+            int idx = prerequisites[i][0];
+            int j = 0;
+            while(j<numCourses && req[idx][j] != -1){
+                j++;
+            }
+            req[idx][j] = prerequisites[i][1];
+        }
+        for(int i = 0;i<numCourses; i++){
+            if(check(req, numCourses, 1, i) == false){
+                return false;
+            }
+        }
+        return true;
+        
+    }
+    private boolean check(int[][]req, int numCourses, int count, int course){
+        if(count > numCourses){
+            return false;
+        }
+        if(req[course][0] == -1){
+            return true;
+        }
+        int idx=0;
+        boolean result;
+        while(idx < numCourses && req[course][idx]!=-1){
+            result = check(req, numCourses, count+1, req[course][idx]);
+            if(result == false){
+                return false;
+            }
+            idx++;
+        }
+        return true;
+    }
+    
+}

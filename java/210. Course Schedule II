@@ -1,0 +1,55 @@
+class Solution {
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        int findResult[] = new int[numCourses];
+        int [][]req = new int[numCourses+1][numCourses];
+        for(int i = 0;i<numCourses+1;i++){
+            for(int j = 0;j<numCourses;j++){
+                req[i][j] = i == numCourses? j: -1;
+            }
+        }
+        for(int i = 0;i<prerequisites.length;i++){
+            int idx = 0;
+            while(req[prerequisites[i][0]][idx] != -1){
+                idx++;
+            }
+            req[prerequisites[i][0]][idx] = prerequisites[i][1];
+        }
+        List<Integer> result = new ArrayList<Integer>();
+        int []isVis = new int[numCourses+1];
+        for(int i = 0; i<numCourses+1;i++){
+            isVis[i] = 0;
+        }
+        if(dfs(numCourses, req, result, numCourses, isVis, 0) == false){
+            return new int[0];
+        }else{
+            for(int i = 0;i<numCourses;i++){
+                findResult[i] = result.get(i);
+            }
+            return findResult;
+        }
+    }
+    private boolean dfs(int numCourses, int[][]req, List<Integer> result, int course, int []isVis, int count ){
+        if(count > numCourses){
+            return false;
+        }
+        
+        isVis[course] = 1;
+        if(req[course][0] == -1){
+            //result.add(course);
+            return true;
+        }
+        boolean ret;
+        for(int i = 0;i<numCourses && req[course][i] != -1; i++){
+            int preIsVis = isVis[req[course][i]];
+            ret = dfs(numCourses, req, result, req[course][i], isVis, count+1);
+            
+            
+            if(ret == false){
+                return false;
+            }
+            if(preIsVis == 0)
+                result.add(req[course][i]);
+        }
+        return true;
+    }
+}
