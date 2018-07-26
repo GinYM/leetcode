@@ -1,0 +1,39 @@
+class Solution {
+    public List<int[]> getSkyline(int[][] buildings) {
+        List<int[]> points = new ArrayList<int[]>();
+        for(int[]point : buildings){
+            points.add(new int[]{point[0], -point[2]});
+            points.add(new int[]{point[1], point[2]});
+        }
+        Collections.sort(points,(int[]a1, int[]a2) -> {
+            if(a1[0] == a2[0]){
+                return a1[1] - a2[1];
+            }else{
+                return a1[0] - a2[0];
+            }
+        });
+        Queue<Integer> queue = new PriorityQueue<Integer>((Integer a, Integer b) ->{
+            return b-a;
+        });
+        List<int[]> result = new ArrayList<int[]>();
+        queue.offer(0);
+        
+        for(int[] point : points){
+            
+            if(point[1] <0){
+                if(queue.peek() < -point[1]){
+                    result.add(new int[]{point[0], -point[1]});
+                }
+                queue.offer(-point[1]);
+            }else{
+                int prev = queue.peek();
+                queue.remove(point[1]);
+                if(queue.peek() != prev){
+                    result.add(new int[]{point[0], queue.peek()});
+                }
+            }
+            
+        }
+        return result;
+    }
+}

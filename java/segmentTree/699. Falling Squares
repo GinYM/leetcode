@@ -1,0 +1,71 @@
+class Solution {
+    public List<Integer> fallingSquares(int[][] positions) {
+        Set<Integer> index = new HashSet<Integer>();
+        for(int[] point : positions){
+            index.add(point[0]);
+            index.add(point[0]+point[1]-1);
+        }
+        Map<Integer, Integer> reorder = new HashMap<Integer, Integer>();
+        List<Integer> list = new ArrayList<Integer>(index);
+        Collections.sort(list);
+        int idx=0;
+        for(Integer i : list){
+            reorder.put(i, idx++);
+        }
+        SegmentTree tree = new SegmentTree(reorder.size());
+        List<Integer> result = new ArrayList<Integer>();
+        for(int[] point : positions){
+            tree.update(reorder.get(point[0]), reorder.get(point[0]+point[1]-1), point[1]);
+            result.add(tree.queryRoot());
+        }
+        return result;
+    }
+    class SegmentTree{
+        public int N;
+        int []tree;
+        public SegmentTree(int num){
+            N = num;
+            tree = new int[2*N];
+        }
+        public void updateOne(int root, int value){
+            while(root >=1){
+                tree[root] = Math.max(tree[root], value);
+                root >>= 1;
+            }
+        }
+        
+        public void update(int left, int right, int value){
+            int l = left+N;
+            int r = right+N;
+            int v = query(left, right);
+            for(int i = l;i<=r;i++){
+                updateOne(i,  v+value);
+            }
+        }
+        public int queryRoot(){
+            return tree[1];
+        }
+        public int query(int left, int right){
+            left += N;
+            right += N;
+            int maxNum = 0;
+            while(left < right){
+                if(left %2 == 1){
+                    maxNum = Math.max(maxNum, tree[left]);
+                    left++;
+                }
+                if(right%2 == 0){
+                    maxNum = Math.max(maxNum, tree[right]);
+                    right--;
+                }
+                right>>=1;
+                left>>=1;
+            }
+            
+            if(left == right){
+                maxNum = Math.max(tree[left], maxNum);
+            }
+            return maxNum;
+        }
+    }
+}
