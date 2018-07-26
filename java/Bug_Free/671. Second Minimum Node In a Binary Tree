@@ -1,0 +1,33 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public int findSecondMinimumValue(TreeNode root) {
+        int result = dfs(root, root.val);
+        if(result == Integer.MAX_VALUE){
+            return -1;
+        }else{
+            return result;
+        }
+    }
+    private int dfs(TreeNode node, int num){
+        int left = Integer.MAX_VALUE,  right = Integer.MAX_VALUE;
+        if(node.left != null){
+            left = dfs(node.left, num);
+        }
+        if(node.right != null){
+            right = dfs(node.right, num);   
+        }
+        if(node.val == num){
+            return Math.min(left, right);
+        }else{
+            return Math.min(Math.min(left, right), node.val);
+        }
+    }
+}
