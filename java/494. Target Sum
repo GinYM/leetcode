@@ -1,0 +1,18 @@
+class Solution {
+    public int findTargetSumWays(int[] nums, int S) {
+        return dfs(nums, 0, S, 0);
+    }
+    int dfs(int []nums, int idx, int S, int sum){
+        if(idx >= nums.length){
+            if(sum == S){
+                return 1;
+            }else{
+                return 0;
+            }
+        }
+        int count = 0;
+        count += dfs(nums, idx+1, S, sum+nums[idx]);
+        count += dfs(nums, idx+1, S, sum-nums[idx]);
+        return count;
+    }
+}

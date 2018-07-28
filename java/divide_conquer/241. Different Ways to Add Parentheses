@@ -1,0 +1,36 @@
+class Solution {
+    public List<Integer> diffWaysToCompute(String input) {
+        
+        List<Integer> result = new ArrayList<Integer>();
+        for(int i = 0;i<input.length();i++){
+            if(input.charAt(i) == '+' || input.charAt(i) == '-' || input.charAt(i) == '*'){
+                List<Integer> left = diffWaysToCompute(input.substring(0,i));
+                List<Integer> right = diffWaysToCompute(input.substring(i+1,input.length()));
+                for(int l : left){
+                    for(int r : right){
+                        switch(input.charAt(i)){
+                            case '+':
+                                result.add(l+r);
+                                break;
+                            case '-':
+                                result.add(l-r);
+                                break;
+                            case '*':
+                                result.add(l*r);
+                                break;
+                        }
+                    }
+                }
+                
+            }
+        }
+        if(result.size() == 0){
+            int num = 0;
+            for(int i = 0;i<input.length();i++){
+                num = num*10 + (input.charAt(i) - '0');
+            }
+            result.add(num);
+        }
+        return result;
+    }
+}
