@@ -1,0 +1,34 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    int result = 0;
+    public int pathSum(TreeNode root, int sum) {
+        preorder(root, new int[0], sum);
+        return result;
+    }
+    private void preorder(TreeNode root, int[]prev, int sum){
+        if(root == null){
+            return;
+        }
+        int []next = new int[prev.length+1];
+        for(int i = 0;i<prev.length;i++){
+            next[i] = prev[i]+root.val;
+            if(next[i] == sum){
+                result++;
+            }
+        }
+        next[next.length-1] = root.val;
+        if(root.val == sum){
+            result++;
+        }
+        preorder(root.left, next, sum);
+        preorder(root.right, next, sum);
+    }
+}

@@ -1,0 +1,89 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    int maxCount;
+    int curVal;
+    int curCount;
+    int storeMode[];
+    int modeNum;
+    int resultIdx;
+    public int[] findMode(TreeNode root) {
+        if(root == null){
+            return new int[0];
+        }
+        maxCount = 0;
+        curVal = 0;
+        curCount = 0;
+        modeNum = 0;
+        resultIdx = 0;
+        inorder(root);
+        if(curCount > maxCount){
+            maxCount = curCount;
+            modeNum = 1;
+        }else if(curCount == maxCount){
+            modeNum++;
+        }
+        storeMode = new int[modeNum];
+        curVal = 0;
+        curCount = 0;
+        inorderAdd(root);
+        if(curCount == maxCount){
+            storeMode[resultIdx++] = curVal;
+        }
+        return storeMode;
+    }
+    private void inorder(TreeNode root){
+        if(root == null){
+            return;
+        }
+        inorder(root.left);
+        if(curCount == 0 ){
+            curVal = root.val;
+            curCount = 1;
+            
+        }else{
+            if(curVal == root.val){
+                curCount++;
+            }else{
+                if(curCount > maxCount){
+                    maxCount = curCount;
+                    modeNum = 1;
+                }else if(curCount == maxCount){
+                    modeNum++;
+                }
+                curVal = root.val;
+                curCount = 1;
+            }
+        }
+        inorder(root.right);
+    }
+    private void inorderAdd(TreeNode root){
+        if(root == null){
+            return;
+        }
+        inorderAdd(root.left);
+        if(curCount == 0 ){
+            curVal = root.val;
+            curCount = 1;
+            
+        }else{
+            if(curVal == root.val){
+                curCount++;
+            }else{
+                if(curCount == maxCount){
+                    storeMode[resultIdx++] = curVal;
+                }
+                curVal = root.val;
+                curCount = 1;
+            }
+        }
+        inorderAdd(root.right);
+    }
+}

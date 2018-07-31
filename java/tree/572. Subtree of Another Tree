@@ -1,0 +1,41 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public boolean isSubtree(TreeNode s, TreeNode t) {
+        if(s == null || t == null){
+            return false;
+        }
+        Set<String> set = new HashSet<String>();
+        String serial = serialize(t);
+        preOrder(s, serial, set);
+        if(set.contains(serial)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    private String serialize(TreeNode n){
+        if(n == null){
+            return "#";
+        }
+        String serial = n.val+","+serialize(n.left)+","+serialize(n.right);
+        return serial;
+    }
+    
+    private String preOrder(TreeNode s, String t, Set<String> set){
+        if(s == null){
+            return "#";
+        }
+        String serial = s.val+","+preOrder(s.left, t, set)+","+preOrder(s.right, t, set);
+        set.add(serial);
+        return serial;
+    }
+}
