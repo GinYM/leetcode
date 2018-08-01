@@ -1,0 +1,39 @@
+class Solution {
+    private int isVis[];
+    private int sum;
+    public boolean canPartitionKSubsets(int[] nums, int k) {
+        sum = 0;
+        isVis = new int[nums.length];
+        for(int i = 0;i<nums.length;i++){
+            sum += nums[i];
+        }
+        if(sum % k != 0){
+            return false;
+        }
+        sum /= k;
+        return dfs(nums, k, 0,0);
+    }
+    private boolean dfs(int[]nums, int k, int prevSum, int startIndex){
+        if(prevSum == sum){
+            k--;
+            return dfs(nums, k, 0, 0);
+        }
+        if(k == 1){
+            return true;
+        }
+        boolean isFind = false;
+        for(int i = startIndex;i<nums.length;i++){
+            if(isVis[i] ==1){
+                continue;
+            }
+            isVis[i] = 1;
+            isFind = dfs(nums, k, prevSum + nums[i],i+1);
+            isVis[i] = 0;
+            if(isFind == true){
+                break;
+            }
+        }
+        return isFind;
+        
+    }
+}
