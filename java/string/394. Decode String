@@ -1,0 +1,52 @@
+class Solution {
+    public String decodeString(String s) {
+        if(s == null || s == ""){
+            return "";
+        }
+        Stack<Integer> repeatedNum = new Stack<Integer>();
+        Stack<String> token = new Stack<String>();
+        
+        int num = 0;
+        String result = "";
+        String str = "";
+        int lastNonLetter = 0; // 0 digit, 1 [, 2 ]
+        token.push("");
+        for(int i = 0;i<s.length();i++){
+            if(Character.isDigit(s.charAt(i))){
+                str = token.pop() + str;
+                token.push(str);
+                
+                str = "";
+                num = num*10+(s.charAt(i)-'0');
+                lastNonLetter = 0;
+            }else if(Character.isLetter(s.charAt(i))){
+                str += s.charAt(i);
+                num = 0;
+            }else if(s.charAt(i) == '['){
+                repeatedNum.push(num);
+                num = 0;
+                token.push("");
+                lastNonLetter = 1;
+            }else{
+                str = token.pop() + str;
+                token.push(str);
+                str = "";
+                
+                
+                
+                String prevStr = token.pop();
+                String repStr = "";
+                int curNum = repeatedNum.pop();
+                while(curNum > 0){
+                    repStr += prevStr;
+                    curNum--;
+                }
+                repStr = token.pop() + repStr;
+                token.push(repStr);
+                
+                lastNonLetter = 2;
+            }
+        }
+        return token.pop()+str;
+    }
+}
