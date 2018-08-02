@@ -1,0 +1,51 @@
+class Solution {
+    private List<Integer> result;
+    class Node{
+        public Node left;
+        public Node right;
+        public int idx;
+        
+        public int num; // number of same value
+        public int smallerUp; // number of smaller numbers from parent
+        public int smallerDown; // number if smaller numbers from children
+        public Node(int idx, int smallerUp){
+            left = null;
+            right = null;
+            this.idx = idx;
+            num = 1;
+            smallerDown = 0;
+            this.smallerUp = smallerUp;
+        }
+    }
+    public List<Integer> countSmaller(int[] nums) {
+        result = new ArrayList<Integer>(nums.length);
+        Node root = null;
+        for(int i = 0;i<nums.length;i++){
+            result.add(0);
+        }
+        for(int i = nums.length-1;i>=0;i--){
+            root = buildBST(i, nums, root, 0);
+        }
+        
+        return result;
+    }
+    
+    private Node buildBST(int startIdx, int []nums, Node root, int smallerUp){
+        if(root == null){
+            result.set(startIdx, smallerUp);
+            return new Node(startIdx, smallerUp);
+        }
+        //update the number of smaller value is important
+        root.smallerUp = smallerUp;
+        if(nums[startIdx] < nums[root.idx]){
+            root.smallerDown++;
+            root.left = buildBST(startIdx, nums, root.left, smallerUp);
+        }else if(nums[startIdx] == nums[root.idx]){
+            root.num++;    
+            result.set(startIdx, root.smallerUp+root.smallerDown);
+        }else{
+            root.right = buildBST(startIdx, nums, root.right, root.smallerDown+root.num+root.smallerUp);
+        }
+        return root;
+    }
+}
