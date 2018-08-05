@@ -1,0 +1,51 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    Map<Integer, List<TreeNode>> dp;
+    public List<TreeNode> generateTrees(int n) {
+        dp = new HashMap<Integer, List<TreeNode>>();
+        return generateTrees(1, n, n);
+    }
+    public List<TreeNode> generateTrees(int left, int right, int n){
+        List<TreeNode> result = new ArrayList<TreeNode>();
+        if(left == right){
+            result.add(new TreeNode(left));
+            dp.put(left*(n+1)+right, result);
+            return result;
+        }
+        
+        List<TreeNode> leftChild, rightChild;
+        for(int i = left;i<=right;i++){
+            TreeNode node;
+            if(i==left){
+                leftChild = new ArrayList<TreeNode>();
+                leftChild.add(null);
+            }else{
+                leftChild = dp.containsKey(left*(n+1)+i-1) == false ? generateTrees(left, i-1, n) : dp.get(left*(n+1)+i-1);
+            }
+            if(i == right){
+                rightChild = new ArrayList<TreeNode>();
+                rightChild.add(null);
+            }else{
+                rightChild = dp.containsKey((i+1)*(n+1)+right) == false ? generateTrees(i+1, right, n) : dp.get((i+1)*(n+1)+right);
+            }
+            for(TreeNode nLeft : leftChild){
+                for(TreeNode nRight : rightChild){
+                    node = new TreeNode(i);
+                    node.left = nLeft;
+                    node.right = nRight;
+                    result.add(node);
+                }
+            }
+        }
+        dp.put(left*(n+1)+right, result);
+        return result;
+    }
+}
