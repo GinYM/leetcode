@@ -1,0 +1,19 @@
+class Solution {
+    public boolean increasingTriplet(int[] nums) {
+        int minVal = Integer.MAX_VALUE, secVal=Integer.MAX_VALUE;
+        for(int num : nums){
+            if(num > minVal){
+                if(num > secVal){
+                    return true;
+                }else{
+                    secVal = Math.min(secVal, num);
+                }
+            }else{
+                minVal = Math.min(minVal, num);
+            }
+            
+            
+        }
+        return false;
+    }
+}
