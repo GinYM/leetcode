@@ -1,0 +1,27 @@
+class NumArray {
+    Map<String, Integer> map;
+    int []nums;
+    public NumArray(int[] nums) {
+        this.nums = nums;
+        map = new HashMap<String, Integer>();
+    }
+    
+    public int sumRange(int i, int j) {
+        if(map.containsKey(i+"#"+j)){
+            return map.get(i+"#"+j);
+        }else{
+            int count = 0;
+            for(int k = i;k<=Math.min(j, nums.length-1);k++){
+                count += nums[k];
+            }
+            map.put(i+"#"+j, count);
+            return count;
+        }
+    }
+}
+
+/**
+ * Your NumArray object will be instantiated and called as such:
+ * NumArray obj = new NumArray(nums);
+ * int param_1 = obj.sumRange(i,j);
+ */
