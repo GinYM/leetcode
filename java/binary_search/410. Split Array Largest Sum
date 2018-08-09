@@ -1,0 +1,39 @@
+class Solution {
+    public int splitArray(int[] nums, int m) {
+        long sum = 0;
+        long maxNum = 0;
+        for(int n : nums){
+            sum += n;
+            maxNum = Math.max(n,maxNum);
+        }
+        long left = maxNum;
+        long right = sum;
+        long mid;
+        while(left <= right){
+            mid = (left+right)/2;
+            if(isValid(nums, mid, m)){
+                right = mid-1;
+            }else{
+                left = mid+1;
+            }
+        }
+        return (int)left;
+        
+    }
+    
+    private boolean isValid(int []nums, long maxNum, int m){
+        long sum = 0;
+        int k = 1;
+        for(int num : nums){
+            sum += num;
+            if(sum > maxNum){
+                sum = num;
+                k++;
+                if(k > m){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+}

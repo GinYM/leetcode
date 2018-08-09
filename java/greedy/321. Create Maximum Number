@@ -1,0 +1,78 @@
+class Solution {
+    public int[] maxNumber(int[] nums1, int[] nums2, int k) {
+        int []result = new int[k];
+        for(int i = 0;i<=k;i++){
+            int []num1;
+            int []num2;
+            if(i<=nums1.length && k-i <= nums2.length){
+                num1 = getMaxArray(nums1, i);
+                num2 = getMaxArray(nums2, k-i);
+            }else{
+                continue;
+            }
+            int []ret = combine(num1, num2);
+            if(greater(ret, result)){
+                result = ret;
+            }
+        }
+        return result;
+    }
+    
+    private boolean greater(int []num1, int[]num2){
+        for(int i = 0;i<num1.length;i++){
+            if(num1[i] < num2[i]){
+                return false;
+            }else if(num1[i] > num2[i]){
+                return true;
+            }
+        }
+        return true;
+    }
+    
+    public int[] combine(int[] num1, int[]num2){
+        int []result = new int[num1.length+num2.length];
+        int i=0,j=0, idx=0;
+        while(i<num1.length || j < num2.length){
+            if(i==num1.length){
+              result[idx++] = num2[j++];  
+            }else if(j == num2.length){
+                result[idx++] = num1[i++];
+            }else{
+                if(num1[i]!=num2[j]){
+                    result[idx++] = num1[i] > num2[j] ? num1[i++] : num2[j++];
+                }else{
+                    int difi = i+1;
+                    int difj = j+1;
+                    while(difi < num1.length && difj < num2.length && num1[difi] == num2[difj]){
+                        difi++;
+                        difj++;
+                    }
+                    if(difi==num1.length || difj == num2.length){
+                        result[idx++] = difi == num1.length ? num2[j++] : num1[i++];
+                    }else{
+                        result[idx++] = num1[difi] > num2[difj]?num1[i++]:num2[j++];
+                    }
+                }
+                
+                
+            }
+        }
+        return result;
+    }
+    
+    public int[] getMaxArray(int []num, int k){
+        Stack<Integer> stack = new Stack<Integer>();
+        for(int i = 0;i<num.length;i++){
+            while(stack.isEmpty()==false && stack.peek() < num[i] && num.length-1-i+1 + stack.size() > k){
+                stack.pop();
+            }
+            if(stack.size() < k)
+                stack.push(num[i]);     
+        }
+        int result[] = new int[k];
+        while(k>=1){
+            result[--k] = stack.pop();
+        }
+        return result;
+    }
+}
