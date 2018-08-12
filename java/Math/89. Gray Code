@@ -1,0 +1,18 @@
+class Solution {
+    public List<Integer> grayCode(int n) {
+        List<Integer> list = new ArrayList<Integer>((int)Math.pow(2,n));
+        if(n == 0){
+            list.add(0);
+            return list;
+        }
+        list.add(0);
+        int plus = 1;
+        for(int i = 0;i<n;i++){
+            for(int j = list.size()-1;j>=0;j--){
+                list.add(list.get(j)+plus);
+            }
+            plus *= 2;
+        }
+        return list;
+    }
+}

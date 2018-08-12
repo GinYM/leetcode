@@ -1,0 +1,23 @@
+class Solution {
+    public boolean isOneBitCharacter(int[] bits) {
+        boolean dp[] = new boolean[bits.length+1];
+        dp[0] = true;
+        for(int i = 1;i<=bits.length;i++){
+            if(dp[i-1] == true && bits[i-1] == 0){
+                dp[i] = true;
+            }else if(i-2 >=0 && dp[i-2] == true && (bits[i-2]*2+bits[i-1] == 2 || bits[i-2]*2+bits[i-1] == 3)){
+                dp[i] = true;
+            }else{
+                dp[i] = false;
+            }
+        }
+        if(bits.length-2>=0 && dp[bits.length-2] == true && (bits[bits.length-2]*2+bits[bits.length-1] == 2 || bits[bits.length-2]*2+bits[bits.length-1] == 3) ){
+            return false;
+        }
+        
+        if(dp[bits.length-1] == true && bits[bits.length-1] == 0){
+            return true;
+        }
+        return false;
+    }
+}
