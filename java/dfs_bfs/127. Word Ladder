@@ -1,0 +1,55 @@
+class Solution {
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        if(wordList.size() == 0){
+            return 0;
+        }
+        int isVis[] = new int[wordList.size()];
+        int result = 0;
+        Queue<String> queue = new ArrayDeque<String>();
+        String last = "";
+        int len = 1;
+        for(int i = 0;i<wordList.size();i++){
+            String word = wordList.get(i);
+            if(diffStr(beginWord, word) == 1){
+                
+                queue.offer(word);
+                isVis[i] = 1;
+                last = word;
+            }
+        }
+        String nextLast = last;
+        while(queue.isEmpty() == false){
+            String word = queue.poll();
+            if(word.equals(endWord)){
+                result = len;
+                break;
+            }
+            
+            for(int i = 0;i<wordList.size();i++){
+                String w = wordList.get(i);
+                if(isVis[i] == 0 && diffStr(word, w) == 1){
+                    nextLast = w;
+                    queue.offer(w);
+                    isVis[i] = 1;
+                }
+            }
+            if(word.equals(last)){
+                len++;
+                last = nextLast;
+            }
+        }
+        return result == 0 ? 0 : result+1;
+    }
+    
+    
+    
+    private int diffStr(String str1, String str2){
+        int count = 0;
+        for(int i = 0;i<str1.length();i++){
+            if(str1.charAt(i) != str2.charAt(i)){
+                count++;
+            }
+        }
+        return count;
+    }
+}
