@@ -1,0 +1,24 @@
+class Solution {
+    List<String> result;
+    public List<String> letterCasePermutation(String S) {
+        result = new ArrayList<String>();
+        if(S == null || S.length() == 0){
+            result.add("");
+            return result;
+        }
+        dfs(0,S, "");
+        return result;
+    }
+    private void dfs(int idx, String S, String prev){
+        if(idx >=S.length()){
+            result.add(prev);
+            return;
+        }
+        if(Character.isDigit(S.charAt(idx))){
+            dfs(idx+1, S, prev + S.charAt(idx));
+        }else{
+            dfs(idx+1, S, prev+Character.toLowerCase(S.charAt(idx)));
+            dfs(idx+1, S, prev+Character.toUpperCase(S.charAt(idx)));
+        }
+    }
+}

@@ -1,0 +1,21 @@
+class Solution {
+    public int maxProduct(String[] words) {
+        if(words == null || words.length == 0){
+            return 0;
+        }
+        int dp[] = new int[words.length];
+        int result = 0;
+        for(int i = 0;i<words.length;i++){
+            String word = words[i];
+            for(int idx = 0;idx<word.length();idx++){
+                dp[i] |= 1<<((int)(word.charAt(idx)-'a'));
+            }
+            for(int j = 0;j<i;j++){
+                if((dp[j]&dp[i]) == 0 ){
+                    result = Math.max(words[i].length()*words[j].length(), result);
+                }
+            }
+        }
+        return result;
+    }
+}

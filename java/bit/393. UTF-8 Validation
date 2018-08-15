@@ -1,0 +1,34 @@
+class Solution {
+    public boolean validUtf8(int[] data) {
+        int state = 0; // how many bytes
+        int countLeft = 0;
+        for(int d : data){
+            int countOne = 0;
+            for(int i = 7;i>=0;i--){
+                if( ((d>>i)&1) == 1 ){
+                    countOne++;
+                }else{
+                    break;
+                }
+            }
+            if(countOne >4){
+                return false;
+            }
+            if(countOne == 1){
+                countLeft--;
+                if(countLeft < 0){
+                    return false;
+                }
+            }else{
+                if(countLeft != 0){
+                    return false;
+                }
+                
+                countLeft = countOne == 0 ? 0 : countOne-1;
+            }
+            
+            
+        }
+        return countLeft == 0? true : false;
+    }
+}

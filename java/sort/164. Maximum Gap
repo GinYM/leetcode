@@ -1,0 +1,37 @@
+class Solution {
+    public int maximumGap(int[] nums) {
+        if(nums == null || nums.length <= 1){
+            return 0;
+        }
+        int minValue = nums[0];
+        int maxValue = nums[0];
+        for(int n:nums){
+            minValue = Math.min(n,minValue);
+            maxValue = Math.max(n,maxValue);
+        }
+        if(maxValue == minValue){
+            return 0;
+        }
+        int store[][] = new int[nums.length][];
+        for(int i = 0;i<nums.length;i++){
+            store[i] = new int[]{Integer.MAX_VALUE, Integer.MIN_VALUE};
+        }
+        int interval = (int)Math.ceil((maxValue-(double)minValue)/(nums.length-1));
+        for(int n : nums){
+            int idx = (n-minValue)/interval;
+            
+            //idx = Math.min(idx, nums.length-2);
+            store[idx][0] = Math.min(store[idx][0], n);
+            store[idx][1] = Math.max(store[idx][1], n);
+        }
+        int result = 0;
+        int prevMax = store[0][1];
+        for(int i = 1;i<nums.length;i++){
+            if(store[i][0] != Integer.MAX_VALUE){
+                result = Math.max(result, store[i][0]-prevMax);    
+            }
+            prevMax = store[i][1] == Integer.MIN_VALUE ? prevMax : store[i][1];
+        }
+        return result;
+    }
+}

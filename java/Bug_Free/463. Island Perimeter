@@ -1,0 +1,56 @@
+class Solution {
+    private int isVis[];
+    private int result;
+    public int islandPerimeter(int[][] grid) {
+        isVis = new int[grid.length*grid[0].length];
+        result = 0;
+        boolean isFind = false;
+        for(int i = 0;i<grid.length;i++){
+            for(int j = 0;j<grid[0].length;j++){
+                if(grid[i][j] == 1){
+                    search(i,j, grid);
+                    isFind = true;
+                    break;
+                }
+            }
+            if(isFind){
+                break;
+            }
+        }
+        return result;
+    }
+    private void search(int i, int j, int [][]grid){
+        int row = grid.length;
+        int col = grid[0].length;
+        if(isVis[i*col+j] == 1){
+            return;
+        }
+        isVis[i*col+j] = 1;
+        if(i==0 || grid[i-1][j] == 0){
+            result++;
+        }
+        if(j==0 || grid[i][j-1] == 0){
+            result++;
+        }
+        if(j == col-1 || grid[i][j+1] == 0){
+            result++;
+        }
+        if(i == row-1 || grid[i+1][j] == 0){
+            result++;
+        }
+        
+        if(j+1 < col && grid[i][j+1] == 1){
+            search(i,j+1,grid);
+        }
+        if(j-1>=0 && grid[i][j-1] == 1){
+            search(i,j-1,grid);
+        }
+        if(i-1 >=0 &&  grid[i-1][j] == 1){
+            search(i-1,j, grid);
+        }
+        if(i+1 < row && grid[i+1][j] == 1){
+            search(i+1, j, grid);
+        }
+        
+    }
+}

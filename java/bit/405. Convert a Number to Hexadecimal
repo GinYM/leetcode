@@ -1,0 +1,31 @@
+class Solution {
+    public String toHex(int num) {
+        int n;
+        String result = "";
+        if(num < 0){
+            num = (~(-num))+1;
+        }
+        boolean prevZero = true;
+        
+        for(int i = 7;i>=0;i--){
+            n = (num>>(i*4)) & 0xf;
+            if(n == 0){
+                if(prevZero){
+                    continue;
+                }else{
+                    result += "0";
+                }
+            }else if(n>0 && n<=9){
+                result += (char)((int)'0'+n);
+                prevZero = false;
+            }else if(n>=10 && n <=15){
+                result += (char)((int)'a' + (n-10));
+                prevZero = false;
+            }
+        }
+        if(result == ""){
+            result = "0";
+        }
+        return result;
+    }
+}
