@@ -1,0 +1,32 @@
+class Solution {
+    public boolean wordPattern(String pattern, String str) {
+        String[]map = new String[257];
+        String []str_split = str.split(" ");
+        Map<String, Integer> str2idx = new HashMap<String, Integer>();
+        if(pattern.length() != str_split.length){
+            return false;
+        }
+        
+        for(int i = 0;i<pattern.length();i++){
+            if(i >= str_split.length){
+                return false;
+            }
+            int idx = pattern.charAt(i);
+            if(map[idx] == null){
+                map[idx] = str_split[i];
+            }else{
+                if(map[idx].equals(str_split[i]) == false){
+                    return false;
+                }
+            }
+            if( str2idx.containsKey(str_split[i]) == false){
+                str2idx.put(str_split[i], idx);
+            }else{
+                if(str2idx.get(str_split[i]) != idx){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+}
