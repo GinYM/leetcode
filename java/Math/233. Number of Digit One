@@ -1,0 +1,18 @@
+class Solution {
+    public int countDigitOne(int n) {
+        String str = Integer.toString(n);
+        long result = 0;
+        for(long i = 1;n/i > 0 ;i*=10){
+            long left = n/i;
+            long right = n%i;
+            if(left%10 > 1){
+                result += (left/10+1)*i;
+            }else if(left%10 == 1){
+                result += (left/10)*i+right+1;
+            }else{
+                result += left/10*i;
+            }
+        }
+        return (int)result;
+    }
+}

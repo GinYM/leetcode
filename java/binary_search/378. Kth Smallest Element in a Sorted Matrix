@@ -1,0 +1,36 @@
+class Solution {
+    public int kthSmallest(int[][] matrix, int k) {
+        int left = matrix[0][0];
+        int row = matrix.length;
+        int col = matrix[0].length;
+        int right = matrix[row-1][col-1];
+        while(left < right){
+            int mid = (left+right)/2;
+            int count = 0;
+            
+            for(int i = 0;i<row;i++){
+                int ret = Arrays.binarySearch(matrix[i], mid);
+                if(ret >=0){
+                    while(ret +1 < col && matrix[i][ret] == matrix[i][ret+1]){
+                        ret++;
+                    }
+                    count += ret+1;
+                    
+                }else{
+                    ret = -(ret+1);
+                    count += ret-1 >=0?ret-1+1 : 0;
+                }
+                //if(mid == 25){
+                //    System.out.println(ret);
+                //}
+            }
+            //System.out.println(left+" "+right+" "+mid+" "+count);
+            if(count<k){
+                left = mid+1;
+            }else{
+                right = mid;
+            }
+        }
+        return right;
+    }
+}

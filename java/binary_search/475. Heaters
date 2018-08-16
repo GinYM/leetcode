@@ -1,0 +1,43 @@
+/*treeset
+class Solution {
+    public int findRadius(int[] houses, int[] heaters) {
+        TreeSet<Integer> set = new TreeSet();
+        for(int h : heaters){
+            set.add(h);
+        }
+        int left, right;
+        int result = -1;
+        for(int n : houses){
+            int retTmp = Integer.MAX_VALUE;
+            if(set.ceiling(n)!=null){
+                right = set.ceiling(n);
+                retTmp = Math.min(right-n, retTmp);
+            }
+            if(set.floor(n)!=null){
+                left = set.floor(n);
+                retTmp = Math.min(retTmp, n-left);
+            }
+            result = Math.max(result, retTmp);
+        }
+        return result;
+    }
+}
+*/
+//Arrays.binarySearch
+class Solution {
+    public int findRadius(int[] houses, int[] heaters) {
+        Arrays.sort(heaters);
+        int result = 0;
+        for(int n : houses){
+            int ret = Arrays.binarySearch(heaters, n);
+            if(ret >=0){
+                continue;
+            }
+            int right = -(ret+1);
+            int rightLen = right == heaters.length?Integer.MAX_VALUE : heaters[right]-n;
+            int leftLen = right-1 >=0 ? n-heaters[right-1] : Integer.MAX_VALUE;
+            result = Math.max(Math.min(leftLen, rightLen), result);
+        }
+        return result;
+    }
+}

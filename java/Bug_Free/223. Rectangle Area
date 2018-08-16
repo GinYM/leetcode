@@ -1,0 +1,15 @@
+class Solution {
+    public int computeArea(int A, int B, int C, int D, int E, int F, int G, int H) {
+        int leftx, lefty, rightx, righty;
+        leftx = Math.max(A, E);
+        lefty = Math.max(B,F);
+        rightx = Math.min(C, G);
+        righty = Math.min(D, H);
+        if(leftx < rightx && lefty < righty){
+            return (C-A)*(D-B)+(G-E)*(H-F) - (rightx-leftx)*(righty-lefty); 
+        }else{
+            return (C-A)*(D-B)+(G-E)*(H-F) ;
+        }
+         
+    }
+}
