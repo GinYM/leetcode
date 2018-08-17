@@ -1,0 +1,45 @@
+class Solution {
+    
+    public List<int[]> pacificAtlantic(int[][] matrix) {
+        List<int[]> result = new ArrayList<int[]>();
+        if(matrix.length == 0 || matrix[0].length == 0){
+            return result;
+        }
+        int memoPac[][];
+        int memoAlt[][];
+        int row = matrix.length;
+        int col = matrix[0].length;
+        
+        memoPac = new int[row][col];
+        memoAlt = new int[row][col];
+        for(int i = 0;i<row;i++){
+            dfs(matrix, -1, i, 0, memoPac);
+            dfs(matrix, -1, i, col-1, memoAlt);
+        }
+        for(int j = 0;j<col;j++){
+            dfs(matrix, -1, 0, j, memoPac);
+            dfs(matrix, -1, row-1, j, memoAlt);
+        }
+        
+        for(int i = 0;i<row;i++){
+            for(int j = 0;j<col;j++){
+                if(memoPac[i][j]==1 && memoAlt[i][j]==1){
+                    result.add(new int[]{i,j});
+                }
+            }
+        }
+        return result;
+    }
+    private int step[][] = new int[][]{{1,0},{-1,0},{0,1},{0,-1}};
+    public void dfs(int [][]matrix, int prev, int i, int j, int isVis[][]){
+        int row = matrix.length;
+        int col = matrix[0].length;
+        if(i<0 || j<0 || i>=row || j>=col || isVis[i][j] != 0 || prev > matrix[i][j]){
+            return;
+        }
+        isVis[i][j] =1;
+        for(int []n : step){
+            dfs(matrix, matrix[i][j], i+n[0], j+n[1], isVis);
+        }
+    }
+}

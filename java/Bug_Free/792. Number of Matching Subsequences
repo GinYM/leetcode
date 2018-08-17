@@ -1,0 +1,29 @@
+class Solution {
+    public int numMatchingSubseq(String S, String[] words) {
+        int count = 0;
+        Set<String> matchedWord = new HashSet<String>();
+        for(String word : words){
+            if(matchedWord.contains(word)){
+                count++;
+                continue;
+            }
+            if(word.length() == 0){
+                count++;
+                matchedWord.add("");
+                continue;
+            }
+            int nextIdx = 0;
+            for(int i = 0;i<S.length();i++){
+                if(S.charAt(i) == word.charAt(nextIdx)){
+                    nextIdx++;
+                    if(nextIdx == word.length()){
+                        count++;
+                        matchedWord.add(word);
+                        break;
+                    }
+                }
+            }
+        }
+        return count;
+    }
+}
