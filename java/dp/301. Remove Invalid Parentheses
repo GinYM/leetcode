@@ -1,0 +1,38 @@
+class Solution {
+    public List<String> removeInvalidParentheses(String s) {
+        List<String> result = new ArrayList<String>();
+        dfs(s, new char[]{'(',')'}, 0, result, 0);
+        return result;
+    }
+    
+    public void dfs(String s, char[] pair, int startIdx, List<String> result, int lastJ){
+        int count = 0;
+        for(int i = startIdx;i<s.length();i++){
+            if(pair[0] == s.charAt(i)){
+                count++;
+            }else if(pair[1] == s.charAt(i)){
+                count--;
+            }
+            if(count>=0){
+                continue;
+            }
+            for(int j = lastJ;j<=i;j++){
+                if(s.charAt(j) == pair[1]){
+                    if(j == 0){
+                        dfs(s.substring(0,j)+s.substring(j+1),pair,i, result, j);
+                    }else if(s.charAt(j-1) != pair[1]){
+                        dfs(s.substring(0,j)+s.substring(j+1),pair,i,result, j);
+                    }
+                }
+            }
+            return;
+        }
+        String str =new StringBuilder(s).reverse().toString();
+        
+        if(pair[0] == '('){
+            dfs(str, new char[]{')','('},0,result, 0);
+        }else{
+            result.add(str);
+        }
+    }
+}

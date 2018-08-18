@@ -1,0 +1,53 @@
+class Solution {
+    public double[] medianSlidingWindow(int[] nums, int k) {
+        Queue<Integer> left = new PriorityQueue<Integer>((Integer a,Integer b)->{
+            return - a.compareTo(b);
+        });
+        Queue<Integer> right = new PriorityQueue<Integer>();
+        double[] result = new double[nums.length-k+1];
+        if(k == 0){
+            return new double[0];
+        }
+        int idx = 0;
+        int n;
+        
+        for(int i = 0;i<nums.length;i++){
+            
+            n = nums[i];
+            if(left.size() == 0 && right.size() == 0){
+                left.offer(n);
+            }else if(left.size() != 0 && n>left.peek()){
+                right.offer(n);
+            }else if(left.size() != 0 && n<=left.peek()){
+                left.offer(n);
+            }else if(n>=right.peek()){
+                right.offer(n);
+            }else{
+                left.offer(n);
+            }
+            if(left.size() + right.size() > k){
+                if(left.isEmpty() == true || ( left.isEmpty() == false && nums[i-k] > left.peek())){
+                    right.remove(nums[i-k]);
+                }else{
+                    left.remove(nums[i-k]);
+                }
+            }
+            while(Math.abs(left.size()-right.size()) > 1){
+                if(left.size() > right.size()){
+                    right.offer(left.poll());
+                }else{
+                    left.offer(right.poll());
+                }
+            }
+            //System.out.println(left.peek()+" "+right.peek()+" "+left.size()+" "+right.size());
+            if(left.size() + right.size() == k){
+                if(left.size() == right.size()){
+                    result[idx++] = ((double)left.peek() + right.peek())/2;
+                }else{
+                    result[idx++] = left.size() > right.size() ? left.peek() : right.peek();
+                }
+            }
+        }
+        return result;
+    }
+}

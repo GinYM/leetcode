@@ -1,0 +1,54 @@
+class Solution {
+    public boolean isAdditiveNumber(String num) {
+        String str1, str2;
+        for(int len1 = 1;len1<num.length();len1++){
+            for(int len2=1;len1+len2 < num.length();len2++){
+                str1 = num.substring(0,len1);
+                str2 = num.substring(len1,len1+len2);
+                if(check(str1,str2,num.substring(len1+len2))){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    public String add(String str1, String str2){
+        String result = "";
+        int carry = 0;
+        int cur = 0;
+        str1 = new StringBuilder(str1).reverse().toString();
+        str2 = new StringBuilder(str2).reverse().toString();
+        for(int i = 0;i<Math.max(str1.length(), str2.length());i++){
+            int num1 = i >= str1.length() ? 0 : str1.charAt(i)-'0';
+            int num2 = i >= str2.length() ? 0 : str2.charAt(i)-'0';
+            cur = num1+num2+carry;
+            carry = cur/10;
+            cur %= 10;
+            result += Integer.toString(cur);
+        }
+        result += carry == 0 ? "" : "1";
+        return new StringBuilder(result).reverse().toString();
+    }
+    public boolean check(String str1, String str2, String num){
+        
+        String sum = add(str1, str2);
+        
+        if(sum.length() > num.length()){
+            return false;
+        }
+        
+        if( (str1.length() != 1 && str1.charAt(0) == '0') || (str2.length()!=1 &&str2.charAt(0) == '0') || (num.length() != 1 && num.charAt(0) == '0')){
+            return false;
+        }
+        
+        if(sum.equals(num)){
+            return true;
+        }
+        
+        if(num.substring(0, sum.length()).equals(sum)){
+            return check(str2, sum, num.substring(sum.length()));
+        }else{
+            return false;
+        }
+    }
+}
