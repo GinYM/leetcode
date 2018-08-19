@@ -1,0 +1,27 @@
+class Solution {
+    public String removeDuplicateLetters(String s) {
+        if(s.length() == 0){
+            return "";
+        }
+        int dp[] = new int[26];
+        for(int i = 0;i<s.length();i++){
+            dp[s.charAt(i)-'a']++;
+        }
+        int minIdx = 0;
+        
+        for(int i = 0;i<s.length();i++){
+            if(s.charAt(i) < s.charAt(minIdx)){
+                minIdx = i;
+            }
+            if(--dp[s.charAt(i)-'a'] == 0){
+                break;
+            }
+        }
+        if(minIdx +1 < s.length()){
+            return s.charAt(minIdx) + removeDuplicateLetters(s.substring(minIdx+1).replace(""+s.charAt(minIdx), ""));
+        }else{
+            return ""+s.charAt(minIdx);
+        }
+        
+    }
+}

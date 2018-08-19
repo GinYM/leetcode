@@ -1,0 +1,28 @@
+class Solution {
+    public boolean validSquare(int[] p1, int[] p2, int[] p3, int[] p4) {
+        int points[][] = new int[4][2];
+        points[0] = p1;
+        points[1] = p2;
+        points[2] = p3;
+        points[3] = p4;
+        TreeMap<Integer, Integer> map = new TreeMap<Integer, Integer>();
+        
+        for(int i = 0;i<points.length-1;i++){
+            for(int j = i+1;j<points.length;j++){
+                map.put(calc(points[i], points[j]), map.getOrDefault(calc(points[i], points[j]), 0)+1);
+                
+            }
+        }
+        if(map.size() == 2 && map.get(map.firstKey()) == 4){
+            return true;
+        }else{
+            return false;
+        }
+        
+        
+    }
+    
+    public int calc(int[]p, int []p1){
+        return (int)Math.pow(p[0]-p1[0] ,2) + (int)Math.pow(p[1]-p1[1],2);
+    }
+}

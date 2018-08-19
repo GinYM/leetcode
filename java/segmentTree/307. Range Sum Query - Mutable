@@ -1,0 +1,60 @@
+class NumArray {
+    public int[]store;
+    public int n;
+    public NumArray(int[] nums) {
+        store = new int[2*nums.length];
+        n = nums.length;
+        for(int i = 0;i<n;i++){
+            store[i+n] = nums[i];
+        }
+        //initialize
+        if(nums.length != 0)
+            initialize(1);
+    }
+    public int initialize(int idx){
+        if(idx >= n){
+            return store[idx];
+        }
+        int left = initialize(idx*2);
+        int right = initialize(idx*2+1);
+        store[idx] = left+right;
+        return store[idx];
+    }
+    
+    public void update(int i, int val) {
+        int dif = val - store[i+n];
+        int idx = i+n;
+        while(idx >=1){
+            store[idx] += dif;
+            idx /= 2;
+        }
+    }
+    
+    public int sumRange(int i, int j) {
+        int left = i+n;
+        int right = j+n;
+        int result = 0;
+        while(left < right){
+            if(left%2 == 1){
+                result += store[left];
+                left++;
+            }
+            if(right %2 == 0){
+                result += store[right];
+                right--;
+            }
+            left/=2;
+            right/=2;
+        }
+        if(left == right)
+            result += store[left];
+        return result;
+    }
+}
+
+/**
+ * Your NumArray object will be instantiated and called as such:
+ * NumArray obj = new NumArray(nums);
+ * obj.update(i,val);
+ * int param_2 = obj.sumRange(i,j);
+ */
