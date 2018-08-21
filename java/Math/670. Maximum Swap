@@ -1,0 +1,36 @@
+class Solution {
+    public int maximumSwap(int num) {
+        String str = Integer.toString(num);
+        int []store = new int[10];
+        int maxNum = 0;
+        for(int i = 0;i<str.length();i++){
+            store[str.charAt(i)-'0']++;
+            maxNum = Math.max(maxNum, str.charAt(i)-'0');
+        }
+        int lessIdx = 0;
+        int result = 0;
+        while(lessIdx < str.length()&& str.charAt(lessIdx)-'0' == maxNum){
+            result = result *10 + maxNum;
+            store[maxNum]--;
+            while(maxNum>=0 && store[maxNum] == 0) maxNum--;
+            lessIdx++;
+            
+        }
+        if(lessIdx < str.length()){
+            result = result*10 + maxNum;
+        }
+        for(int i = lessIdx+1;i<str.length();i++){
+            if(str.charAt(i)-'0' == maxNum && store[maxNum] == 1){
+                store[maxNum]--;
+                result = result*10 + (str.charAt(lessIdx)-'0');
+            }else{
+                result = result*10 + (str.charAt(i)-'0');
+                store[str.charAt(i)-'0']--;
+            }
+        }
+        
+        
+        return result;
+        
+    }
+}

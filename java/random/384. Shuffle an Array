@@ -1,0 +1,36 @@
+class Solution {
+    public int []nums;
+    Random r;
+    public Solution(int[] nums) {
+        this.nums = nums;    
+    }
+    
+    /** Resets the array to its original configuration and return it. */
+    public int[] reset() {
+        return nums;
+    }
+    
+    /** Returns a random shuffling of the array. */
+    public int[] shuffle() {
+        int []newint = nums.clone();
+        r = new Random();
+        for(int i = 0;i<newint.length;i++){
+            int idx = r.nextInt(i+1);
+            swap(newint, i, idx);
+        }
+        return newint;
+    }
+    
+    public void swap(int[]num, int idx1, int idx2){
+        int tmp = num[idx1];
+        num[idx1] = num[idx2];
+        num[idx2] = tmp;
+    }
+}
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution obj = new Solution(nums);
+ * int[] param_1 = obj.reset();
+ * int[] param_2 = obj.shuffle();
+ */

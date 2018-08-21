@@ -1,0 +1,76 @@
+class Solution {
+    public void wiggleSort(int[] nums) {
+        if(nums.length == 1){
+            return;
+        }
+        findK(nums);
+        
+        //virtual idx
+        int n = nums.length;
+        
+        //three way partition
+        int i=0;
+        int j = 0;
+        int k = n-1;
+        int mid = nums[n/2-1];
+        while(j<=k){
+            if(nums[vidx(j, n)] == mid){
+                j++;
+            }else if(nums[vidx(j,n)] > mid){
+                swap(nums, vidx(j++,n), vidx(i++,n));
+            }else{
+                swap(nums, vidx(j,n), vidx(k--,n));
+            }
+        }
+        
+    }
+    
+    public int vidx(int idx, int n){
+        return (2*idx+1)%(n|1);
+    }
+    
+    public void findK(int []nums){
+        int left = 0;
+        int right = nums.length-1;
+        int k = nums.length/2;
+        while(left < right){
+            int pivot = split(nums, left, right, k);
+            if(pivot == k-1){
+                return;
+            }else if(k-1 < pivot){
+                right = pivot-1;
+            }else{
+                left = pivot+1;
+            }
+        }
+    }
+    
+    public int split(int [] nums, int left, int right, int k){
+        shuffle(nums, left, right);
+        int key = nums[left];
+        int idx = left;
+        while(left <= right){
+            while(left <= right && nums[left] >= key) left++;
+            while(left<=right && nums[right] < key) right--;
+            if(left < right){
+                swap(nums, left, right);
+            }else{
+                break;
+            }
+        }
+        swap(nums, idx, right);
+        return right;
+    }
+    public void swap(int []nums, int idx1, int idx2){
+        int tmp = nums[idx1];
+        nums[idx1] = nums[idx2];
+        nums[idx2] = tmp;
+    }
+    public void shuffle(int nums[], int left, int right){
+        Random r = new Random();
+        for(int i = left;i<=right;i++){
+            int next = r.nextInt(i-left+1)+left;
+            swap(nums, i, next);
+        }
+    }
+}

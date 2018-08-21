@@ -1,0 +1,63 @@
+class Solution {
+    public int lengthLongestPath(String input) {
+        Stack<String> stack = new Stack<String>();
+        int idx = 0;
+        int level = 0;
+        int result = 0;
+        while(idx < input.length()){
+            if(Character.isLetter(input.charAt(idx))){
+                int nameIdx = getName(input, idx);
+                String name = input.substring(idx, nameIdx);
+                stack.push(name);
+                level = 0;
+                idx = nameIdx;
+                if(name.indexOf(".")!=-1){
+                    result = Math.max(name.length(), result);
+                }
+            }else{
+                //System.out.println(idx);
+                int curLevel = getLevel(input, idx);
+                //System.out.println(curLevel);
+                while(level >= curLevel){
+                    stack.pop();
+                    level--;
+                }
+                int nextIdx = idx+(curLevel+1);
+                if(nextIdx >= input.length()){break;}
+                int nameIdx = getName(input, nextIdx);
+                String name = input.substring(nextIdx, nameIdx);
+                stack.push( (stack.isEmpty() ? "" : stack.peek() +"/")  +name);
+                idx = nameIdx;
+                level++;
+                if(name.indexOf(".")!=-1){
+                    //System.out.println(stack.peek());
+                    result = Math.max(stack.peek().length(), result);
+                }
+            }
+            //System.out.println(idx);
+            
+        }
+        return result;
+    }
+    
+    //return the lastIdx+1
+    public int getName(String input, int startIdx){
+        int endIdx = startIdx;
+        while(endIdx < input.length() && ( input.charAt(endIdx) == ' ' || input.charAt(endIdx) == '.' || Character.isLetter(input.charAt(endIdx)) || Character.isDigit(input.charAt(endIdx)) ) ) {
+            endIdx++;
+        }
+        return endIdx;
+    }
+    //return the level of file
+    public int getLevel(String input, int startIdx){
+        int count = 0;
+        int endIdx = startIdx+1;
+        //System.out.println(startIdx+" "+endIdx);
+        //System.out.println(input.charAt(endIdx));
+        while(endIdx < input.length() && input.charAt(endIdx) == '\t' ){
+            count++;
+            endIdx++;
+        }
+        return count;
+    }
+}

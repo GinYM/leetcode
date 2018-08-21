@@ -1,0 +1,49 @@
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        int left = 0;
+        int right = nums.length-1;
+        while(left <= right){
+            int pivot = split(nums, left, right);
+            if(pivot == k-1){
+                return nums[pivot];
+            }else if(k-1 > pivot){
+                left = pivot+1;
+            }else{
+                right = pivot-1;
+            }
+        }
+        return -1;
+        
+    }
+    public int split(int []nums, int left, int right){
+        shuffle(nums, left, right);
+        int key = nums[left];
+        int idx = left;
+        while(true){
+            while(left <= right && nums[left] >= key) left++;
+            while(left <= right && nums[right] < key) right--;
+            if(left > right){
+                break;
+            }
+            swap(nums, left, right);
+        }
+        swap(nums, idx, right);
+        return right;
+        
+    }
+    
+    public void shuffle(int []nums, int left, int right){
+        Random r = new Random();
+        for(int i = left;i<=right;i++){
+            int idx = r.nextInt(right-left+1);
+            idx += left;
+            swap(nums, i, idx);
+        }
+    }
+    
+    public void swap(int []nums, int idx1, int idx2){
+        int tmp = nums[idx1];
+        nums[idx1] = nums[idx2];
+        nums[idx2] = tmp;
+    }
+}

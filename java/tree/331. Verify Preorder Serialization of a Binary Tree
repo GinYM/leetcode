@@ -1,0 +1,41 @@
+/*
+class Solution {
+    public boolean isValidSerialization(String preorder) {
+        String nodes[] = preorder.split(",");
+        Stack<Boolean> stack = new Stack<Boolean>(); //whether it is "#"
+        for(int i = 0;i<nodes.length;i++){
+            String node = nodes[i];
+            if(node.equals("#")){
+                while(stack.isEmpty() == false  && stack.peek() == true){
+                    stack.pop();
+                    if(stack.pop()!=false){
+                        return false;
+                    }
+                }
+                if(stack.isEmpty() && i!=nodes.length-1){
+                    return false;
+                }else if(stack.isEmpty()){
+                    return true;
+                }
+                stack.push(true);
+            }else{
+                stack.push(false);
+            }
+        }
+        return false;
+    }
+}
+*/
+class Solution {
+    public boolean isValidSerialization(String preorder) {
+        int dif = 1;
+        String nodes[] = preorder.split(",");
+        for(String node : nodes){
+            if(--dif < 0){return false;}
+            if(!node.equals("#")){dif+=2;}
+        }
+        return dif == 0;
+    }
+}
+
+

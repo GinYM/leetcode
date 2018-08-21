@@ -1,0 +1,88 @@
+/**
+ * // This is the interface that allows for creating nested lists.
+ * // You should not implement it, or speculate about its implementation
+ * public interface NestedInteger {
+ *
+ *     // @return true if this NestedInteger holds a single integer, rather than a nested list.
+ *     public boolean isInteger();
+ *
+ *     // @return the single integer that this NestedInteger holds, if it holds a single integer
+ *     // Return null if this NestedInteger holds a nested list
+ *     public Integer getInteger();
+ *
+ *     // @return the nested list that this NestedInteger holds, if it holds a nested list
+ *     // Return null if this NestedInteger holds a single integer
+ *     public List<NestedInteger> getList();
+ * }
+ */
+public class NestedIterator implements Iterator<Integer> {
+    public Stack<List<NestedInteger>> data;
+    public Stack<Integer> idx;
+    public NestedIterator(List<NestedInteger> nestedList) {
+        data = new Stack<List<NestedInteger>>();
+        idx = new Stack<Integer>();
+        if(nestedList.size() >0){
+            data.push(nestedList);
+            idx.push(0);
+            
+            extract();
+        }
+        
+    }
+
+    @Override
+    public Integer next() {
+        if(hasNext() == false){
+            return -1;
+        }
+        //removeNull();
+        int index = idx.pop();
+        NestedInteger ret = data.peek().get(index);
+        idx.push(index+1);
+        if(ret.isInteger()){ 
+            return ret.getInteger();
+        }else{
+            while(ret.isInteger() == false){
+                data.push(ret.getList());
+                idx.push(0);
+                ret = ret.getList().get(0);
+            }
+            idx.pop();
+            idx.push(1);
+            return ret.getInteger();
+        }
+        //return ret.;
+    }
+    
+    //expand empty nested Integer
+    public void extract(){
+        removeNull();
+        while(data.isEmpty() == false && data.peek().get(idx.peek()).isInteger() == false){
+            //idx.pop();
+            int index = idx.peek();
+            idx.push(idx.pop()+1);
+            data.push(data.peek().get(index).getList());
+            idx.push(0);
+            removeNull();
+        }
+    }
+    
+    public void removeNull(){
+        while(idx.isEmpty() == false && data.isEmpty() == false && (data.peek().size() == 0 || idx.peek() >= data.peek().size())){
+            idx.pop();
+            data.pop();
+        }
+    }
+
+    @Override
+    public boolean hasNext() {
+        extract();
+        return !data.isEmpty();
+    }
+}
+
+/**
+ * Your NestedIterator object will be instantiated and called as such:
+ * NestedIterator i = new NestedIterator(nestedList);
+ * while (i.hasNext()) v[f()] = i.next();
+ */

@@ -1,0 +1,49 @@
+class Solution {
+    public List<String> topKFrequent(String[] words, int k) {
+        Map<String, Integer> map = new HashMap<String, Integer>();
+        for(String word : words){
+            map.put(word, map.getOrDefault(word, 0)+1);
+        }
+        Queue<Data> queue = new PriorityQueue<Data>((a,b)->{
+            if(a.freq != b.freq)
+                return a.freq-b.freq;
+            else{
+                return -a.word.compareTo(b.word);
+            }
+        });
+        //Queue<Data> queue = new PriorityQueue<Data>(new Comparator<Dara>(){
+        //    public int compare(Data a, Datab){return b.freq-a.freq};
+        //});
+        for(String word : map.keySet()){
+            int freq = map.get(word);
+            if(queue.size() < k){
+                queue.offer(new Data(word, map.get(word)));
+            }else if(freq> queue.peek().freq){
+                queue.poll();
+                queue.offer(new Data(word, map.get(word)));
+            }else if(freq == queue.peek().freq && word.compareTo(queue.peek().word) < 0){
+                queue.poll();
+                queue.offer(new Data(word, map.get(word)));
+            }
+        }
+        List<String> result = new ArrayList<String>(k);
+        for(int i = 0;i<k;i++){
+            result.add("");
+        }
+        int i= k-1;
+        while(queue.isEmpty() == false){
+            result.set(i, queue.poll().word);
+            i--;
+        }
+        return result;
+    }
+    
+    class Data{
+        String word;
+        int freq;
+        public Data(String word, int f){
+            this.word = word;
+            freq = f;
+        }
+    }
+}
