@@ -1,0 +1,23 @@
+class Solution {
+    public int findPairs(int[] nums, int k) {
+        if(k<0) return 0;
+        Map<Integer, Integer> map = new TreeMap<Integer, Integer>();
+        for(int n : nums){
+            map.put(n, map.getOrDefault(n,0)+1);
+        }
+        int result = 0;
+        for(int n : map.keySet()){
+            int count = map.get(n);
+            if(k == 0){
+                
+                if(count > 1){
+                    result ++;
+                }
+            }else{
+                //result += count*map.getOrDefault(n+k,0);
+                result += map.containsKey(n-k) ? 1:0;
+            }
+        }
+        return result;
+    }
+}
