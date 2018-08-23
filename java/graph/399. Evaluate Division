@@ -1,0 +1,38 @@
+class Solution {
+    public double[] calcEquation(String[][] equations, double[] values, String[][] queries) {
+        Map<String, List<String> > map = new HashMap<String, List<String> >();
+        Map<String, Double> equation = new HashMap<String, Double>();
+        int idx = 0;
+        for(String s[] : equations){
+            if(!map.containsKey(s[0])){
+                map.put(s[0], new ArrayList<String>());
+            }
+            if(!map.containsKey(s[1])){
+                map.put(s[1], new ArrayList<String>());
+            }
+            map.get(s[0]).add(s[1]);
+            map.get(s[1]).add(s[0]);
+            equation.put(s[0]+"#"+s[1], values[idx]);
+            equation.put(s[1]+"#"+s[0], 1.0/values[idx]);
+            idx++;
+        }
+        for(String key : map.keySet()){
+            dfs(map, equation, key, 1.0, key);
+        }
+        double[] result = new double[queries.length];
+        for(int i = 0;i<queries.length;i++){
+            String[] query = queries[i];
+            result[i] = equation.getOrDefault(query[0]+"#"+query[1], -1.0);
+        }
+        return result;
+    }
+    public void dfs(Map<String, List<String>> map, Map<String, Double> equation, String start, double lastVal, String last){
+        
+        for(String next : map.get(last)){
+            if(start == last || !equation.containsKey(start+"#"+next)){
+                equation.put(start+"#"+next, lastVal*equation.get(last+"#"+next));
+                dfs(map, equation, start, lastVal*equation.get(last+"#"+next), next);
+            }
+        }
+    }
+}

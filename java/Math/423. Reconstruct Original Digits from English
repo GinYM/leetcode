@@ -1,0 +1,60 @@
+class Solution {
+    
+    public String originalDigits(String s) {
+        String dig[] = new String[]{"zero","one","two","three","four","five","six","seven","eight","nine"};
+        int count[] = new int[27];
+        for(int i= 0;i<s.length();i++){
+            count[s.charAt(i)-'a']++;
+        }
+        //System.out.println(count['n'-'a']);
+        //zero
+        int result[] = new int[10];
+        result[0] = count['z'-'a'];
+        remove(count, dig[0], result[0]);
+        //six
+        result[6] = count['x'-'a'];
+        remove(count, dig[6], result[6]);
+        //eight
+        result[8] = count['g'-'a'];
+        remove(count, dig[8], result[8]);
+        //two
+        result[2] = count['w'-'a'];
+        remove(count, dig[2], result[2]);
+        //four
+        result[4] = count['u'-'a'];
+        remove(count, dig[4], result[4]);
+        //three
+        result[3] = count['r'-'a'];
+        remove(count, dig[3], result[3]);
+        //five
+        result[5] = count['f'-'a'];
+        remove(count, dig[5], result[5]);
+        //seven
+        result[7] = count['s'-'a'];
+        remove(count, dig[7], result[7]);
+        
+        //nine
+        //System.out.println(count['i'-'a']);
+        result[9] = count['i'-'a'];
+        remove(count, dig[9], result[9]);
+        //one
+        result[1] = count['n'-'a'];
+        remove(count, dig[1], result[1]);
+        String resultStr = "";
+        for(int i = 0;i<10;i++){
+            for(int c = 0;c<result[i];c++){
+                resultStr += i;
+            }
+            //resultStr += result[i]==0?"":i;
+        }
+        return resultStr;
+    }
+    
+    public void remove(int []count, String num, int c){
+        //System.out.println(num+" "+c);
+        for(int i = 0;i<num.length();i++){
+            count[num.charAt(i)-'a']-= c;
+        }
+    }
+    
+}
