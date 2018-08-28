@@ -1,0 +1,41 @@
+class Solution {
+    public int repeatedStringMatch(String A, String B) {
+        int result = -1;
+        int next[] = new int[B.length()+1];
+        int i = 1;
+        int j = 0;
+        while(i<B.length()){
+            if(B.charAt(j) == B.charAt(i)){
+                next[++i] = ++j;
+            }else if(j == 0){
+                next[++i] = 0;
+            }else{
+                j = next[j];
+            }
+        }
+        i=0;
+        j=0;
+        int count = 0;
+        
+        while(i<A.length() && j < B.length() && i+1+count*A.length() < A.length()+B.length()){
+            if(A.charAt(i) == B.charAt(j)){
+                i++;
+                j++;
+            }else if(j == 0){
+                i++;
+            }else{
+                j = next[j];
+            }
+            if(j>=B.length()){
+                result = count+1;
+                break;
+            }
+            if(i >= A.length()){
+                i %= A.length();
+                count++;
+            }
+            
+        }
+        return result;
+    }
+}

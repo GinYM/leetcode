@@ -1,0 +1,42 @@
+class Solution {
+    public boolean canIWin(int maxChoosableInteger, int desiredTotal) {
+        if(maxChoosableInteger >= desiredTotal) return true;
+        if((1+maxChoosableInteger)*maxChoosableInteger/2 < desiredTotal){
+            return false;
+        }
+        Map<Integer, Boolean> map = new HashMap<Integer, Boolean>();
+        int left = 1;
+        for(int i = 0;i<maxChoosableInteger-1;i++){
+            left = (left<<1)|1;
+        }
+        return check(map, desiredTotal, left, maxChoosableInteger);
+        
+    }
+    
+    public boolean check(Map<Integer, Boolean> map, int desired, int left, int maxChoosable){
+        
+        if(desired <= 0){
+            return false;
+        }
+        int mask = 1;
+        if(map.containsKey(left)){
+            return map.get(left);
+        }
+        int getNum = 0;
+        boolean isWin = false;
+        for(int i = 1;i<=maxChoosable;i++){
+            if((left&mask) != 0 ){
+                //System.out.println(desired+" "+i);
+                if(!check(map, desired-i, left&(~(mask)), maxChoosable)){
+                    isWin = true;
+                    break;
+                }
+            }
+            
+            mask<<=1;
+        }
+        //System.out.println(desired+" "+isWin);
+        map.put(left, isWin);
+        return isWin;
+    }
+}

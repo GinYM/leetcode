@@ -1,0 +1,35 @@
+class Solution {
+    public int minMutation(String start, String end, String[] bank) {
+        int level = 1;
+        Queue<String> queue = new LinkedList<String>();
+        Set<String> bankSet = new HashSet<String>();
+        for(String s : bank){
+            bankSet.add(s);
+        }
+        queue.offer(start);
+        bankSet.add(start);
+        char dict[] = new char[]{'A','T','C','G'};
+        int count = 1;
+        while(queue.isEmpty() == false){
+            count--;
+            String word = queue.poll();
+            bankSet.remove(word);
+            for(int i = 0;i<word.length();i++){
+                for(char c : dict){
+                    String mutWord = word.substring(0,i)+c+word.substring(i+1);
+                    if(bankSet.contains(mutWord)){
+                        queue.offer(mutWord);
+                        if(mutWord.equals(end)){
+                            return level;
+                        }
+                    }
+                }
+            }
+            if(count == 0){
+                level++;
+                count = queue.size();
+            }
+        }
+        return -1;
+    }
+}
