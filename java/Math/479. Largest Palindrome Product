@@ -1,0 +1,39 @@
+class Solution {
+    public int largestPalindrome(int n) {
+        if(n == 1){
+            return 9;
+        }
+        int upper = (int)Math.pow(10,n)-1;
+        int lower = (int)Math.pow(10,n-1);
+        long maxNum = (long)upper*upper;
+        String num = Long.toString(maxNum);
+        int half = Integer.parseInt(num.substring(0,num.length()/2));
+        //System.out.println(half);
+        boolean isFind = false;
+        long total = 0;
+        int result = 0;
+        while(isFind == false  && half>0){
+            //System.out.println(half);
+            StringBuilder sb = new StringBuilder(Integer.toString(half));
+            //System.out.println(sb.reverse().toString()+sb.toString());
+            String totalStr = Integer.toString(half)+sb.reverse();
+            total = Long.parseLong(totalStr);
+            //System.out.println(sb);
+            
+            for(int i = upper;(long)i*i >= total;i--){
+                
+                if(total%(long)i == 0){
+                    isFind = true;
+                    break;
+                }
+            }
+            if(isFind){
+                result = (int)(total%1337);
+                
+            }
+            half--;
+        }
+        return result;
+        
+    }
+}

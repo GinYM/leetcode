@@ -1,0 +1,43 @@
+/*
+class Solution {
+    public int minSteps(int n) {
+        List<Map<Integer, Integer>> dp = new ArrayList<Map<Integer, Integer>>(); 
+        dp.add(new HashMap<Integer, Integer>());//dummy 
+        Map<Integer, Integer> first = new HashMap<Integer, Integer>(); //number of step to get the copy
+        first.put(1,1); //n -> step
+        dp.add(first);
+        int minStep = 0;
+        for(int i = 2;i<=n;i++){
+            dp.add(new HashMap<Integer, Integer>());
+            minStep = Integer.MAX_VALUE;
+            for(int j = 1;j<=i;j++){
+                if(dp.get(i-j).containsKey(j)){
+                    int step = dp.get(i-j).get(j);
+                    dp.get(i).put(j, step+1);
+                    minStep = Math.min(step+1, minStep);
+                }
+            }
+            dp.get(i).put(i,minStep+1);
+        }
+        return dp.get(n).get(n)-1;
+    }
+}
+*/
+
+//new solution O(n)
+
+class Solution {
+    public int minSteps(int n) {
+        int dp[] = new int[n+1];
+        dp[1] = 0;
+        for(int i = 2;i<=n;i++){
+            for(int j = i-1;j>=1;j--){
+                if(i%j == 0){
+                    dp[i] = dp[j]  + i/j;
+                    break;
+                }
+            }
+        }
+        return dp[n];
+    }
+}

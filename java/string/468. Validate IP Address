@@ -1,0 +1,51 @@
+class Solution {
+    public String validIPAddress(String IP) {
+        boolean isIPV4 = false;
+        boolean isIPV6 = false;
+        //check IPv4
+        String ipSplit[] = IP.split("\\.", -1);
+        //System.out.println(ipSplit.length);
+        if(ipSplit.length == 4){
+            for(String ip : ipSplit){
+                if(ip.length() >=2 && ip.charAt(0) == '0'){
+                    return "Neither";
+                }
+                if(ip.length() == 0){
+                    return "Neither";
+                }
+                //System.out.println(Integer.parseInt(ip));
+                int num = 0;
+                for(int i = 0;i<ip.length();i++){
+                    if(Character.isDigit(ip.charAt(i)) == false){
+                        return "Neither";
+                    }
+                    num = num*10 + (ip.charAt(i)-'0');
+                }
+                if(num <0 || num > 255){
+                    return "Neither";
+                }
+            }
+            return "IPv4";
+        }
+        ipSplit = IP.split(":", -1);
+        
+        if(ipSplit.length == 8){
+            for(String ip : ipSplit){
+                if(ip.length() == 0 || ip.length() > 4){
+                    return "Neither";
+                }
+                //if(ip.length()!=4 && ip.length()!=1){
+                //    return "Neither";
+                //}
+                for(int i = 0;i<ip.length();i++){
+                    if(Character.isDigit(ip.charAt(i)) == false && !(ip.charAt(i) >= 'A' && ip.charAt(i) <= 'F') && !(ip.charAt(i) >= 'a' && ip.charAt(i) <= 'f')){
+                        return "Neither";
+                    }
+                }
+                
+            }
+            return "IPv6";
+        }
+        return "Neither";
+    }
+}

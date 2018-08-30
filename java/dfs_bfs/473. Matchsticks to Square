@@ -1,0 +1,51 @@
+class Solution {
+    public boolean result;
+    public boolean makesquare(int[] nums) {
+        if(nums.length == 0){
+            return false;
+        }
+        Arrays.sort(nums);
+        result = false;
+        int total = 0;
+        for(int n : nums){
+            total += n;
+        }
+        if(total%4!=0){
+            return false;
+        }
+        int target = total/4;
+        int []isVis = new int[nums.length];
+        return dfs(nums, 0, target, total, 0, isVis);
+    }
+    
+    public boolean dfs(int []nums, int prev, int target, int total, int idx, int[] isVis){
+        if(prev  > target){
+            return false;
+        }
+        if(prev == target){
+            total -= prev;
+            prev=0;
+            idx = 0;
+        }
+        if(total == 0){
+            
+            return true;
+        }
+        
+        for(int i = idx;i<nums.length;i++){
+            if(isVis[i] == 1){
+                continue;
+            }
+            if(prev+nums[i] > target){
+                return false;
+            }
+            isVis[i] = 1;
+            if(dfs(nums, prev+nums[i], target, total, i+1, isVis)){
+                isVis[i] = 0;
+                return true;
+            } 
+            isVis[i] = 0;
+        }
+        return false;
+    }
+}
