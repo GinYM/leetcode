@@ -1,0 +1,29 @@
+class Solution {
+    public int magicalString(int n) {
+        if(n == 0){
+            return 0;
+        }
+        StringBuilder sb = new StringBuilder("12");
+        int idx = 0;
+        int curIdx = 0;
+        boolean isOne = false;
+        while(sb.length() < n){
+            isOne = !isOne;
+            int count = sb.charAt(idx)-'0';
+            for(int i = curIdx;i<curIdx+count;i++){
+                if(i>=sb.length()){
+                    sb.append(isOne?"1":"2");
+                }
+            }
+            curIdx += count;
+            idx++;
+        }
+        int result = 0;
+        for(int i = 0;i<n;i++){
+            if(sb.charAt(i) == '1'){
+                result++;
+            }
+        }
+        return result;
+    }
+}
