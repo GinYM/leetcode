@@ -1,0 +1,56 @@
+class Solution {
+    public String replaceWords(List<String> dict, String sentence) {
+        Node root = new Node();
+        for(String d : dict){
+            buildTrie(d,root);
+        }
+        String sent[] = sentence.split(" ");
+        StringBuilder sb = new StringBuilder();
+        
+        for(int i = 0;i<sent.length;i++){
+            if(i!=0){
+                sb.append(" ");
+            }
+            sb.append(findRoot(root, sent[i]));
+        }
+        return sb.toString();
+    }
+    
+    public String findRoot(Node root, String word){
+        int idx = 0;
+        while(root.isLeaf == false && idx < word.length() ){
+            if(root.next[word.charAt(idx)-'a'] == null){
+                idx = word.length();
+                break;
+            }else{
+                root = root.next[word.charAt(idx)-'a'];
+            }
+            
+            idx++;
+        }
+        return word.substring(0,idx);
+    }
+    
+    public void buildTrie(String s, Node root){
+        if(s.length() == 0){
+            return;
+        }
+        for(int i = 0;i<s.length();i++){
+            int idx = s.charAt(i)-'a';
+            if(root.next[idx] == null){
+                root.next[idx] = new Node();
+            }
+            root = root.next[idx];
+        }
+        root.isLeaf = true;
+    }
+    
+    class Node{
+        public Node next[];
+        public boolean isLeaf;
+        public Node(){
+            next = new Node[26];
+            isLeaf = false;
+        }
+    }
+}

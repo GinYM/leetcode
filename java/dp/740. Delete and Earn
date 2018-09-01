@@ -1,0 +1,27 @@
+class Solution {
+    public int deleteAndEarn(int[] nums) {
+        List<Integer> list = new ArrayList<Integer>();
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+        for(int n : nums){
+            if(map.containsKey(n) == false){
+                list.add(n);
+            }
+            map.put(n,map.getOrDefault(n,0)+1);
+        }
+        Collections.sort(list);
+        int dp[] = new int[list.size()+1];
+        for(int i = 0;i<list.size();i++){
+            if(i == 0){
+                dp[i+1] = list.get(i)*map.get(list.get(i));
+            }else{
+                if(list.get(i-1) < list.get(i)-1){
+                    dp[i+1] = dp[i]+list.get(i)*map.get(list.get(i));
+                }else{
+                    dp[i+1] = Math.max(dp[i-1] + map.get(list.get(i))*list.get(i), dp[i]);
+                }
+            }
+            
+        }
+        return dp[list.size()];
+    }
+}

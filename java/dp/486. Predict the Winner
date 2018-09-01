@@ -1,0 +1,25 @@
+class Solution {
+    public boolean PredictTheWinner(int[] nums) {
+        //start#end win or lose
+        Map<String, Integer> map = new HashMap<String, Integer>();
+        int total = 0;
+        for(int n:nums){
+            total += n;
+        }
+        int result = predict(0, nums.length-1,nums, map, total);
+        return result >= total-result;
+    }
+    
+    public int predict(int start, int end, int[]nums, Map<String, Integer> map, int total){
+        if(map.containsKey(""+start+"#"+end)){
+            return map.get(""+start+"#"+end);
+        }
+        if(start == end){
+            return nums[start];
+        }
+        int left = predict(start+1,end, nums, map, total-nums[start]);
+        int right = predict(start, end-1, nums, map, total-nums[end]);
+        map.put(start+"#"+end, total-Math.min(left, right));
+        return total-Math.min(left, right);
+    }
+}
