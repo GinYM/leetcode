@@ -1,0 +1,43 @@
+class Solution {
+    Random rndx;
+    Random rndy;
+    Random r;
+    int [][]rects;
+    int total;
+    int square[];
+    public Solution(int[][] rects) {
+        this.rects = rects;
+        rndx = new Random();
+        rndy = new Random();
+        r = new Random();
+        square = new int[rects.length];
+        int prev = 0;
+        for(int i = 0;i<rects.length;i++){
+            int[]rect = rects[i];
+            total += (rect[2]-rect[0]+1)*(rect[3]-rect[1]+1);
+            square[i] = prev + (rect[2]-rect[0]+1)*(rect[3]-rect[1]+1);
+            prev = square[i];
+        }
+    }
+    
+    public int[] pick() {
+        int area = r.nextInt(total)+1;
+        int idx = 0;
+        while(area > square[idx] ) idx++;
+        area -= idx-1>=0? square[idx-1]:0;
+        int len = rects[idx][2] - rects[idx][0]+1;
+        int w = rects[idx][3] - rects[idx][1]+1;
+        int x = rects[idx][0] + (area-1)%len;
+        int y = rects[idx][1] + (area-1)/len;
+        
+        
+        
+        return new int[]{x,y};
+    }
+}
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution obj = new Solution(rects);
+ * int[] param_1 = obj.pick();
+ */

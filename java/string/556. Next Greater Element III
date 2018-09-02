@@ -1,0 +1,36 @@
+class Solution {
+    public int nextGreaterElement(int n) {
+        String nstr = Integer.toString(n);
+        List<Character> list = new ArrayList<Character>();
+        int i=nstr.length()-1;
+        for(i = nstr.length()-1;i>=0;i--){
+            if(i==nstr.length()-1 || nstr.charAt(i) >= nstr.charAt(i+1)){
+                list.add(nstr.charAt(i));
+            }else{
+                break;
+            }
+        }
+        Collections.sort(list);
+        if(i == -1){
+            return -1;
+        }
+        int idx = 0;
+        char repStr = '\0';
+        for(idx = 0;idx<list.size();idx++){
+            if(list.get(idx) > nstr.charAt(i)){
+                repStr = list.get(idx);
+                list.set(idx, nstr.charAt(i));
+                break;
+            }
+        }
+        StringBuilder result = new StringBuilder(nstr.substring(0,i));
+        result.append(repStr);
+        for(idx = 0;idx<list.size();idx++){
+            result.append(""+list.get(idx));
+        }
+        if(Long.parseLong(result.toString()) > Integer.MAX_VALUE){
+            return -1;
+        }
+        return Integer.parseInt(result.toString());
+    }
+}
