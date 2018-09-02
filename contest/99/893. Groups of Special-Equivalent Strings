@@ -1,0 +1,37 @@
+class Solution {
+    public int numSpecialEquivGroups(String[] A) {
+        List<String> group = new ArrayList<String>(A.length);
+        boolean isFind = false;
+        for(int i = 0;i<A.length;i++){
+            isFind = false;
+            for(int j = 0;j<group.size();j++){
+                if(check(A[i], group.get(j))){
+                    isFind = true;
+                    break;
+                }
+            }
+            if(isFind == false){
+                group.add(A[i]);
+            }
+        }
+        
+        return group.size();
+    }
+    public boolean check(String a, String b){
+        int countA[][] = new int[2][26];
+        int countB[][] = new int[2][26];
+        for(int i = 0;i<a.length();i++){
+            countA[i%2][a.charAt(i)-'a']++;
+            countB[i%2][b.charAt(i)-'a']++;
+        }
+        for(int i = 0;i<26;i++){
+            if(countA[0][i]!=countB[0][i]){
+                return false;
+            }
+            if(countA[1][i]!=countB[1][i]){
+                return false;
+            }
+        }
+        return true;
+    }
+}
