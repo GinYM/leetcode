@@ -1,0 +1,25 @@
+class Solution {
+    public int findCircleNum(int[][] M) {
+        int store[] = new int[M.length];
+        int n = M.length;
+        int count = 0;
+        for(int i = 0;i<n;i++){
+            if(store[i]!=0) continue;
+            Queue<Integer> queue = new LinkedList<Integer>();
+            queue.offer(i);
+            count++;
+            while(queue.isEmpty() == false){
+                int idx = queue.poll();
+                store[idx] = count;
+                for(int ii = 0;ii<n;ii++){
+                    if(M[idx][ii] == 1){
+                        if(store[ii]==0){
+                            queue.offer(ii);
+                        }
+                    }
+                }
+            }
+        }
+        return count;
+    }
+}

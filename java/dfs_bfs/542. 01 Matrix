@@ -1,0 +1,37 @@
+class Solution {
+    public int[][] updateMatrix(int[][] matrix) {
+        int count = 0;
+        int row = matrix.length;
+        int col = matrix[0].length;
+        Queue<int[]> queue = new LinkedList<int[]>();
+        int [][]result = new int[row][col];
+        for(int i = 0;i<row;i++){
+            for(int j = 0;j<col;j++){
+                if(matrix[i][j] == 0){
+                    queue.offer(new int[]{i,j,0});
+                }else{
+                    result[i][j] = Integer.MAX_VALUE;
+                }
+            }
+        }
+        int d[][] = new int[][]{{-1,0},{1,0},{0,-1},{0,1}};
+        
+        while(queue.isEmpty() == false){
+            int[] ret = queue.poll();
+            int r = ret[0];
+            int c = ret[1];
+            if(r<0 || r>=row || c<0 || c>=col || (ret[2] !=0 && ret[2] >= result[r][c])){
+                continue;
+            }
+            result[r][c] = ret[2];
+            for(int step [] : d){
+                
+                queue.offer(new int[]{r+step[0], c+step[1], ret[2]+1});
+            }
+            
+        }
+        return result;
+    }
+    
+    
+}
