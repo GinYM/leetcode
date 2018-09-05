@@ -1,0 +1,35 @@
+class Solution {
+    public String findLongestWord(String s, List<String> d) {
+        Collections.sort(d, (a,b)->{
+            if(a.length()!=b.length()){
+                return b.length()-a.length();
+            }else{
+                return a.compareTo(b);
+            }
+        });
+        for(String word : d){
+            if(isSub(word, s)){
+                return word;
+            }
+        }
+        return "";
+        
+    }
+    public boolean isSub(String s1, String s2){
+        int idx1 = 0;
+        int idx2 = 0;
+        while(idx1 < s1.length() && idx2 < s2.length()){
+            if(s1.charAt(idx1)!=s2.charAt(idx2)){
+                idx2++;
+            }else{
+                idx1++;
+                idx2++;
+            }
+        }
+        if(idx1 == s1.length()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+}

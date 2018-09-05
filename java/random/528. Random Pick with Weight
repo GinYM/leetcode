@@ -1,0 +1,32 @@
+class Solution {
+    public int []sum;
+    public Random r;
+    public int total;
+    public Solution(int[] w) {
+        
+        r = new Random();
+        int prev = 0;
+        sum = new int[w.length];
+        if(w.length==0) return;
+        for(int i = 0;i<w.length;i++){
+            sum[i] = prev + w[i];
+            prev = sum[i];
+        }
+        total = prev;
+    }
+    
+    public int pickIndex() {
+        if(sum.length == 0) return 0;
+        int idx = r.nextInt(total)+1;
+        int ret = Arrays.binarySearch(sum, 0, sum.length, idx);
+        if(ret >=0) return ret;
+        ret = -(ret+1);
+        return ret;
+    }
+}
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution obj = new Solution(w);
+ * int param_1 = obj.pickIndex();
+ */

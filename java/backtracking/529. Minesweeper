@@ -1,0 +1,71 @@
+class Solution {
+    public char[][] updateBoard(char[][] board, int[] click) {
+        traverse(board, click);
+        return board;
+    }
+    
+    public int countMine(char [][]board, int []click){
+        int row = board.length;
+        int col = board[0].length;
+        int r = click[0];
+        int c = click[1];
+        int count = 0;
+        if(r-1>=0 && c-1>=0 && board[r-1][c-1] == 'M'){
+            count++;
+        }
+        if(r-1>=0 &&  board[r-1][c] == 'M'){
+            count++;
+        }
+        if(r-1>=0 && c+1<col && board[r-1][c+1] == 'M'){
+            count++;
+        }
+        if( c-1>=0 && board[r][c-1] == 'M'){
+            count++;
+        }
+        if(c+1<col && board[r][c+1] == 'M'){
+            count++;
+        }
+        if(r+1<row && c-1>=0 && board[r+1][c-1] == 'M'){
+            count++;
+        }
+        if(r+1<row &&  board[r+1][c] == 'M'){
+            count++;
+        }
+        if(r+1<row && c+1<col && board[r+1][c+1] == 'M'){
+            count++;
+        }
+        return count;
+    }
+    
+    public void traverse(char[][]board, int []click){
+        int row = board.length;
+        int col = board[0].length;
+        int r = click[0];
+        int c = click[1];
+        if(!(r>=0 && r<row && c>=0 && c<col)){
+            return;
+        }
+        
+        if(board[r][c] == 'M'){
+            board[r][c] = 'X';
+            return;
+        }
+        if(board[r][c]!='E') return;
+        int count = countMine(board, click);
+        if(count !=0){
+            board[r][c] = (char)(count+'0');
+            return;
+        }else{
+            board[r][c] = 'B';
+        }
+        
+        traverse(board, new int[]{r-1,c});
+        traverse(board, new int[]{r+1,c});
+        traverse(board, new int[]{r,c+1});
+        traverse(board, new int[]{r,c-1});
+        traverse(board, new int[]{r-1,c-1});
+        traverse(board, new int[]{r-1,c+1});
+        traverse(board, new int[]{r+1,c-1});
+        traverse(board, new int[]{r+1,c+1});
+    }
+}

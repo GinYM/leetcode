@@ -1,0 +1,34 @@
+class Solution {
+    public int rows;
+    public int cols;
+    public Random r;
+    public Map<Integer, Integer> map;
+    public int total;
+    
+    public Solution(int n_rows, int n_cols) {
+        rows = n_rows;
+        cols = n_cols;
+        r = new Random();
+        map = new HashMap<Integer, Integer>();
+        total = rows*cols;
+    }
+    
+    public int[] flip() {
+        int idx = r.nextInt(total--);
+        int point = map.getOrDefault(idx,idx);
+        map.put(idx,map.getOrDefault(total,total));
+        map.put(total, point);
+        return new int[]{point/cols, point%cols};
+    }
+    
+    public void reset() {
+        total = rows*cols;
+    }
+}
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution obj = new Solution(n_rows, n_cols);
+ * int[] param_1 = obj.flip();
+ * obj.reset();
+ */

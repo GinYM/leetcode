@@ -1,0 +1,40 @@
+class Solution {
+    public int findMinDifference(List<String> timePoints) {
+        Collections.sort(timePoints, (a,b)->{
+            String []str1 = a.split(":");
+            String []str2 = b.split(":");
+            
+            if(str1[0].equals(str2[0]) == false){
+                
+                return str1[0].compareTo(str2[0]);
+            }else{
+                return str1[1].compareTo(str2[1]);
+            }
+        });
+        int result = Integer.MAX_VALUE;
+        for(int i = 1;i<timePoints.size();i++){
+            //System.out.println(timePoints.get(i)+" "+timePoints.get(i-1));
+            result = Math.min(result, dif(timePoints.get(i-1), timePoints.get(i)));
+        }
+        //System.out.println(result);
+        result = Math.min(result, dif(timePoints.get(timePoints.size()-1) ,"24:00") + dif("00:00", timePoints.get(0)));
+        return result;
+        
+    }
+    
+    public int dif(String time1, String time2){
+        String t1[] = time1.split(":");
+        String t2[] = time2.split(":");
+        int minute = 0;
+        int carry = 0;
+        if(t1[1].compareTo(t2[1]) <= 0){
+            minute += Integer.parseInt(t2[1])-Integer.parseInt(t1[1]);
+            carry = 0;
+        }else{
+            minute = Integer.parseInt(t2[1])+60 - Integer.parseInt(t1[1]);
+            carry = 1;
+        }
+        minute += (Integer.parseInt(t2[0])-carry-Integer.parseInt(t1[0]))*60;
+        return minute;
+    }
+}

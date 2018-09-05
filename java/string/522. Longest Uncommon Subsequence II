@@ -1,0 +1,51 @@
+class Solution {
+    public int findLUSlength(String[] strs) {
+        List<String> list = new ArrayList<String>();
+        for(String str : strs){
+            list.add(str);
+        }
+        Collections.sort(list, (a,b)->{
+            return a.length()-b.length();
+        });
+        Map<String, Integer> map = new HashMap<String, Integer>();
+        for(String str : strs){
+            map.put(str,map.getOrDefault(str, 0)+1);
+        }
+        
+        for(int i = list.size()-1;i>=0;i--){
+            String str = list.get(i);
+            if(map.get(str) !=1){
+                continue;
+            }
+            boolean isFind =true;
+            for(int j = i+1;j<list.size();j++){
+                if(isSubsequence(str, list.get(j)) == true){
+                    System.out.println(str+" "+list.get(j));
+                    isFind = false;
+                    break;
+                }
+            }
+            if(isFind == true){
+                return str.length();
+            }
+        }
+        return -1;
+    }
+    
+    public boolean isSubsequence(String s1, String s2){
+        int idx1, idx2;
+        idx1 = 0;
+        idx2 = 0;
+        while(idx1<s1.length() && idx2 < s2.length()){
+            if(s1.charAt(idx1) != s2.charAt(idx2)){
+                idx2++;
+            }else{
+                idx1++;
+                idx2++;
+            }
+        }
+        if(idx1 == s1.length()) return true;
+        else return false;
+        
+    }
+}

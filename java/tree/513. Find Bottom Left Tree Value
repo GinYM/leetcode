@@ -1,0 +1,32 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    int level;
+    int result;
+    public int findBottomLeftValue(TreeNode root) {
+        level = -1;
+        result = 0;
+        postOrder(root, 0);
+        return result;
+    }
+    
+    public void postOrder(TreeNode node, int curLevel){
+        if(node == null){
+            return;
+        }
+        postOrder(node.left, curLevel+1);
+        postOrder(node.right, curLevel+1);
+        if(curLevel > level){
+            result = node.val;
+            level = curLevel;
+        }
+        
+    }
+}

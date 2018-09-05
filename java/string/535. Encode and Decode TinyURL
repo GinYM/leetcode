@@ -1,0 +1,36 @@
+public class Codec {
+    public String seed = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    public Map<String, String> url2code;
+    public Map<String, String> code2url;
+    public Random r;
+    public Codec(){
+        url2code = new HashMap<String, String>();
+        code2url = new HashMap<String, String>();
+        r = new Random();
+    }
+
+    // Encodes a URL to a shortened URL.
+    public String encode(String longUrl) {
+        while(true){
+            String code = "http://tinyurl.com/";
+            for(int i = 0;i<6;i++){
+                code += seed.charAt(r.nextInt(seed.length()));
+            }
+            if(code2url.containsKey(code) == false){
+                code2url.put(code, longUrl);
+                url2code.put(longUrl, code);
+                break;
+            }
+        }
+        return url2code.get(longUrl);
+    }
+
+    // Decodes a shortened URL to its original URL.
+    public String decode(String shortUrl) {
+        return code2url.get(shortUrl);
+    }
+}
+
+// Your Codec object will be instantiated and called as such:
+// Codec codec = new Codec();
+// codec.decode(codec.encode(url));
