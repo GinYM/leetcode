@@ -1,0 +1,34 @@
+class Solution {
+    public double knightProbability(int N, int K, int r, int c) {
+        double dp[][] = new double[N][N];
+        dp[r][c] = 1;
+        int dirs[][] = new int[][]{{-2,1},{-1,2},{1,2},{2,1},{2,-1},{1,-2},{-1,-2},{-2,-1}};
+        int out = 0;
+        
+        for(int step = 1;step<=K;step++){
+            double temp[][] = new double[N][N];
+            for(int i = 0;i<N;i++){
+                for(int j = 0;j<N;j++){
+                    for(int[]dir : dirs){
+                        int newr = i+dir[0];
+                        int newc = j + dir[1];
+                        if(newr <N && newr>=0 && newc>=0 && newc<N){
+                            temp[newr][newc] = dp[i][j] + temp[newr][newc];
+                        }
+                    }
+                }
+            }
+            dp = temp;
+        }
+        double count = 0.0;
+        for(int i = 0;i<N;i++){
+            for(int j = 0;j<N;j++){
+                count += dp[i][j];
+            }
+        }
+        //System.out.println(count);
+        //System.out.println(out);
+        //System.out.println(dp[r][c]);
+        return count/(Math.pow(8,K));
+    }
+}

@@ -1,0 +1,56 @@
+class Solution {
+    public String fractionAddition(String expression) {
+        if(expression.length() == 0){
+            return "";
+        }
+        long numerator = 0;
+        long denominator = 1;
+        int idx = 0;
+        List<Integer> num = new ArrayList<Integer>();
+        List<Integer> denom = new ArrayList<Integer>();
+        int total = 1;
+        while(idx < expression.length()){
+            int sign = 1;
+            if(expression.charAt(idx) == '-'){
+                sign = -1;
+                idx++;
+            }else if(expression.charAt(idx) == '+'){
+                idx++;
+            }
+            int n = 0;
+            while(Character.isDigit(expression.charAt(idx))){
+                n = n*10+(expression.charAt(idx)-'0');
+                idx++;
+            }
+            num.add(sign*n);
+            idx++;
+            n = 0;
+            while(idx < expression.length() && Character.isDigit(expression.charAt(idx))){
+                n = n*10+(expression.charAt(idx)-'0');
+                idx++;
+            }
+            denom.add(n);
+            denominator*=n;
+        }
+        
+        for(int i = 0;i<num.size();i++){
+            //System.out.println(num.get(i));
+            numerator += num.get(i)*(denominator/denom.get(i));
+            //System.out.println(numerator);
+        }
+        
+        //System.out.println(numerator+" "+denominator);
+        
+        for(int i = 0;i<denom.size();i++){
+            int number = denom.get(i);
+            for(int nu = 2;nu<=number;nu++){
+                while(numerator%nu == 0 && denominator%nu == 0){
+                    numerator/=nu;
+                    denominator/=nu;
+                }
+            }
+        }
+        return numerator+"/"+denominator;
+        
+    }
+}

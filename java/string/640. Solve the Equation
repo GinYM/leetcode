@@ -1,0 +1,47 @@
+class Solution {
+    public String solveEquation(String equation) {
+        int countx = 0;
+        int countnum = 0;
+        int idx = 0;
+        int signAll = 1;
+        while(idx < equation.length()){
+            if(equation.charAt(idx) == '='){
+                idx++;
+                signAll = -1;
+            }
+            int sign = 1;
+            if(equation.charAt(idx) == '+' || equation.charAt(idx) == '-'){
+                sign = equation.charAt(idx) == '+' ? 1:-1;
+                idx++;
+            }
+            int num = 0;
+            boolean isFind = false;
+            while(idx < equation.length() && Character.isDigit(equation.charAt(idx))){
+                num = num*10 + (equation.charAt(idx)-'0');
+                idx++;
+                isFind = true;
+            }
+            if(idx>=equation.length()){
+                countnum += signAll*sign*num;
+                break;
+            }
+            if(equation.charAt(idx)=='x'){
+                countx += signAll*sign*(isFind == true?num : 1);
+                idx++;
+            }else{
+                countnum += signAll*sign*num;
+            }
+            
+        }
+        //System.out.println(countnum+" "+countx);
+        if(countx==0){
+            if(countnum==0){
+                return "Infinite solutions";
+            }else{
+                return "No solution";
+            }
+        }else{
+            return "x="+(-countnum/countx);
+        }
+    }
+}

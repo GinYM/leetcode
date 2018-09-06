@@ -1,0 +1,29 @@
+class Solution {
+    public int findPaths(int m, int n, int N, int i, int j) {
+        int dp[][] = new int[m][n];
+        int dirs [][] = new int[][]{{1,0},{-1,0},{0,1},{0,-1}};
+        dp[i][j] = 1;
+        int mod = (int)Math.pow(10,9)+7;
+        int result = 0;
+        for(int step = 1;step<=N;step++){
+            int temp[][] = new int[m][n];
+            for(int r = 0;r<m;r++){
+                for(int c = 0;c<n;c++){
+                    for(int dir[] : dirs){
+                        int newr = r+dir[0];
+                        int newc = c+dir[1];
+                        if(newr>=0 && newr < m && newc>=0 && newc<n){
+                            temp[newr][newc] = (dp[r][c]+temp[newr][newc])%mod;
+                        }else{
+                            
+                            result = (result + dp[r][c])%mod;
+                            
+                        }
+                    }
+                }
+            }
+            dp = temp;
+        }
+        return result;
+    }
+}

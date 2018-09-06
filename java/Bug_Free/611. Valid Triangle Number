@@ -1,0 +1,38 @@
+class Solution {
+    public int triangleNumber(int[] nums) {
+        if(nums.length<3){
+            return 0;
+        }
+        Arrays.sort(nums);
+        int result = 0;
+        for(int i = 0;i<nums.length;i++){
+            for(int j = i+1;j<nums.length;j++){
+                int end = Arrays.binarySearch(nums, nums[i]+nums[j]);
+                if(end < 0){
+                    end = -(end+1);
+                    end--;
+                }else{
+                    while(end-1>=0 && nums[end] == nums[end-1]) end--;
+                    end--;
+                }
+                int start = Arrays.binarySearch(nums, nums[j]-nums[i]);
+                if(start < 0){
+                    start = -(start+1);
+                }else{
+                    while(start+1 < nums.length && nums[start+1] == nums[start]){
+                        start++;
+                    }
+                    start++;
+                }
+                start = Math.max(start, j+1);
+                end = Math.min(nums.length-1, end);
+                if(end >= start){
+                    result += end-start+1;
+                }
+                
+            }
+        }
+        return result;
+    }
+    
+}
