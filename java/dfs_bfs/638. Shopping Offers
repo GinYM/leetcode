@@ -1,0 +1,35 @@
+class Solution {
+    public Map<List<Integer>, Integer> map; // needs to price
+    public int shoppingOffers(List<Integer> price, List<List<Integer>> special, List<Integer> needs) {
+        map = new HashMap<List<Integer>, Integer>();
+        return dfs(price, special, needs);
+    }
+    public int dfs(List<Integer>price, List<List<Integer>> special, List<Integer> needs){
+        if(map.containsKey(needs)){
+            return map.get(needs);
+        }
+        int minPrice = Integer.MAX_VALUE;
+        for(List<Integer> sp : special){
+            List<Integer> need = new ArrayList<Integer>(needs);
+            boolean canUse = true;
+            for(int i = 0;i<sp.size()-1;i++){
+                need.set(i, need.get(i)-sp.get(i));
+                if(need.get(i)<0){
+                    canUse = false;
+                    break;
+                }
+            }
+            if(canUse == false){
+                continue;
+            }
+            minPrice=Math.min(dfs(price, special, need)+sp.get(sp.size()-1) , minPrice);
+        }
+        int p = 0;
+        for(int i =0;i<needs.size();i++){
+            p += needs.get(i)*price.get(i);
+        }
+        minPrice = Math.min(minPrice, p);
+        map.put(needs, minPrice);
+        return minPrice;
+    }
+}

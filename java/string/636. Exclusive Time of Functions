@@ -1,0 +1,28 @@
+class Solution {
+    public int[] exclusiveTime(int n, List<String> logs) {
+        int result[] = new int[n];
+        int prev[] = new int[]{-1,-1,0}; // id timestamp start or end
+        Stack<Integer> stack = new Stack<Integer>();
+        int lastTime = 0;
+        boolean lastStart = false;
+        for(String log : logs){
+            String logSp[] = log.split(":");
+            int id = Integer.parseInt(logSp[0]);
+            int time = Integer.parseInt(logSp[2]);
+            if(stack.isEmpty()){
+                stack.push(id);
+            }else{
+                if(logSp[1].equals("start")){
+                    result[stack.peek()] += lastStart==true ? time-lastTime : time-lastTime-1;
+                    stack.push(id);
+                }else{
+                    result[stack.peek()] += lastStart==true ? time-lastTime+1 : time-lastTime;
+                    stack.pop();
+                }
+            }
+            lastTime = time;
+            lastStart = logSp[1].equals("start");
+        }
+        return result;
+    }
+}
