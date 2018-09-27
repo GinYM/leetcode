@@ -1,0 +1,21 @@
+class Solution {
+    public int atMostNGivenDigitSet(String[] D, int N) {
+        int result = 0;
+        String number = Integer.toString(N);
+        int lenD = D.length;
+        for(int i = 0;i<number.length()-1;i++){
+            result += (int)Math.pow(lenD, i+1);
+        }
+        for(int i = 0;i<number.length();i++){
+            int idx = -1;
+            while(idx+1 < lenD && D[idx+1].charAt(0) < number.charAt(i)) idx++;
+            //if(idx == -1) break;
+            
+            result +=(idx+1)*(int)Math.pow(lenD, number.length()-i-1);
+            if(i == number.length()-1 && idx+1<lenD && D[idx+1].charAt(0) == number.charAt(i)) result++;
+            
+            if(!(idx+1 < lenD && D[idx+1].charAt(0)== number.charAt(i))) break;
+        }
+        return result;
+    }
+}

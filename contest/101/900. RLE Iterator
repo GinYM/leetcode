@@ -1,0 +1,34 @@
+class RLEIterator {
+    public int[] A;
+    public int startIdx;
+    public RLEIterator(int[] A) {
+        this.A = A;
+        startIdx = 0;
+    }
+    
+    public int next(int n) {
+        int result = 0;
+        while(startIdx<A.length && n>0){
+            if(A[startIdx] >= n){
+                A[startIdx] -=n;
+                result = A[startIdx+1];
+                n = 0;
+            }else{
+                n -= A[startIdx];
+                startIdx+=2;
+                
+            }
+        }
+        if(n!=0){
+            return -1;
+        }else{
+            return result;
+        }
+    }
+}
+
+/**
+ * Your RLEIterator object will be instantiated and called as such:
+ * RLEIterator obj = new RLEIterator(A);
+ * int param_1 = obj.next(n);
+ */
