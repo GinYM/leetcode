@@ -1,0 +1,32 @@
+class Solution {
+    public int sumSubarrayMins(int[] A) {
+        int left[] = new int[A.length];
+        int right[] = new int[A.length];
+        int mod = (int)Math.pow(10,9)+7;
+        Stack<int[]> inc = new Stack<int[]>(); // number, value
+        Stack<int[]> inc1 = new Stack<int[]>();
+        for(int i = 0;i<A.length;i++){
+            
+            long ret = 1;
+            while(inc.isEmpty() == false && inc.peek()[1]>A[i]){
+                ret += inc.pop()[0];
+                ret %= mod;
+            }
+            left[i] = (int)ret;
+            inc.push(new int[]{(int)ret, A[i]});
+            ret = 1;
+            while(inc1.isEmpty() == false && inc1.peek()[1] >= A[A.length-1-i]){
+                ret += inc1.pop()[0];
+                ret %= mod;
+            }
+            right[A.length-1-i] = (int)ret;
+            inc1.push(new int[]{(int)ret, A[A.length-1-i]});
+        }
+        long result=0;
+        for(int i = 0;i<A.length;i++){
+            result += (left[i]*right[i]*A[i])%mod;
+            result %= mod;
+        }
+        return (int)result;
+    }
+}

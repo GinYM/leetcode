@@ -1,0 +1,60 @@
+class RangeModule {
+    TreeMap<Integer, Integer> map;
+    
+    public RangeModule() {
+        map = new TreeMap<Integer, Integer>();
+    }
+    
+    public void addRange(int left, int right) {
+        Integer low = map.floorKey(right);
+        int rightVal = right;
+        int leftVal = left;
+        int high = low == null ? 0 : map.get(low);
+        while(low!=null && high >= left){
+            leftVal = Math.min(leftVal, low);
+            rightVal = Math.max(rightVal, high);
+            map.remove(low);
+            low = map.floorKey(right);
+            high = low == null ? 0 : map.get(low);
+        }
+        map.put(leftVal, rightVal);
+    }
+    
+    public boolean queryRange(int left, int right) {
+        Integer low = map.floorKey(left);
+        if(low == null) return false;
+        int high = map.get(low);
+        return high >= right;
+        
+        
+    }
+    
+    public void removeRange(int left, int right) {
+        Integer low = map.lowerKey(right);
+        int high = low == null ? 0 : map.get(low);
+        while(low!=null && high > left){
+            map.remove(low);
+            if(high > right && low>=left){
+                map.put(right, high);
+            }else if(high > right && low < left){
+                map.put(low, left);
+                map.put(right, high);
+            }else if(high <= right && low >= left){
+                //do nothing
+            }else{
+                // low < left
+                map.put(low, left);
+            }
+            low = map.lowerKey(right);
+            high = low == null ? 0 : map.get(low);
+        }
+    }
+}
+
+/**
+ * Your RangeModule object will be instantiated and called as such:
+ * RangeModule obj = new RangeModule();
+ * obj.addRange(left,right);
+ * boolean param_2 = obj.queryRange(left,right);
+ * obj.removeRange(left,right);
+ */

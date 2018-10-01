@@ -1,0 +1,19 @@
+class Solution {
+    public int[] constructArray(int n, int k) {
+        int result[] = new int[n];
+        int i = 1;
+        int j = n;
+        boolean first = true;
+        int idx = 0;
+        while(n-->0){
+            if(first) result[idx++] = i++;
+            else result[idx++] = j--;
+            if(k!=1){
+                k--;
+                first = !first;
+            }
+            
+        }
+        return result;
+    }
+}

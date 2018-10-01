@@ -1,0 +1,12 @@
+class Solution {
+    public boolean isIdealPermutation(int[] A) {
+        int maxNum = A[0];
+        for(int i = 2;i<A.length;i++){
+            if(A[i] < maxNum){
+                return false;
+            }
+            maxNum = Math.max(A[i-1], maxNum);
+        }
+        return true;
+    }
+}

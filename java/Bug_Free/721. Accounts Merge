@@ -1,0 +1,56 @@
+class Solution {
+    public List<List<String>> accountsMerge(List<List<String>> accounts) {
+        Map<String, String> map = new HashMap<String, String>();
+        for(List<String> account : accounts){
+            String firstEmail = account.get(1);
+            if(map.containsKey(firstEmail) == false){
+                map.put(firstEmail, account.get(0));
+            }
+            String firstRoot = findRoot(map, firstEmail);
+            for(int i = 2;i<account.size();i++){
+                String email = account.get(i);
+                String root;
+                if(map.containsKey(email)){
+                    root = findRoot(map, email);
+                }else{
+                    root = email;
+                }
+                //String 
+                if(root.equals(firstRoot) == false){
+                    map.put(root, firstRoot);
+                }
+                //map.put(root, firstRoot);
+            }
+        }
+        Map<String, Set<String>> root2set = new HashMap<String, Set<String>>();
+        for(String email : map.keySet()){
+            String root = findRoot(map, email);
+            if(root2set.containsKey(root) == false){
+                root2set.put(root, new HashSet<String>());
+            }
+            root2set.get(root).add(email);
+        }
+        List<List<String>> result = new ArrayList<List<String>>(root2set.size());
+        for(String root : root2set.keySet()){
+            Set<String> set = root2set.get(root);
+            List<String> ret = new ArrayList<String>(1+set.size());
+            ret.add(map.get(root));
+            ret.addAll(set);
+            Collections.sort(ret.subList(1, ret.size()));
+            result.add(ret);
+        }
+        return result;
+    }
+    
+    public String findRoot(Map<String, String> map, String email){
+        
+        String value;
+        value = map.get(email);
+        if(value.indexOf("@") == -1){
+            return email;
+        }
+        String root = findRoot(map, value);
+        map.put(email, root);
+        return root;
+    }
+}

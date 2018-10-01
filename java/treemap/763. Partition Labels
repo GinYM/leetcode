@@ -1,0 +1,42 @@
+class Solution {
+    public List<Integer> partitionLabels(String S) {
+        int interval[][] = new int[26][2];
+        for(int i = 0 ;i<26;i++){
+            interval[i][0] = Integer.MAX_VALUE;
+        }
+        
+        for(int i = 0;i<S.length();i++){
+            int idx =S.charAt(i)-'a';
+            interval[idx][0] = Math.min(interval[idx][0], i);
+            interval[idx][1] = i;
+        }
+        TreeMap<Integer, Integer> map = new TreeMap<Integer, Integer>();
+        for(int interv [] : interval){
+            if(interv[0] == Integer.MAX_VALUE){
+                continue;
+            }
+            add(map, interv);
+        }
+        List<Integer> result = new ArrayList<Integer>(map.size());
+        for(int k : map.keySet()){
+            result.add(map.get(k)-k+1);
+        }
+        return result;
+    }
+    
+    public void add(TreeMap<Integer, Integer> map, int point[]){
+        Integer low = map.lowerKey(point[1]);
+        Integer high = low == null ? null : map.get(low);
+        int minv = point[0];
+        int maxv = point[1];
+        while(low!=null && high>point[0]){
+            maxv = Math.max(maxv, high);
+            minv = Math.min(minv, low);
+            map.remove(low);
+            low = map.lowerKey(point[1]);
+            high = low == null ? null : map.get(low);
+        }
+        map.put(minv, maxv);
+        
+    }
+}

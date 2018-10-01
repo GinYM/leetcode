@@ -1,0 +1,67 @@
+class Solution {
+    public int calculate(String s) {
+        Stack<Character> operator = new Stack<Character>();
+        Stack<Integer> number = new Stack<Integer>();
+        int idx = 0;
+        while(idx < s.length()){
+            if(s.charAt(idx) == ' '){
+                idx++;
+                continue;
+            }
+            
+            if(Character.isDigit(s.charAt(idx))){
+                int num = s.charAt(idx)-'0';
+                while(idx+1 < s.length() && Character.isDigit(s.charAt(idx+1))){
+                    idx++;
+                    num = num*10 + s.charAt(idx)-'0';
+                }
+                if(operator.isEmpty() == true || operator.peek() == '('){
+                    number.push(num);
+                }else if(operator.peek()=='+'){
+                    operator.pop();
+                    int num1 = number.pop();
+                    number.push(num1+num);
+                }
+                else if(operator.peek()=='-'){
+                    operator.pop();
+                    int num1 = number.pop();
+                    number.push(num1-num);
+                }
+            }else if(s.charAt(idx) == '+' || s.charAt(idx) == '-' || s.charAt(idx) =='('){
+                operator.push(s.charAt(idx));
+                if(s.charAt(idx) == '-'){
+                    if(number.isEmpty() == true){
+                        number.push(0);
+                    }
+                }
+                if(s.charAt(idx)=='('){
+                    //check whether followed by '-'
+                    int i = idx+1;
+                    while(s.charAt(i) == ' '){i++;}
+                    if(s.charAt(i) == '-'){
+                        number.push(0);
+                    }
+                }
+            }else{
+                // operator is )
+                operator.pop();
+                int num2 = number.pop();
+                if(operator.isEmpty() == false && operator.peek()!='('){
+                    char op = operator.pop();
+                    int num1 = number.pop();
+                    if(op == '+'){
+                        number.push(num1+num2);
+                    }else if(op == '-'){
+                        number.push(num1-num2);
+                    }
+                }else{
+                    number.push(num2);
+                }
+            }
+            
+            idx++;
+            
+        }
+        return number.pop();
+    }
+}

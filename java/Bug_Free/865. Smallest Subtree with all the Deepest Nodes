@@ -1,0 +1,57 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public Map<TreeNode, TreeNode> parent;
+    public Set<TreeNode> deepest; 
+    public int depth;
+    
+    public TreeNode subtreeWithAllDeepest(TreeNode root) {
+        depth = 0;
+        deepest = new HashSet<TreeNode>();
+        parent = new HashMap<TreeNode, TreeNode>();
+        findDepth(root, 0, null);
+        dfs(root, 0);
+        
+        
+        
+        while(deepest.size()>1){
+            Set<TreeNode> set = new HashSet<TreeNode>();
+            for(TreeNode node : deepest){
+                
+                set.add(parent.get(node));
+            }
+            deepest = set;
+            
+        }
+        return deepest.iterator().next();
+    }
+    
+    public void findDepth(TreeNode root, int d, TreeNode prev){
+        if(root == null){
+            return;
+        }
+        parent.put(root, prev);
+        depth = Math.max(depth, d);
+        findDepth(root.left, d+1, root);
+        findDepth(root.right, d+1, root);
+    }
+    
+    public void dfs(TreeNode root, int d){
+        if(root == null){
+            return;
+        }
+        if(d == depth){
+            deepest.add(root);
+            return;
+        }
+        dfs(root.left, d+1);
+        dfs(root.right, d+1);
+    }
+}

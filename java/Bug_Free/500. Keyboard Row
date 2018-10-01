@@ -1,0 +1,30 @@
+class Solution {
+    public String[] findWords(String[] words) {
+        char s[][] = new char[3][10];
+        s[0] = new char[]{'q','w','e','r','t','y','u','i','o','p'};
+        s[1] = new char[]{'a','s','d','f','g','h','j','k','l','0'};
+        s[2] = new char[]{'z','x','c','v','b','n','m','0','0','0'};
+        Map<Character, Integer> map = new HashMap<Character, Integer>();
+        for(int i = 0;i<3;i++){
+            for(int j = 0;j<s[0].length;j++){
+                map.put(s[i][j], i);
+                map.put(Character.toUpperCase(s[i][j]), i);
+            }
+        }
+        List<String> result = new ArrayList<String>();
+        for(String word :words){
+            int row = map.get(word.charAt(0));
+            boolean isFind = true;
+            for(int i = 1;i<word.length();i++){
+                if(map.get(word.charAt(i)) != row){
+                    isFind = false;
+                    break;
+                }
+            }
+            if(isFind == true){
+                result.add(word);
+            }
+        }
+        return result.toArray(new String[result.size()]);
+    }
+}

@@ -1,0 +1,19 @@
+class Solution {
+    public boolean checkPossibility(int[] nums) {
+        int count = 0;
+        for(int i = 1;i<nums.length;i++){
+            if(nums[i]>=nums[i-1]) continue;
+            if(count>0) return false;
+            if(i==1 || i == nums.length-1){
+                count++;
+                continue;
+            }
+            if(nums[i-1] <= nums[i+1] || nums[i-2] <= nums[i]){
+                count++;
+                continue;
+            }
+            return false;
+        }
+        return true;
+    }
+}

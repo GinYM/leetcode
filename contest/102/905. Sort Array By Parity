@@ -1,0 +1,15 @@
+class Solution {
+    public int[] sortArrayByParity(int[] A) {
+        int ret[] = new int[A.length];
+        int left = 0;
+        int right = A.length-1;
+        for(int a : A){
+            if(a%2 == 0){
+                ret[left++] = a;
+            }else{
+                ret[right--] = a;
+            }
+        }
+        return ret;
+    }
+}

@@ -1,0 +1,30 @@
+class Solution {
+    public boolean hasGroupsSizeX(int[] deck) {
+        Map<Integer, Integer> count = new HashMap<Integer, Integer>();
+        int minCount = Integer.MAX_VALUE;
+        
+        for(int a : deck){
+            count.put(a, count.getOrDefault(a,0)+1);
+            
+        }
+        
+        for(int v : count.values()){
+            minCount = Math.min(minCount, v);
+        }
+        
+        for(int i = 2;i<=minCount;i++){
+            boolean isFind = true;
+            for(int v : count.values()){
+                if(v%i!=0){
+                    isFind = false;
+                    break;
+                }
+            }
+            if(isFind){
+                return true;
+            }
+        }
+        return false;
+        
+    }
+}

@@ -1,0 +1,52 @@
+class Solution {
+    public int result = Integer.MAX_VALUE;
+    public int findCheapestPrice(int n, int[][] flights, int src, int dst, int K) {
+        int store[] = new int[n];
+        Arrays.fill(store, Integer.MAX_VALUE);
+        store[src] = 0;
+        int map[][] = new int[n][n];
+        for(int i = 0;i<n;i++){
+            Arrays.fill(map[i], -1);
+        }
+        for(int flight[] : flights){
+            map[flight[0]][flight[1]] = flight[2];
+        }
+        Queue<Integer> queue = new LinkedList<Integer>();
+        queue.offer(src);
+        int count = 1;
+        int countK = 0;
+        int prev[] = new int[n];
+        Arrays.fill(prev, Integer.MAX_VALUE);
+        while(queue.isEmpty() == false){
+            int start = queue.poll();
+            count--;
+             
+            for(int i = 0;i<n;i++){
+                if(map[start][i]!=-1){
+                    if(store[start] + map[start][i] < store[i]){
+                        queue.offer(i);
+                        //store[i] = store[start] + map[start][i];
+                        prev[i] =Math.min(prev[i],store[start] + map[start][i]);
+                        
+                    }
+                    
+                }
+            }
+            if(count == 0){
+                for(int i = 0;i<n;i++){
+                    store[i] = Math.min(store[i], prev[i]);
+                }
+                Arrays.fill(prev, Integer.MAX_VALUE);
+                count = queue.size();
+                countK++;
+                if(countK == K+1) break;
+                
+            }
+            
+            
+        }
+        return store[dst] == Integer.MAX_VALUE?-1:store[dst];
+    }
+    
+    
+}

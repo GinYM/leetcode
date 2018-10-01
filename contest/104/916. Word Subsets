@@ -1,0 +1,38 @@
+class Solution {
+    public List<String> wordSubsets(String[] A, String[] B) {
+        int counttotal [] = new int[26];
+        for(int i = 0;i<B.length;i++){
+            int countOne[] = new int[26];
+            for(int idx = 0;idx<B[i].length();idx++){
+                int index = B[i].charAt(idx)-'a';
+                countOne[index]++;
+                counttotal[index] = Math.max(counttotal[index], countOne[index]);
+            }
+            
+        }
+        
+        List<String> result = new ArrayList<String>();
+        
+        for(String a : A){
+            int count[] = new int[26];
+            for(int i = 0;i<a.length();i++){
+                int idx = a.charAt(i)-'a';
+                count[idx]++;
+            }
+            boolean isFind = true;
+            if(isLE(count, counttotal)){
+                result.add(a);
+            }
+        }
+        return result;
+    }
+    
+    public boolean isLE(int [] a, int[]b){
+        for(int i = 0;i<a.length;i++){
+            if(a[i] < b[i]){
+                return false;
+            }
+        }
+        return true;
+    }
+}

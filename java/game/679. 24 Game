@@ -1,0 +1,73 @@
+class Solution {
+    public boolean judgePoint24(int[] nums) {
+        
+        double acc = 0.000001;
+        List<int[]> allperm = new ArrayList<int[]>();
+        perm(nums, allperm, new ArrayList<Integer>());
+        //System.out.println(allperm.size());
+        for(int[] allnums : allperm){
+            List<Double> ret =  point24(allnums, 0, nums.length-1);
+            for(double n : ret){
+                if(Math.abs(n-24.0) < acc ){
+                    return true;
+                }
+            }
+        }
+        
+        return false;
+    }
+    
+    public List<Double> point24(int[]nums, int left, int right){
+        
+        List<Double> ret = new ArrayList<Double>();
+        if(left== right){
+            ret.add((double)nums[left]);
+            return ret;
+        }
+        for(int idx = left;idx<=right-1;idx++){
+            List<Double> leftList, rightList;
+            
+            rightList = point24(nums, idx+1, right);
+            leftList = point24(nums, left, idx);
+            for(Double num1 : leftList){
+                for(Double num2 : rightList){
+                    ret.add(num1+num2);
+                    ret.add(num1-num2);
+                    ret.add(num1*num2);
+                    ret.add(num1/num2);
+                }
+            }
+            
+        }
+        
+        return ret;
+    }
+    
+    public void perm(int[] num, List<int[]>result, List<Integer> prev){
+        if(prev.size() == 4){
+            int[] tmp = new int[4];
+            for(int i = 0;i<prev.size();i++){
+                tmp[i] = num[prev.get(i)];
+            }
+            result.add(tmp);
+            return;
+        }
+        for(int i = 0;i<num.length;i++){
+            
+            boolean isExist = false;
+            for(int n : prev){
+                if(n == i){
+                    //System.out.println("Exist: "+num[i]);
+                    isExist = true;
+                    break;
+                }
+            }
+            if(isExist == false){
+                prev.add(i);
+                //System.out.println(prev.size());
+                perm(num, result, prev);
+                prev.remove(prev.size()-1);
+            }
+        }
+    }
+}

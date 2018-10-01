@@ -1,0 +1,37 @@
+class MyHashMap {
+    public boolean[][]contains;
+    public int [][]table;
+    public int mod;
+    /** Initialize your data structure here. */
+    public MyHashMap() {
+        mod = 1001;
+        contains = new boolean[1000][1001];
+        table = new int[1000][1001];
+    }
+    
+    /** value will always be non-negative. */
+    public void put(int key, int value) {
+        contains[key/mod][key%mod] = true;
+        table[key/mod][key%mod] = value;
+    }
+    
+    /** Returns the value to which the specified key is mapped, or -1 if this map contains no mapping for the key */
+    public int get(int key) {
+        if(contains[key/mod][key%mod] == false) return -1;
+        return table[key/mod][key%mod];
+    }
+    
+    /** Removes the mapping of the specified value key if this map contains a mapping for the key */
+    public void remove(int key) {
+        contains[key/mod][key%mod] = false;
+        
+    }
+}
+
+/**
+ * Your MyHashMap object will be instantiated and called as such:
+ * MyHashMap obj = new MyHashMap();
+ * obj.put(key,value);
+ * int param_2 = obj.get(key);
+ * obj.remove(key);
+ */

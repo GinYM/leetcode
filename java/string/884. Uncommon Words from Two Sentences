@@ -1,0 +1,26 @@
+class Solution {
+    public String[] uncommonFromSentences(String A, String B) {
+        Map<String, Integer> map = new HashMap<String, Integer>();
+        Map<String, Integer> map1 = new HashMap<String, Integer>();
+        String as[] = A.split(" ");
+        String bs[] = B.split(" ");
+        for(String a : as){
+            map.put(a,map.getOrDefault(a,0)+1);
+        }
+        for(String b : bs){
+            map1.put(b, map1.getOrDefault(b,0)+1);
+        }
+        List<String> result = new ArrayList<String>();
+        for(String key : map.keySet()){
+            if(map.get(key) == 1 && map1.containsKey(key) == false){
+                result.add(key);
+            }
+        }
+        for(String key : map1.keySet()){
+            if(map1.get(key) == 1 && map.containsKey(key) == false){
+                result.add(key);
+            }
+        }
+        return result.toArray(new String[result.size()]);
+    }
+}

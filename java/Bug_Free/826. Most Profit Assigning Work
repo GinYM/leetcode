@@ -1,0 +1,24 @@
+class Solution {
+    public int maxProfitAssignment(int[] difficulty, int[] profit, int[] worker) {
+        if(difficulty.length == 0) return 0;
+        List<int[]> list = new ArrayList<int[]>(profit.length);
+        for(int i = 0;i<profit.length;i++){
+            list.add(new int[]{difficulty[i], profit[i]});
+        }
+        Collections.sort(list, (a,b)->{
+            return b[1]-a[1];
+        });
+        int result = 0;
+        for(int w : worker){
+            int ret = 0;
+            for(int i = 0;i<list.size();i++){
+                if(w >= list.get(i)[0]){
+                    ret = list.get(i)[1];
+                    break;
+                }
+            }
+            result += ret;
+        }
+        return result;
+    }
+}

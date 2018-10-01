@@ -1,0 +1,37 @@
+class MapSum {
+
+    public Map<String, Integer> prefix;
+    public Map<String, Integer> db;
+    
+    /** Initialize your data structure here. */
+    public MapSum() {
+        prefix = new HashMap<String, Integer>();
+        db = new HashMap<String, Integer>();
+    }
+    
+    public void insert(String key, int val) {
+        
+        if(db.containsKey(key) == true){
+            int oldVal = db.get(key);
+            for(int i = 1;i<=key.length();i++){
+                prefix.put(key.substring(0,i), prefix.get(key.substring(0,i))-oldVal);
+            }
+        }
+        db.put(key, val);
+        
+        for(int i = 1;i<=key.length();i++){
+            prefix.put(key.substring(0,i), prefix.getOrDefault(key.substring(0,i),0)+val);
+        }
+    }
+    
+    public int sum(String prefix) {
+        return this.prefix.getOrDefault(prefix,0);
+    }
+}
+
+/**
+ * Your MapSum object will be instantiated and called as such:
+ * MapSum obj = new MapSum();
+ * obj.insert(key,val);
+ * int param_2 = obj.sum(prefix);
+ */

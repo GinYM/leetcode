@@ -1,0 +1,53 @@
+class Solution {
+    public boolean splitArraySameAverage(int[] A) {
+        int sum = 0;
+        for(int a : A){
+            sum += a;
+        }
+        boolean isFind = false;
+        int maxK = 0;
+        for(int i = 1;i<=A.length/2;i++){
+            if((sum*i)%A.length == 0){
+                isFind = true;
+                maxK = i;
+            }
+        }
+        if(isFind == false) return false;
+        
+        Set<Integer> dp[][] = new Set[maxK+1][A.length];
+        for(int i = 0;i<A.length;i++){
+            dp[0][i] = new HashSet<Integer>();
+        }
+        for(int i = 1;i<=maxK;i++){
+            for(int j = i-1;j<A.length;j++){
+                dp[i][j] = new HashSet<Integer>();
+                if(i == 1 && j == 0){
+                    dp[i][j].add(A[j]);
+                }else{
+                    if(j!=i-1){
+                        for(int key : dp[i][j-1]){
+                            dp[i][j].add(key);
+                        }
+                        
+                    }
+                    if(i == 1){
+                        dp[i][j].add(A[j]);
+                    }else{
+                        for(int key : dp[i-1][j-1]){
+                            dp[i][j].add(key+A[j]);
+                        }
+                    }
+                    
+                    
+                    
+                }
+            }
+        }
+        for(int i = 1;i<=maxK;i++){
+            if((sum*i)%A.length == 0 && dp[i][A.length-1].contains(sum*i/A.length)){
+                return true;
+            }
+        }
+        return false;
+    }
+}

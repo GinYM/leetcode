@@ -1,0 +1,24 @@
+class Solution {
+    public int uniqueLetterString(String S) {
+        int left[] = new int[S.length()];
+        int right[] = new int[S.length()];
+        int lastIdxleft[] = new int[26];
+        int lastIdxright[] = new int[26];
+        Arrays.fill(lastIdxleft, -1);
+        Arrays.fill(lastIdxright, S.length());
+        
+        for(int i = 0;i<S.length();i++){
+            int idxl = S.charAt(i)-'A';
+            left[i] = i-(lastIdxleft[idxl]+1)+1;
+            lastIdxleft[idxl] = i;
+            int idxr = S.charAt(S.length()-1-i)-'A';
+            right[S.length()-1-i] = lastIdxright[idxr]-1 - (S.length()-1-i)+1;
+            lastIdxright[idxr] = S.length()-1-i;
+        }
+        int result = 0;
+        for(int i = 0;i<S.length();i++){
+            result += left[i]*right[i];
+        }
+        return result;
+    }
+}

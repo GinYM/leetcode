@@ -1,0 +1,21 @@
+class Solution {
+    public int findRotateSteps(String ring, String key) {
+        int dp[][] = new int[key.length()+1][ring.length()+1];
+        int m = key.length();
+        int n = ring.length();
+        for(int i = m-1;i>=0;i--){
+            for(int j = 0;j<n;j++){
+                dp[i][j] = Integer.MAX_VALUE;
+                for(int k = 0;k<n;k++){
+                    if(ring.charAt(k) == key.charAt(i)){
+                        int step = Math.abs(k-j);
+                        step = Math.min(step, n-step);
+                        dp[i][j] = Math.min(dp[i][j], step + dp[i+1][k]);
+                    }
+                    
+                }
+            }
+        }
+        return dp[0][0]+m;
+    }
+}
