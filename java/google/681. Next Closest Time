@@ -1,0 +1,59 @@
+class Solution {
+    List<String> allTime;
+    
+    public String nextClosestTime(String time) {
+        int digit[] = new int[4];
+        int origin[] = new int[4];
+        int idx = 0;
+        for(int i = 0;i<time.length();i++){
+            if(time.charAt(i) == ':'){
+                continue;
+            }
+            origin[idx] = time.charAt(i)-'0';
+            digit[idx++] = time.charAt(i)-'0';
+            
+        }
+        Arrays.sort(digit);
+        StringBuilder sb = new StringBuilder();
+        
+        int maxvalid[] = new int[]{2,3,5,9};
+        
+        for(int i = 3;i>=0;i--){
+            int ret = Arrays.binarySearch(digit, origin[i]+1);
+            if(ret<0){
+                ret = -(ret+1);
+            }
+            if(ret == 4){
+                continue;
+            }
+            
+            int next = digit[ret];
+            if((i>=2 && next <= maxvalid[i]) ||
+               (i==0 && next <=2) ||
+              (i==1  && (time.charAt(0) <='1' || next <=3) ) ){
+                //System.out.println(i+" "+next+" "+(next <='3'));
+                if(i<=1)
+                    sb.append(time.substring(0, i));
+                else
+                    sb.append(time.substring(0,i+1));
+                sb.append(""+next);
+                for(int remainIdx = i+1;remainIdx < 4;remainIdx++){
+                    sb.append(""+digit[0]);
+                }
+                if(i<=1)
+                    sb.insert(2,':');
+                break;
+            }
+        }
+        if(sb.length() == 0){
+            for(int i = 0;i<4;i++){
+                sb.append(""+digit[0]);
+                
+            }
+            sb.insert(2,':');
+            return sb.toString();
+        }else{
+            return sb.toString();
+        }
+    }
+}

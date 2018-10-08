@@ -1,0 +1,82 @@
+class Solution {
+    public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
+        //bfs
+        Set<String> dict = new HashSet<String>();
+        for(String word : wordList){
+            dict.add(word);
+        }
+        Queue<String> queue = new LinkedList<String>();
+        Map<String, Integer> steps = new HashMap<String, Integer>();
+        Map<String, Set<String>> prev = new HashMap<String,Set<String>>(); 
+        
+        
+        queue.offer(beginWord);
+        steps.put(beginWord, 0);
+        
+        
+        
+        List<List<String>> result = new ArrayList<List<String>>();
+        while(queue.isEmpty() != true){
+            //String word = queue.poll().getLast();
+            String word = queue.poll();
+            
+            int step = steps.get(word);
+            
+            for(int i=0;i<word.length();i++){
+                
+                for(int ii = 0;ii<26;ii++){
+                    StringBuilder sb = new StringBuilder(word.substring(0,i));
+                    char ch = (char)('a'+ii);
+                    sb.append(ch);
+                    sb.append(word.substring(i+1, word.length()));
+                    if(dict.contains(sb.toString()) == false){
+                        continue;
+                    }
+                    if(steps.containsKey(sb.toString()) == false
+                      || steps.get(sb.toString()) > step+1){
+                        steps.put(sb.toString(), step+1);
+                        queue.offer(sb.toString());
+                        if(prev.containsKey(sb.toString()) == false){
+                            prev.put(sb.toString(), new HashSet<String>());
+                        }
+                        prev.get(sb.toString()).add(word);
+                    }else if(steps.containsKey(sb.toString()) == true
+                      && steps.get(sb.toString()) == step+1){
+                        if(prev.containsKey(sb.toString()) == false){
+                            prev.put(sb.toString(), new HashSet<String>());
+                        }
+                        prev.get(sb.toString()).add(word);
+                    }
+                }
+                
+            }
+            
+            
+            
+        }
+        if(steps.containsKey(endWord) == false){
+            return result;
+        }
+        return backTrack(endWord, prev);
+        
+    }
+    
+    public List<List<String>> backTrack(String word,
+                                 Map<String, Set<String>> prev){
+        List<List<String>> result = new ArrayList<List<String>>();
+        if(prev.containsKey(word) == false){
+            List<String> list = new ArrayList<String>(1);
+            list.add(word);
+            result.add(list);
+            return result;
+        }
+        for(String preWord : prev.get(word)){
+            List<List<String>> prevs = backTrack(preWord, prev);
+            for(List<String> prevList : prevs){
+                prevList.add(word);
+                result.add(prevList);
+            }
+        }
+        return result;
+    }
+}

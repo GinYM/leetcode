@@ -1,0 +1,110 @@
+class Solution {
+    public int calculate(String s) {
+        int idx = 0;
+        Stack<Integer> number = new Stack<Integer>();
+        Stack<Character> operator = new Stack<Character>();
+        boolean isMinus = false;
+        while(idx < s.length()){
+            if(s.charAt(idx) == ' '){
+                idx++;
+                continue;
+            }else{
+                if(Character.isDigit(s.charAt(idx))){
+                    int num = 0;
+                    while(idx < s.length() && Character.isDigit(s.charAt(idx))){
+                        num = num*10 + (s.charAt(idx)-'0');
+                        idx++;
+                    }
+                    if(isMinus)
+                        number.push(-num);
+                    else
+                        number.push(num);
+                    isMinus = false;
+                }else{
+                    if(s.charAt(idx) == '/' || s.charAt(idx)=='*'){
+                        while(operator.isEmpty() == false && (operator.peek()=='/' || operator.peek() =='*' ) ){
+                            char op = operator.pop();
+                            int num2 = number.pop();
+                            int num1 = number.pop();
+                            if(op == '*'){
+                                number.push(num1*num2);
+                            }else{
+                                number.push(num1/num2);
+                            }
+                        }
+                        isMinus = false;
+                        operator.push(s.charAt(idx));
+                    }else if(s.charAt(idx) == '-' && checkIsMinus(idx, s)){
+                        isMinus = true;
+                    }else{
+                        
+                        //consume * /
+                        while(operator.isEmpty() == false && (operator.peek() == '*' || operator.peek() == '/' )){
+                            char op = operator.pop();
+                            int num2 = number.pop();
+                            int num1 = number.pop();
+                            if(op == '*'){
+                                number.push(num1*num2);
+                            }else{
+                                number.push(num1/num2);
+                            }
+                        }
+                        
+                        //consume + -
+                        while(operator.isEmpty() == false && (operator.peek() == '-' || operator.peek() == '+' )){
+                            char op = operator.pop();
+                            int num2 = number.pop();
+                            int num1 = number.pop();
+                            if(op == '+'){
+                                number.push(num1+num2);
+                            }else{
+                                number.push(num1-num2);
+                            }
+                        }
+                        
+                        operator.push(s.charAt(idx));
+                    }
+                    
+                    idx++;
+                }
+            }
+        }
+        while(operator.isEmpty() == false){
+            int num2 = number.pop();
+            int num1 = number.pop();
+            int ret = 0;
+            switch(operator.pop()){
+                case '+':
+                    ret = num1+num2;
+                    break;
+                case '-':
+                    ret = num1-num2;
+                    break;
+                case '*':
+                    ret = num1*num2;
+                    break;
+                case '/':
+                    ret = num1/num2;
+                    break;
+            }
+            number.push(ret);
+            
+        }
+        return number.pop();
+    }
+    
+    public boolean checkIsMinus(int idx, String s){
+        if(idx == 0){
+            return true;
+        }
+        idx--;
+        while(idx>=0 && s.charAt(idx) == ' '){
+            idx--;
+        }
+        if(idx<0) return true;
+        if(Character.isDigit(s.charAt(idx)) == false){
+            return true;
+        }
+        return false;
+    }
+}

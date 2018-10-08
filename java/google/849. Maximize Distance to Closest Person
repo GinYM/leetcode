@@ -1,0 +1,22 @@
+class Solution {
+    public int maxDistToClosest(int[] seats) {
+        int lastIdx = -1;
+        int result = 0;
+        for(int i = 0;i<seats.length;i++){
+            if(seats[i] == 1){
+                if(lastIdx == -1){
+                    if(i!=0)
+                        result = Math.max(result, i);
+                }else{
+                    result = Math.max(result, (i+lastIdx)/2-lastIdx );
+                }
+                
+                lastIdx = i;
+            }
+        }
+        if(lastIdx!=seats.length-1){
+            result = Math.max(result, seats.length-1-lastIdx);
+        }
+        return result;
+    }
+}

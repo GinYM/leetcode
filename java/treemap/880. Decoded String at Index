@@ -1,0 +1,55 @@
+class Solution {
+    public String decodeAtIndex(String S, int K) {
+        TreeMap<Long, Integer> map = new TreeMap<Long, Integer>();
+        long sum = 0;
+        for(int i = 0;i<S.length();i++){
+            if(Character.isDigit(S.charAt(i))){
+                sum = (S.charAt(i)-'0')*sum;
+                map.put(sum, i);
+            }else{
+                sum++;
+            }
+        }
+        
+        if(map.containsKey(sum) == false){
+            map.put(sum, S.length());
+        }
+        
+        while(true){
+            Long low = map.floorKey((long)K);
+            Long high = map.higherKey((long)K);
+            if(low == null){
+                int between = map.get(high);
+                return ""+S.charAt((K-1)%between);
+            }else if(low == (long)K){
+                return getLetter(S, map.get(low)-1);
+            }else if(high==null){
+                return "";
+            }else{
+                int lowidx = map.get(low);
+                int highidx = map.get(high);
+                long between = (low+(long)(highidx-lowidx-1));
+                if((long)K % between == 0){
+                    return getLetter(S, highidx-1);
+                }else{
+                    if((long)K > between){
+                        K = (int)((long)K%between);
+                    }
+                    if(K>low){
+                        return getLetter(S, lowidx+K-low.intValue());
+                    }
+                }
+            }
+        }
+       
+    }
+    
+    public String getLetter(String S, int idx){
+        for(int i = idx;i>=0;i--){
+            if(Character.isLetter(S.charAt(i)) == true){
+                return ""+S.charAt(i);
+            }
+        }
+        return "";
+    }
+}

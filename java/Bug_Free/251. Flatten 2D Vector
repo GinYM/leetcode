@@ -1,0 +1,39 @@
+public class Vector2D implements Iterator<Integer> {
+    public Integer nextval;
+    public int i;
+    public int j;
+    List<List<Integer>> vec2d;
+    public Vector2D(List<List<Integer>> vec2d) {
+        i=0;
+        j=0;
+        while(i<vec2d.size() && vec2d.get(i).size() == 0){
+            i++;
+        }
+        this.vec2d = vec2d;
+        
+    }
+
+    @Override
+    public Integer next() {
+        int val = vec2d.get(i).get(j++);
+        while(i<vec2d.size() && j == vec2d.get(i).size()){
+            i++;
+            j=0;
+        }
+        return val;
+    }
+
+    @Override
+    public boolean hasNext() {
+        if(i>=vec2d.size() || (i == vec2d.size()-1 && j == vec2d.get(i).size() ) ){
+            return false;
+        }
+        return true;
+    }
+}
+
+/**
+ * Your Vector2D object will be instantiated and called as such:
+ * Vector2D i = new Vector2D(vec2d);
+ * while (i.hasNext()) v[f()] = i.next();
+ */

@@ -1,0 +1,141 @@
+class Solution {
+    public int result;
+    public int longestLine(int[][] M) {
+        int n = M.length;
+        if(n == 0){
+            return 0;
+        }
+        int m = M[0].length;
+        int isVis[][] = new int[n][m];//four direction, hori, vert, dia, antidia
+        result = 0;
+        for(int i = 0;i<n;i++){
+            for(int j = 0;j<m;j++){
+                if(M[i][j]==0)
+                    continue;
+                
+                dfs(M, isVis, i, j);
+                //System.out.println(result);
+            }
+        }
+        
+        return result;
+    }
+    
+    public void dfs(int [][]M, int isVis[][], int i, int j){
+        int n = M.length;
+        int m = M[0].length;
+        if(i<0 || i>=n || j<0 || j>=m){
+            return;
+        }
+        int mask = 15;
+        if(isVis[i][j] == mask){
+            return;
+        }
+        if((isVis[i][j]&1) == 0 ){
+            result = Math.max(result, horizontal(M, i, j));
+            //System.out.println(result);
+            isVis[i][j] |= 1;
+        }
+        if((isVis[i][j]&2) == 0 ){
+            result = Math.max(result, vertical(M, i, j));
+            isVis[i][j] |= 2;
+            //System.out.println(result);
+        }
+        if((isVis[i][j]&4) == 0 ){
+            result = Math.max(result, diagonal(M, i, j));
+            isVis[i][j] |= 4;
+            //System.out.println(result);
+        }
+        if((isVis[i][j]&8) == 0 ){
+            result = Math.max(result, antidia(M, i, j));
+            isVis[i][j] |= 8;
+            //System.out.println(result);
+        }
+          
+    }
+    
+    public int horizontal(int [][]M, int i, int j){
+        if(M[i][j]!=1){
+            return 0;
+        }
+        int ret = 1;
+        int n = M.length;
+        int m = M[0].length;
+        int jj = j+1;
+        while(jj < m && M[i][jj] == 1){
+            jj++;
+            ret++;
+        }
+        jj = j-1;
+        while(jj>=0 && M[i][jj] == 1){
+            jj--;
+            ret++;
+        }
+        return ret;
+    }
+    public int antidia(int [][]M, int i, int j){
+        if(M[i][j]!=1){
+            return 0;
+        }
+        int ret = 1;
+        int n = M.length;
+        int m = M[0].length;
+        int jj = j+1;
+        int ii = i-1;
+        while(jj < m && ii>=0 && M[ii][jj] == 1){
+            jj++;
+            ii--;
+            ret++;
+        }
+        jj = j-1;
+        ii = i+1;
+        while(jj>=0 && ii<n && M[ii][jj] == 1){
+            jj--;
+            ii++;
+            ret++;
+        }
+        return ret;
+    }
+    public int vertical(int [][]M, int i, int j){
+        if(M[i][j]!=1){
+            return 0;
+        }
+        int ret = 1;
+        int n = M.length;
+        int m = M[0].length;
+        int ii = i+1;
+        while(ii < n && M[ii][j] == 1){
+            ii++;
+            ret++;
+        }
+        ii = i-1;
+        while(ii>=0 && M[ii][j] == 1){
+            ii--;
+            ret++;
+        }
+        return ret;
+    }
+    public int diagonal(int [][]M, int i, int j){
+        if(M[i][j]!=1){
+            return 0;
+        }
+        int ret = 1;
+        int n = M.length;
+        int m = M[0].length;
+        int jj = j+1;
+        int ii = i+1;
+        while(jj < m && ii<n && M[ii][jj] == 1){
+            jj++;
+            ii++;
+            ret++;
+        }
+        jj = j-1;
+        ii = i-1;
+        while(jj>=0 && ii>=0 && M[ii][jj] == 1){
+            jj--;
+            ii--;
+            ret++;
+        }
+        return ret;
+    }
+}

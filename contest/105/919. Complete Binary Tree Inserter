@@ -1,0 +1,73 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class CBTInserter {
+
+    public TreeNode root;
+    public Map<Integer, List<TreeNode>> incomp;
+    public int minLevel;
+    
+    public CBTInserter(TreeNode root) {
+        minLevel = Integer.MAX_VALUE;
+        incomp = new HashMap<Integer, List<TreeNode>>();
+        this.root = initialize(root,0);
+        
+    }
+    
+    public TreeNode initialize(TreeNode node, int level){
+        if(node == null){
+            return null;
+        }
+        TreeNode theNode = new TreeNode(node.val);
+        theNode.left = initialize(node.left, level+1);
+        theNode.right = initialize(node.right, level+1);
+        if(theNode.right==null){
+            if(incomp.containsKey(level) == false){
+                incomp.put(level, new LinkedList<TreeNode>());
+            }
+            incomp.get(level).add(theNode);
+            minLevel = Math.min(minLevel, level);
+        }
+        return theNode;
+    }
+    
+    public int insert(int v) {
+        TreeNode first = incomp.get(minLevel).get(0);
+        TreeNode newNode = new TreeNode(v);
+        if(first.left==null){
+            first.left = newNode;
+            incomp.get(minLevel);
+        }else{
+            first.right = newNode;
+            incomp.get(minLevel).remove(0);
+            
+        }
+        if(incomp.containsKey(minLevel+1) == false){
+            incomp.put(minLevel+1, new LinkedList<TreeNode>());
+        }
+        incomp.get(minLevel+1).add(newNode);
+            
+        if(incomp.get(minLevel).size() == 0){
+            incomp.remove(minLevel);
+            minLevel++;
+        }
+        return first.val;
+    }
+    
+    public TreeNode get_root() {
+        return root;
+    }
+}
+
+/**
+ * Your CBTInserter object will be instantiated and called as such:
+ * CBTInserter obj = new CBTInserter(root);
+ * int param_1 = obj.insert(v);
+ * TreeNode param_2 = obj.get_root();
+ */
