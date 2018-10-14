@@ -1,0 +1,49 @@
+class Solution {
+    public Map<Integer, Integer> scores;
+    public boolean PredictTheWinner(int[] nums) {
+        scores = new HashMap<Integer, Integer>();
+        int leftTotal = 0;
+        for(int n : nums){
+            leftTotal += n;
+        }
+        predictHelper(nums, 0, leftTotal);
+        int mask = 0;
+        int currentScore = scores.get(0);
+        if(currentScore >= leftTotal - currentScore){
+            return true;
+        }else{
+            return false;
+        }
+        
+    }
+    
+    public int predictHelper(int [] nums, int left, int leftTotal){
+        if(scores.containsKey(left)){
+            return scores.get(left);
+        }
+        int idx = 0;
+        int mask = 1;
+        int len = nums.length;
+        int result = 0;
+        for(int i = 0;i<nums.length;i++){
+            mask = 1<<i;
+            if((left&mask) == 0){
+                int counter = predictHelper(nums, left|mask, leftTotal-nums[i]);
+                result = Math.max(result, leftTotal - counter);
+                break;
+            }
+        }
+        
+        for(int i = nums.length-1;i>=0;i--){
+            mask = 1<<i;
+            if((left&mask) == 0){
+                int counter = predictHelper(nums, left|mask, leftTotal-nums[i]);
+                result = Math.max(result, leftTotal - counter);
+                break;
+            }
+        }
+        scores.put(left, result);
+        return result;
+        
+    }
+}

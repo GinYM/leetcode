@@ -1,0 +1,57 @@
+class Solution {
+    public double[] calcEquation(String[][] equations, double[] values, String[][] queries) {
+        Map<String, List<String>> map = new HashMap<>();
+        Map<String, Double> eq = new HashMap<>();
+        double[] result = new double[queries.length];
+        for(int i = 0;i<equations.length;i++)
+        {
+            String[] equation = equations[i];
+            double value = values[i];
+            if(map.containsKey(equation[0]) == false){
+                map.put(equation[0], new ArrayList<String>());
+            }
+            if(map.containsKey(equation[1]) == false){
+                map.put(equation[1], new ArrayList<String>());
+            }
+            map.get(equation[0]).add(equation[1]);
+            map.get(equation[1]).add(equation[0]);
+            eq.put(equation[0]+"/"+equation[1], value);
+            eq.put(equation[1]+"/"+equation[0], 1.0/value);
+        }
+        int idx = 0;
+        for(String[]query : queries){
+            HashSet<String> isVis = new HashSet<String>();
+            isVis.add(query[0]);
+            Double ret = dfs(map, eq, query, query[0], isVis);
+            if(ret == null){
+                result[idx++] = -1.0;
+            }else{
+                result[idx++] = ret;
+            }
+        }
+        return result;
+    }
+    
+    public Double dfs(Map<String, List<String>> map, Map<String, Double> eq, String query[], String prev, Set<String> isVis){
+        if(map.containsKey(query[0]) == false || map.containsKey(query[1]) == false){
+            return null;
+        }
+        if(prev.equals(query[1])){
+            return 1.0;
+        }
+        List<String> variables = map.get(prev);
+        for(String variable : variables){
+            if(isVis.contains(variable) == false){
+                isVis.add(variable);
+                Double ret = dfs(map, eq, query, variable, isVis);
+                isVis.remove(variable);
+                if(ret != null){
+                    return eq.get(prev+"/"+variable)*ret;
+                }
+            }
+            
+        }
+        
+        return null;
+    }
+}

@@ -1,0 +1,31 @@
+class Solution {
+    public int[] findRedundantConnection(int[][] edges) {
+        Map<Integer, Integer> parent = new HashMap<>();
+        for(int [] edge : edges){
+            
+            int root1 = getRoot(edge[0], parent);
+            int root2 = getRoot(edge[1], parent);
+            if(root1 == root2){
+                return edge;
+            }
+            add(root1, root2, parent);
+            
+            
+        }
+        return new int[]{-1,-1};
+    }
+    
+    
+    public int getRoot(int node, Map<Integer, Integer> map){
+        if(map.containsKey(node) == false){
+            return node;
+        }
+        map.put(node, getRoot(map.get(node), map));
+        return map.get(node);
+    }
+    
+    public void add(int root, int child, Map<Integer, Integer> parent){
+        
+        parent.put(child, root);
+    }
+}

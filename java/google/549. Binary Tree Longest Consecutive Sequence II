@@ -1,0 +1,70 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public int result;
+    public int longestConsecutive(TreeNode root) {
+        result = 0;
+        preOrder(root);
+        return result;
+    }
+    
+    // return min and max
+    public void preOrder(TreeNode root){
+        if(root == null){
+            return;
+        }
+        int ret = 1;
+        int left = -1;
+        int right = -1;
+        int leftSign = 0;
+        int rightSign = 0;
+        if(root.left!=null){
+            if(Math.abs(root.left.val-root.val) == 1){
+                left = dfs(root.left, root.left.val,0, root.left.val-root.val);
+                leftSign = root.left.val-root.val;
+            }
+        }
+        
+        if(root.right!=null){
+            if(Math.abs(root.right.val-root.val) == 1){
+                right = dfs(root.right, root.right.val, 0, root.right.val-root.val);
+                rightSign = root.right.val-root.val;
+            }
+        }
+        
+        if(left != -1 && right != -1){
+            if(leftSign != rightSign){
+                ret = left+1+right;
+            }else{
+                ret = 1+Math.max(left, right);
+            }
+        }else if(left != -1){
+            ret = 1+left;
+            //System.out.println(left);
+        }else if(right!=-1){
+            ret = 1+right;
+        }
+        result = Math.max(result, ret);
+        preOrder(root.left);
+        preOrder(root.right);
+        
+        
+    }
+    
+    public int dfs(TreeNode node, int val, int pre, int sign){
+        
+        if(node == null || node.val != val){
+            return pre;
+        }
+        //System.out.println(node.val+" "+pre);
+        
+        return Math.max(dfs(node.left, val+sign, pre+1, sign), dfs(node.right, val+sign, pre+1, sign));
+    }
+}

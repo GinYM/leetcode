@@ -1,0 +1,157 @@
+class Solution {
+    
+    public int isVis[][]; // ver: 1 hor: 10  dia: 100 antidia: 1000
+    public int result;
+    public void search(int[][]M, int i, int j){
+        
+        if((isVis[i][j]&1) == 0){
+            result = Math.max(result, vertical(M, i, j));
+        }
+        if((isVis[i][j]&2) == 0){
+            result = Math.max(result, horizontal(M, i, j));
+        }
+        if((isVis[i][j]&4) == 0){
+            result = Math.max(result, diagonal(M, i, j));
+        }
+        if((isVis[i][j]&8) == 0){
+            result = Math.max(result, antidiagonal(M, i, j));
+        }
+    }
+    
+    public int vertical(int [][]M, int i, int j){
+        
+        if(M[i][j] ==0){
+            return 0;
+        }
+        isVis[i][j] |= 1;
+        int n = M.length;
+        int m = M[0].length;
+        int num = 1;
+        for(int ii = i-1;ii>=0;ii--){
+            isVis[ii][j] |= 1;
+            if(M[ii][j]==0){
+                break;
+            }else{
+                num++;
+            }
+            
+            
+        }
+        for(int ii = i+1;ii<n;ii++){
+            isVis[ii][j] |= 1;
+            if(M[ii][j]==0){
+                break;
+            }else{
+                num++;
+            }
+            
+        }
+        return num;
+    }
+    
+    public int horizontal(int [][]M, int i, int j){
+        
+        if(M[i][j] ==0){
+            return 0;
+        }
+        isVis[i][j] |= 2;
+        int n = M.length;
+        int m = M[0].length;
+        int num = 1;
+        for(int jj = j-1;jj>=0;jj--){
+            isVis[i][jj] |= 2;
+            if(M[i][jj]==0){
+                break;
+            }else{
+                num++;
+            }
+            
+            
+        }
+        for(int jj = j+1;jj<m;jj++){
+            isVis[i][jj] |= 2;
+            if(M[i][jj]==0){
+                break;
+            }else{
+                num++;
+            }
+            
+        }
+        return num;
+    }
+    
+    public int diagonal(int [][]M, int i, int j){
+        
+        if(M[i][j] ==0){
+            return 0;
+        }
+        isVis[i][j] |= 4;
+        int n = M.length;
+        int m = M[0].length;
+        int num = 1;
+        int ii = i+1;
+        int jj = j-1;
+        while(ii < n && jj >=0 && M[ii][jj] == 1){
+            isVis[ii][jj] |= 4;
+            num++; 
+            ii++;
+            jj--;
+        }
+        ii = i-1;
+        jj = j+1;
+        while(ii >= 0 && jj < m && M[ii][jj] == 1){
+            isVis[ii][jj] |= 4;
+            num++; 
+            ii--;
+            jj++;
+        }
+        return num;
+    }
+    
+    public int antidiagonal(int [][]M, int i, int j){
+        
+        if(M[i][j] ==0){
+            return 0;
+        }
+        isVis[i][j] |= 8;
+        int n = M.length;
+        int m = M[0].length;
+        int num = 1;
+        int ii = i+1;
+        int jj = j+1;
+        while(ii < n && jj < m && M[ii][jj] == 1){
+            isVis[ii][jj] |= 8;
+            num++; 
+            ii++;
+            jj++;
+        }
+        ii = i-1;
+        jj = j-1;
+        while(ii >= 0 && jj >= 0 && M[ii][jj] == 1){
+            isVis[ii][jj] |= 8;
+            num++; 
+            ii--;
+            jj--;
+        }
+        return num;
+    }
+    
+    public int longestLine(int[][] M) {
+        int n = M.length;
+        if(n == 0){
+            return 0;
+        }
+        int m = M[0].length;
+        result = 0;
+        isVis = new int[n][m];
+        for(int i = 0;i<n;i++){
+            for(int j = 0;j<m;j++){
+                if(M[i][j] == 1){
+                    search(M, i, j);
+                }
+            }
+        }
+        return result;
+    }
+    
+}
