@@ -1,0 +1,49 @@
+class Solution {
+    public int shortestDistance(int[][] maze, int[] start, int[] destination) {
+        int m = maze.length;
+        int n = maze[0].length;
+        int [][]dp = new int[m][n];
+        dfs(maze, start, dp, start);
+        if(dp[destination[0]][destination[1]]==0){
+            return -1;
+        }else{
+            return dp[destination[0]][destination[1]];
+        }
+    }
+    
+    public void dfs(int[][]maze, int[]prev, int dp[][], int[]start){
+        int m = maze.length;
+        int n = maze[0].length;
+        int dirs[][] = new int[][]{{1,0},{-1,0},{0,1},{0,-1}};
+        for(int []dir : dirs){
+            int i = prev[0]+dir[0];
+            int j = prev[1]+dir[1];
+            if(isValid(maze, i, j) == false){
+                continue;
+            }
+            int count = 1;
+            while(isValid(maze, i+dir[0],j+dir[1])){
+                i+=dir[0];
+                j+=dir[1];
+                count++;
+            }
+            
+            int dis = dp[prev[0]][prev[1]]+count;
+            if( (dp[i][j] == 0 && (i!=start[0] || j != start[1]) ) ||  dis < dp[i][j]){
+                
+                dp[i][j] = dis;
+                //System.out.println(i+" "+j+" "+dp[i][j]);
+                dfs(maze, new int[]{i,j}, dp, start);
+            }
+        }
+    }
+    
+    public boolean isValid(int [][]maze, int i, int j){
+        int m = maze.length;
+        int n = maze[0].length;
+        if(i<0 || j<0 || i>=m || j>=n||maze[i][j] == 1){
+            return false;
+        }
+        return true;
+    }
+}

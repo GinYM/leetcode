@@ -1,0 +1,34 @@
+class Solution {
+    public boolean isBipartite(int[][] graph) {
+        int n = graph.length;
+        int colors[] = new int[n];
+        for(int i = 0;i<n;i++){
+            if(colors[i] !=0){
+                continue;
+            }
+            if(setColor(graph, colors, 1,i) == false){
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    public boolean setColor(int[][]graph, int[]colors, int color, int node){
+        colors[node] = color;
+        for(int nextNode : graph[node]){
+            
+                if(colors[nextNode] == color){
+                    return false;
+                }
+                if(colors[nextNode] == 0){
+                    if(setColor(graph, colors, -color, nextNode) == false){
+                        return false;
+                    }
+                }
+            
+        }
+        return true;
+    }
+    
+   
+}

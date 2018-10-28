@@ -1,0 +1,60 @@
+class Solution {
+    public int numBusesToDestination(int[][] routes, int S, int T) {
+        if(S==T){
+            return 0;
+        }
+        int dp[][] = new int[routes.length][routes.length];
+        Map<Integer, Set<Integer>> map = new HashMap<>();
+        //List<Integer> start = new ArrayList<Integer>();
+        //List<Integer> end = new ArrayList<Integer>();
+        for(int idx = 0;idx<routes.length;idx++){
+            int[]route = routes[idx];
+            dp[idx][idx] = 1;
+            for(int stop : route){
+                if(map.containsKey(stop) == false){
+                    map.put(stop, new HashSet<Integer>());
+                }
+                map.get(stop).add(idx);
+            }
+        }
+        Set<Integer> end = map.get(T);
+        Queue<Integer> queue = new LinkedList<Integer>();
+        queue.offer(S);
+        int count = queue.size();
+        Set<Integer> isVis = new HashSet<Integer>();
+        int result = 0;
+        isVis.add(S);
+        boolean isFind = false;
+        while(queue.isEmpty() == false){
+            count--;
+            int stop = queue.poll();
+            if(stop == T){
+                isFind = true;
+                break;
+            }
+            Set<Integer> route = map.get(stop);
+            for(int r : route){
+                
+                for(int newstop : routes[r]){
+                    if(isVis.contains(newstop) == false){
+                        isVis.add(newstop);
+                        queue.offer(newstop);
+                    }
+                }
+            }
+            if(count == 0){
+                count = queue.size();
+                result++;
+            }
+        }
+        
+        if(isFind == false){
+            return -1;
+        }else{
+            return result;
+        }
+        
+    }
+    
+    
+}

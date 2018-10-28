@@ -1,0 +1,42 @@
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int left = 0;
+        int right = nums.size()-1;
+        int len = nums.size();
+        if(len == 0){
+            return -1;
+        }
+        while(left <= right){
+            int mid = (left+right)/2;
+            if(nums[mid] > nums[len-1]){
+                left  = mid+1;
+            }else{
+                right = mid-1;
+            }
+        }
+        int topIdx = 0;
+        if(nums[left] > nums[len-1]){
+            topIdx = left;
+        }else{
+            topIdx = right;
+        }
+        topIdx++;
+        
+        
+        left = 0;
+        right = len-1;
+        while(left <= right){
+            int mid = (left+right)/2;
+            int realmid = (mid+topIdx)%len;
+            if(target == nums[realmid]){
+                return realmid;
+            }else if(target > nums[realmid]){
+                left = mid+1;
+            }else{
+                right = mid-1;
+            }
+        }
+        return -1;
+    }
+};

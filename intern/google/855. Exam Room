@@ -1,0 +1,57 @@
+class ExamRoom {
+    public List<Integer> list;
+    public int N;
+    public ExamRoom(int N) {
+        list = new ArrayList<Integer>();
+        this.N = N;
+    }
+    
+    public int seat() {
+        if(list.size() == 0){
+            list.add(0);
+            return 0;
+        }
+        
+        //int d = Math.max(list.get(0), N-1-list.get(list.size()-1));
+        int d = list.get(0);
+        int idx = -1;
+        for(int i = 0;i<list.size()-1;i++){
+            int newd = (list.get(i)+list.get(i+1))/2-list.get(i);
+            if(newd > d){
+                d = newd;
+                idx = i;
+            }
+        }
+        if(N-1-list.get(list.size()-1) > d){
+            list.add(N-1);
+            return N-1;
+        }
+        
+        if(d == list.get(0)){
+            list.add(0, 0);
+            return 0;
+        }else{
+            list.add(idx+1, (list.get(idx)+list.get(idx+1))/2 );
+            return list.get(idx+1);
+        }
+        
+        
+        
+    }
+    
+    public void leave(int p) {
+        for(int i = 0;i<list.size();i++){
+            if(list.get(i) == p){
+                list.remove(i);
+                return;
+            }
+        }
+    }
+}
+
+/**
+ * Your ExamRoom object will be instantiated and called as such:
+ * ExamRoom obj = new ExamRoom(N);
+ * int param_1 = obj.seat();
+ * obj.leave(p);
+ */

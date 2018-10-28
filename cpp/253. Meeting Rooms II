@@ -1,0 +1,46 @@
+/**
+ * Definition for an interval.
+ * struct Interval {
+ *     int start;
+ *     int end;
+ *     Interval() : start(0), end(0) {}
+ *     Interval(int s, int e) : start(s), end(e) {}
+ * };
+ */
+class Solution {
+public:
+    static bool cmp( const pair<int, int>& node1,const pair<int, int> & node2){
+        return node1.first<node2.first;
+    }
+    int minMeetingRooms(vector<Interval>& intervals) {
+        vector<pair<int, int>> store= vector<pair<int, int>>();
+        for(auto interval : intervals){
+            
+            store.push_back({interval.start, 0});
+            store.push_back({interval.end, 1});
+        }
+        
+        sort(store.begin(), store.end(),cmp);
+        int count = 0;
+        int result = 0;
+        int prev = INT_MIN;
+        int idx = 0;
+        while(idx < store.size()){
+            pair<int, int> node = store[idx];
+            if(node.second == 0){
+                count++;
+            }else{
+                count--;
+            }
+            if(idx+1<store.size() && store[idx+1].first == store[idx].first){
+                idx++;
+                continue;
+            }else{
+                idx++;
+                result = max(result, count);
+            }
+        }
+        
+        return result;
+    }
+};

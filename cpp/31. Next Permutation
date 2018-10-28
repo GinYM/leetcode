@@ -1,0 +1,19 @@
+class Solution {
+public:
+    void nextPermutation(vector<int>& nums) {
+        int idx = nums.size()-1;
+        while(idx>=1 && nums[idx-1] >= nums[idx]){
+            idx--;
+        }
+        if(idx==0){
+            sort(nums.begin(), nums.end());
+        }else{
+            int low = idx-1;
+            while(idx<nums.size() && nums[idx] > nums[low]) idx++;
+            idx--;
+            swap(nums[low], nums[idx]);
+            sort(nums.begin()+low+1, nums.end());
+        }
+        
+    }
+};

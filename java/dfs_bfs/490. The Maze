@@ -1,0 +1,52 @@
+class Solution {
+    public boolean hasPath(int[][] maze, int[] start, int[] destination) {
+        return dfs(maze, new HashSet<String>(), start, destination);
+    }
+    
+    public boolean dfs(int[][]maze, Set<String> isVis, int[]prev, int []destination){
+        //System.out.println(prev[0]+" "+prev[1]);
+        if(prev[0] == destination[0] && prev[1] == destination[1]){
+            return true;
+        }
+        int m = maze.length;
+        int n = maze[0].length;
+        int dirs[][] = new int[][]{{0,1},{0,-1},{1,0},{-1,0}};
+        int idx = 0;
+        for(int dir[]:dirs){
+            idx++;
+            int i = prev[0]+dir[0];
+            int j = prev[1] + dir[1];
+            if(i<0 || j<0 || i>=m|| j>=n || maze[i][j] == 1){
+                continue;
+            }
+            
+            
+            while(isValid(maze,i+dir[0], j+dir[1])){
+                i+=dir[0];
+                j+=dir[1];
+            }
+            
+            String direction = prev[0]+" "+prev[1]+" "+idx;
+            if(isVis.contains(direction)){
+                continue;
+            }
+            isVis.add(direction);
+            if(dfs(maze, isVis, new int[]{i, j}, destination)){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public boolean isValid(int [][]maze, int i, int j){
+        int m = maze.length;
+        int n = maze[0].length;
+        if(i<0 || j<0 || i>=m|| j>=n){
+            return false;
+        }
+        if(maze[i][j]!=0){
+            return false;
+        }
+        return true;
+    }
+}

@@ -1,0 +1,33 @@
+class Solution {
+    public boolean validTree(int n, int[][] edges) {
+        if(n==1 && edges.length == 0){
+            return true;
+        }
+        int unionset[] = new int[n];
+        Arrays.fill(unionset, -1);
+        
+        for(int [] edge : edges){
+            int root1 = getRoot(unionset, edge[0]);
+            int root2 = getRoot(unionset, edge[1]);
+            if(root1 == root2){
+                return false;
+            }
+            unionset[root2] = root1;
+        }
+        int count = 0;
+        for(int p : unionset){
+            if(p == -1){
+                count++;
+            }
+        }
+        return count == 1;
+    }
+    
+    public int getRoot(int unionset[], int node){
+        if(unionset[node] == -1){
+            return node;
+        }
+        unionset[node] = getRoot(unionset, unionset[node]);
+        return unionset[node];
+    }
+}

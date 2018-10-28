@@ -1,0 +1,26 @@
+class Solution {
+    public int carFleet(int target, int[] position, int[] speed) {
+        if(position.length == 0){
+            return 0;
+        }
+        List<int[]> store = new ArrayList<int[]>(position.length);
+        for(int i = 0;i<position.length;i++){
+            store.add(new int[]{position[i], speed[i]});
+        }
+        Collections.sort(store, (a,b)->{
+            return b[0]-a[0];
+        });
+        int result = 1;
+        double longest = 1.0*(target-store.get(0)[0])/store.get(0)[1];
+        
+        for(int i = 1;i<store.size();i++){
+            double cur = 1.0*(target-store.get(i)[0])/store.get(i)[1];
+            if(cur > longest){
+                longest = cur;
+                result++;
+            }
+        }
+        return result;
+        
+    }
+}

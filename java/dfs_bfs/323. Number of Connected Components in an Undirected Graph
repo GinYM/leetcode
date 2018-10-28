@@ -1,0 +1,26 @@
+class Solution {
+    public int countComponents(int n, int[][] edges) {
+        int []unionset = new int[n];
+        Arrays.fill(unionset, -1);
+        for(int[]edge : edges){
+            int root1 = getRoot(unionset, edge[0]);
+            int root2 = getRoot(unionset, edge[1]);
+            if(root1 != root2)
+                unionset[root2] = root1;
+        }
+        int result = 0;
+        for(int root : unionset){
+            if(root == -1){
+                result++;
+            }
+        }
+        return result;
+    }
+    public int getRoot(int []unionset, int node){
+        if(unionset[node] == -1){
+            return node;
+        }
+        unionset[node] = getRoot(unionset, unionset[node]);
+        return unionset[node];
+    }
+}

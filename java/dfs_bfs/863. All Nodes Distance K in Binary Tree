@@ -1,0 +1,56 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<Integer> distanceK(TreeNode root, TreeNode target, int K) {
+        Map<TreeNode, TreeNode> parents = new HashMap<>();
+        getParent(root, null, parents);
+        Queue<TreeNode> queue = new LinkedList<TreeNode>();
+        queue.offer(target);
+        int count = 1;
+        int dis = 0;
+        Set<TreeNode> isVis = new HashSet<TreeNode>();
+        isVis.add(target);
+        List<Integer> result = new ArrayList<Integer>();
+        while(queue.isEmpty() == false){
+            TreeNode node = queue.poll();
+            count--;
+            if(dis == K){
+                result.add(node.val);
+            }
+            TreeNode p = parents.get(node);
+            if(p!=null && isVis.contains(p) == false){
+                isVis.add(p);
+                queue.offer(p);
+            }
+            if(node.left!=null && isVis.contains(node.left) == false){
+                isVis.add(node.left);
+                queue.offer(node.left);
+            }
+            if(node.right!=null && isVis.contains(node.right) == false){
+                isVis.add(node.right);
+                queue.offer(node.right);
+            }
+            if(count == 0){
+                count = queue.size();
+                dis++;
+            }
+        }
+        return result;
+    }
+    
+    public void getParent(TreeNode node, TreeNode parent, Map<TreeNode, TreeNode> parents){
+        if(node==null){
+            return;
+        }
+        parents.put(node, parent);
+        getParent(node.left, node, parents);
+        getParent(node.right, node, parents);
+    }
+}

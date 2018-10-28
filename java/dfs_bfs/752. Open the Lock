@@ -1,0 +1,49 @@
+class Solution {
+    public int openLock(String[] deadends, String target) {
+        Queue<String> queue = new LinkedList<String>();
+        Set<String> isVis = new HashSet<String>();
+        
+        
+        int count = 1;
+        int step = 0;
+        Set<String> dead = new HashSet<String>();
+        for(String d : deadends){
+            dead.add(d);
+        }
+        
+        if(dead.contains("0000")){
+            return -1;
+        }
+        
+        queue.offer("0000");
+        while(queue.isEmpty() == false){
+            String str = queue.poll();
+            if(str.equals(target)){
+                return step;
+            }
+            count--;
+            for(int i = 0;i<4;i++){
+                int num = str.charAt(i)-'0';
+                int nextNum1 = (num+1)%10;
+                int nextNum2 = (num-1+10)%10;
+                
+                String lock1 = str.substring(0,i)+Integer.toString(nextNum1)+str.substring(i+1, 4);
+                String lock2 = str.substring(0,i)+Integer.toString(nextNum2)+str.substring(i+1, 4);
+                
+                if(isVis.contains(lock1) == false && dead.contains(lock1) == false){
+                    isVis.add(lock1);
+                    queue.offer(lock1);
+                }
+                if(isVis.contains(lock2) == false && dead.contains(lock2) == false){
+                    isVis.add(lock2);
+                    queue.offer(lock2);
+                }
+            }
+            if(count == 0){
+                count = queue.size();
+                step++;
+            }
+        }
+        return -1;
+    }
+}

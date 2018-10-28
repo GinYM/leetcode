@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int left = 0;
+        int right = 0;
+        int result = 0;
+        unordered_map<char, int> mymap = unordered_map<char, int>();
+        for(int i = 0;i<s.size();i++){
+            char c = s[i];
+            if(mymap.find(c) == mymap.end()){
+                mymap[c] = i;
+            }else{
+                left = max(mymap[c]+1, left);
+                mymap[c] = i;
+            }
+            result = max(result, i-left+1);
+        }
+        return result;
+    }
+};

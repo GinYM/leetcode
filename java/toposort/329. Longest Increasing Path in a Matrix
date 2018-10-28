@@ -1,0 +1,85 @@
+class Solution {
+    public int result = 0;
+    public int longestIncreasingPath(int[][] matrix) {
+        int m = matrix.length;
+        if(m == 0){
+            return 0;
+        }
+        int n = matrix[0].length;
+        if(n == 0){
+            return 0;
+        }
+        int [][]dis = new int[m][n];
+        for(int i = 0;i<m;i++){
+            for(int j = 0;j<n;j++){
+                if(dis[i][j] == 0){
+                    search(matrix, i, j, dis);
+                }
+            }
+        }
+        
+        return result;
+    }
+    
+    public int search(int[][]matrix, int i, int j, int[][]dis){
+        //System.out.println(i+" "+j+" dis: "+dis[i][j]);
+        if(dis[i][j]!=0){
+            return dis[i][j];
+        }
+        int m = matrix.length;
+        int n = matrix[0].length;
+        
+        int dirs[][] = new int[][]{{1,0},{-1,0},{0,1},{0,-1}};
+        int max = 0;
+        for(int dir[] : dirs){
+            int r = i+dir[0];
+            int c = j+dir[1];
+            if(r<0 || c<0 || r>=m || c>=n){
+                continue;
+            }
+            if(matrix[r][c] <= matrix[i][j]){
+                continue;
+            }
+            
+            max = Math.max(max, search(matrix, r,c,dis));
+            //System.out.println(i+" "+j+" to "+r+" "+c+" dis: "+max);
+        }
+        dis[i][j] = max+1;
+        result = Math.max(result, dis[i][j]);
+        return dis[i][j];
+    }
+}
+
+class Solution {
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        int graph[][] = new int[numCourses][numCourses];
+        int indegree[] = new int[numCourses];
+        for(int []pre : prerequisites){
+            graph[pre[0]][pre[1]] = 1;
+            indegree[pre[1]]++;
+        }
+        Queue<Integer> queue = new LinkedList<Integer>();
+        for(int i = 0;i<numCourses;i++){
+            if(indegree[i] == 0){
+                queue.offer(i);
+            }
+        }
+        int count = 0;
+        while(queue.isEmpty() == false){
+            int node = queue.poll();
+            count++;
+            for(int i = 0;i<numCourses;i++){
+                if(graph[node][i] == 1){
+                    graph[node][i] = 0;
+                    indegree[i]--;
+                    if(indegree[i] == 0){
+                        queue.offer(i);
+                    }
+                }
+            }
+        }
+        return count == numCourses;
+    }
+    
+    
+}

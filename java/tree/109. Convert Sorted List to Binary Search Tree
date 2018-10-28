@@ -37,3 +37,54 @@ class Solution {
         return root;
     }
 }
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public TreeNode sortedListToBST(ListNode head) {
+        return create(head, null);
+    }
+    
+    public TreeNode create(ListNode start, ListNode end){
+        
+        if(start == end){
+            return null;
+        }
+        if(start.next == end){
+            return new TreeNode(start.val);
+        }
+        ListNode slow = start;
+        ListNode fast = start;
+      
+        while(fast.next != end && fast.next.next != end){
+            
+            slow = slow.next;
+            fast = fast.next.next;
+            
+        }
+        //System.out.println(slow.val);
+        TreeNode root = new TreeNode(slow.val);
+        root.left = create(start, slow);
+        
+        root.right = create(slow.next, end);
+        
+        
+        return root;
+        
+    }
+}

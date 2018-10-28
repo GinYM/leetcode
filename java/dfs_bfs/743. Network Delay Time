@@ -1,0 +1,40 @@
+class Solution {
+    public int networkDelayTime(int[][] times, int N, int K) {
+        int dp[] = new int[N+1];
+        Arrays.fill(dp, -1);
+        Queue<Integer> queue = new LinkedList<Integer>();
+        queue.offer(K);
+        Map<Integer, List<int[]>> map = new HashMap<>();
+        dp[K] = 0;
+        dp[0] = 0;
+        for(int[] time : times){
+            if(map.containsKey(time[0]) == false){
+                map.put(time[0], new LinkedList<int[]>());
+            }
+            // node, time
+            map.get(time[0]).add(new int[]{time[1], time[2]});
+        }
+        while(queue.isEmpty() == false){
+            int node = queue.poll();
+            if(map.containsKey(node) == false){
+                continue;
+            }
+            List<int[]> infos = map.get(node);
+            for(int[] info : infos){
+                int dis = dp[node]+info[1];
+                if(dp[info[0]] == -1 || dis < dp[info[0]]){
+                    queue.offer(info[0]);
+                    dp[info[0]] = dis;
+                }
+            }
+        }
+        int maxTime = 0;
+        for(int time : dp){
+            if(time == -1){
+                return -1;
+            }
+            maxTime = Math.max(maxTime, time);
+        }
+        return maxTime;
+    }
+}

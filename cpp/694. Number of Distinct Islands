@@ -1,0 +1,43 @@
+class Solution {
+public:
+    int numDistinctIslands(vector<vector<int>>& grid) {
+        unordered_set<string> store = unordered_set<string>();
+        int numr = grid.size();
+        if(numr == 0) return 0;
+        int numc = grid[0].size();
+        if(numc == 0) return 0;
+        vector<vector<bool>> isVis(numr, vector<bool>(numc, false));
+        for(int i = 0;i<grid.size();i++){
+            for(int j = 0;j<grid[0].size();j++){
+                if(grid[i][j] == 1 && isVis[i][j] == false){
+                    isVis[i][j] = true;
+                    string prev = "start";
+                    dfs(grid, i, j, prev, isVis);
+                    store.insert(prev);
+                }
+                    
+                
+            }
+        }
+        return store.size();
+    }
+    
+    void dfs(vector<vector<int>>& grid, int i, int j, string &prev, vector<vector<bool>> &isVis){
+        int numr = grid.size();
+        int numc = grid[0].size();
+        int dirs[][2] = {{0,1},{0,-1},{1,0},{-1,0}};
+        int dirIdx = 0;
+        for(auto dir : dirs){
+            dirIdx++;
+            int r = i+dir[0];
+            int c = j+dir[1];
+            if(r<0 || c<0 || r>=numr || c>=numc || isVis[r][c] == true || grid[r][c] == 0){
+                continue;
+            }
+            isVis[r][c] = true;
+            prev += char(dirIdx+'0');
+            dfs(grid, r, c, prev, isVis);
+        }
+        prev += "#";
+    }
+};
